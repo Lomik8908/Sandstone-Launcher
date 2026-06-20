@@ -1,0 +1,131 @@
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using System.Text.Json.Nodes;
+using System.Windows.Forms;
+
+namespace Sandstone_Launcher
+{
+    public partial class InstanceDialog : Form
+    {
+        public InstanceDialog()
+        {
+            InitializeComponent();
+            gc_box.Items.Add(Program.NamedClasses["none"]);
+            gc_box.Items.Add(Program.NamedClasses["default"]);
+            ram_bar.Maximum = (int)(Program.pcInfo.TotalPhysicalMemory / (1024 * 1024));
+            LoadGameVers();
+        }
+
+        public void SetValues(Instance inst = null)
+        {
+            name_box.Text = inst?.name;
+            version_box.SelectedItem = inst?.version;
+            gamedir_box.Text = inst?.gamedir;
+            resx_box.Value = inst?.width ?? 0;
+            resy_box.Value = inst?.height ?? 0;
+            ram_bar.Value = inst?.memory ?? 0;
+            ram_box.Value = inst?.memory ?? 0;
+            GCTemplate GC = GCFlags.GCTemplates.FirstOrDefault(v => v.id == inst?.gc_preset);
+            if (inst?.gc_preset == null || inst?.gc_preset == "default" || GC == null) gc_box.SelectedItem = Program.NamedClasses["default"];
+            else if (inst?.gc_preset == "none") gc_box.SelectedItem = Program.NamedClasses["none"];
+            else gc_box.SelectedItem = GC;
+            mcarg_box.Text = inst?.mc_args;
+            jvmarg_box.Text = inst?.java_args;
+        }
+        public void NoFilters()
+        {
+            installed_only.Checked = false;
+            show_snapshots.Checked = false;
+        }
+        public Instance NewInstance()
+        {
+            if (string.IsNullOrWhiteSpace(name_box.Text) || version_box.SelectedItem == null)
+                return null;
+
+            return new Instance
+            {
+                name = name_box.Text,
+                version = version_box.SelectedItem as string,
+                gamedir = string.IsNullOrWhiteSpace(gamedir_box.Text) ? null : gamedir_box.Text,
+                width = resx_box.Value > 0 ? (int?)resx_box.Value : null,
+                height = resy_box.Value > 0 ? (int?)resy_box.Value : null,
+                memory = ram_box.Value > 0 ? (int?)ram_box.Value : null,
+                gc_preset = (gc_box.SelectedItem as GCTemplate)?.id ?? (gc_box.SelectedItem as NameClass)?.Id ?? "default",
+                mc_args = string.IsNullOrWhiteSpace(mcarg_box.Text) ? null : mcarg_box.Text,
+                java_args = string.IsNullOrWhiteSpace(jvmarg_box.Text) ? null : jvmarg_box.Text,
+                uuid = Guid.NewGuid().ToString()
+            };
+        }
+        public void EditInstance(Instance inst)
+        {
+            if (string.IsNullOrWhiteSpace(name_box.Text) || version_box.SelectedItem == null)
+                return;
+            inst.name = name_box.Text;
+            inst.version = version_box.SelectedItem as string;
+            inst.gamedir = string.IsNullOrWhiteSpace(gamedir_box.Text) ? null : gamedir_box.Text;
+            inst.width = resx_box.Value > 0 ? (int?)resx_box.Value : null;
+            inst.height = resy_box.Value > 0 ? (int?)resy_box.Value : null;
+            inst.memory = ram_box.Value > 0 ? (int?)ram_box.Value : null;
+            if (gc_box.SelectedItem is NameClass)
+                inst.gc_preset = (gc_box.SelectedItem as NameClass)?.Id;
+            else
+                inst.gc_preset = (gc_box.SelectedItem as GCTemplate)?.id;
+            inst.mc_args = string.IsNullOrWhiteSpace(mcarg_box.Text) ? null : mcarg_box.Text;
+            inst.java_args = string.IsNullOrWhiteSpace(jvmarg_box.Text) ? null : jvmarg_box.Text;
+        }
+        public void LoadGameVers(string SelectVer = null) {
+            string Version = SelectVer ?? version_box.SelectedItem as string;
+            version_box.Items.Clear();
+            int InsertAt = 1;
+            version_box.Items.Add(new NameClass { Id = "latest-release", Name = "Latest Release" });
+            if (show_snapshots.Checked)
+            {
+                version_box.Items.Add(new NameClass { Id = "latest-shapshot", Name = "Latest Snapshot" });
+                InsertAt = 2;
+            }
+            if (!installed_only.Checked)
+            {
+                JsonArray Vers = LauncherLib.GetVersionsManifest()?["versions"]?.AsArray();
+                if (Vers == null) return;
+                foreach (JsonNode Ver in Vers)
+                {
+                    if (Ver["type"].ToString() == "snapshot" && !show_snapshots.Checked) continue;
+                    int Index = version_box.Items.Add(Ver["id"].ToString());
+                    if (Ver["id"].ToString() == Version)
+                        version_box.SelectedIndex = Index;
+                }
+            }
+            foreach (string Ver in LauncherLib.GetInstalledVersions())
+            {
+                if (version_box.Items.Contains(Ver)) continue;
+                version_box.Items.Insert(InsertAt, Ver);
+                if (Ver == Version)
+                    version_box.SelectedIndex = 0;
+            }
+        }
+
+        private void filter_button_Click(object sender, EventArgs e) => filter_menu.Show(filter_button, Point.Empty);
+        private void ram_bar_Scroll(object sender, EventArgs e) => ram_box.Value = Math.Max(ram_box.Minimum, Math.Min(ram_bar.Value, ram_box.Maximum));
+        private void ram_box_ValueChanged(object sender, EventArgs e) => ram_bar.Value = (int)Math.Max(ram_bar.Minimum, Math.Min(ram_box.Value, ram_bar.Maximum));
+        private void save_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(name_box.Text))
+                if (version_box.SelectedItem != null)
+                    DialogResult = DialogResult.OK;
+                else
+                    MessageBox.Show(Program.Lang?.sel_ver_warn ?? "Select the game version for this instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show(Program.Lang?.make_name_warn ?? "Create a name for this instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void installed_only_CheckedChanged(object sender, EventArgs e) => LoadGameVers();
+        private void show_snapshots_CheckedChanged(object sender, EventArgs e) => LoadGameVers();
+
+        private void gamedir_button_Click(object sender, EventArgs e)
+        {
+            string Path = Program.homeWindow.SelectFolder();
+            if (Path != null)
+                gamedir_box.Text = Path;
+        }
+    }
+}

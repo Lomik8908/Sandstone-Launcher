@@ -45,7 +45,7 @@ namespace Sandstone_Launcher
         }
         static public bool HashDoRewrite(JsonNode item, string FilePath)
         {
-            return item["sha1"] != null && File.Exists(FilePath) && ComputeSHA1(FilePath) != item["sha1"].ToString();
+            return item?["sha1"] != null && File.Exists(FilePath) && ComputeSHA1(FilePath) != item["sha1"].ToString();
         }
     }
     public class BetterWebClient : WebClient

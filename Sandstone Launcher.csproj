@@ -140,18 +140,9 @@
     <EmbeddedResource Include="InstanceDialog.resx">
       <DependentUpon>InstanceDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Misc\AccountFlowWindow.resx">
-      <DependentUpon>AccountFlowWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Misc\Backgrounds.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Backgrounds.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Misc\Ely2Step.resx">
-      <DependentUpon>Ely2Step.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Misc\ElyFlow.resx">
-      <DependentUpon>ElyFlow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

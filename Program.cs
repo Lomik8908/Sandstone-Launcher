@@ -361,7 +361,7 @@ namespace Sandstone_Launcher
                 string JavaExec;
                 if (!custJre || !File.Exists(custJrePath))
                 {
-                    JavaExec = LauncherLib.DownloadJava(mfJson["javaVersion"]?["component"]?.ToString(), reJava, checkHash);
+                    JavaExec = LauncherLib.DownloadJava(mfJson["javaVersion"]?["component"]?.ToString() ?? "jre-legacy", reJava, checkHash);
                     InvokeUI(() => { homeWindow.updatejava_box.Checked = false; });
                 }
                 else JavaExec = custJrePath;

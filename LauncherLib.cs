@@ -321,7 +321,7 @@ namespace Sandstone_Launcher
                 }
                 else if (((bool?)AssetIndex["virtual"]?.AsValue()) == true)
                 {
-                    AssetPath = Path.Combine(GameDir, "assets", "virtual", assetId);
+                    AssetPath = Path.Combine(GameDir, "assets", "virtual", assetId, aFile.Key);
                 }
                 else
                 {

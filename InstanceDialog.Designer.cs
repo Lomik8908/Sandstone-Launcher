@@ -28,358 +28,404 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            ScrollablePanel = new System.Windows.Forms.Panel();
-            jvmarg_box = new System.Windows.Forms.TextBox();
-            mcarg_box = new System.Windows.Forms.TextBox();
-            jvmarg_label = new System.Windows.Forms.Label();
-            mcarg_label = new System.Windows.Forms.Label();
-            gc_box = new System.Windows.Forms.ComboBox();
-            gc_label = new System.Windows.Forms.Label();
-            mib_label = new System.Windows.Forms.Label();
-            ram_box = new System.Windows.Forms.NumericUpDown();
-            ram_bar = new System.Windows.Forms.TrackBar();
-            ram_label = new System.Windows.Forms.Label();
-            x_label = new System.Windows.Forms.Label();
-            resy_box = new System.Windows.Forms.NumericUpDown();
-            resx_box = new System.Windows.Forms.NumericUpDown();
-            res_label = new System.Windows.Forms.Label();
-            gamedir_button = new System.Windows.Forms.Button();
-            gamedir_box = new System.Windows.Forms.TextBox();
-            gamedir_label = new System.Windows.Forms.Label();
-            filter_button = new System.Windows.Forms.Button();
-            version_box = new System.Windows.Forms.ComboBox();
-            version_label = new System.Windows.Forms.Label();
-            name_box = new System.Windows.Forms.TextBox();
-            instname_label = new System.Windows.Forms.Label();
-            cancel = new System.Windows.Forms.Button();
-            save = new System.Windows.Forms.Button();
-            filter_menu = new System.Windows.Forms.ContextMenuStrip(components);
-            installed_only = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            show_snapshots = new System.Windows.Forms.ToolStripMenuItem();
-            ScrollablePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(ram_box)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(ram_bar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(resy_box)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(resx_box)).BeginInit();
-            filter_menu.SuspendLayout();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.ScrollablePanel = new System.Windows.Forms.Panel();
+            this.jre_button = new System.Windows.Forms.Button();
+            this.jre_label = new System.Windows.Forms.Label();
+            this.jre_box = new System.Windows.Forms.TextBox();
+            this.jvmarg_box = new System.Windows.Forms.TextBox();
+            this.mcarg_box = new System.Windows.Forms.TextBox();
+            this.jvmarg_label = new System.Windows.Forms.Label();
+            this.mcarg_label = new System.Windows.Forms.Label();
+            this.gc_box = new System.Windows.Forms.ComboBox();
+            this.gc_label = new System.Windows.Forms.Label();
+            this.mib_label = new System.Windows.Forms.Label();
+            this.ram_box = new System.Windows.Forms.NumericUpDown();
+            this.ram_bar = new System.Windows.Forms.TrackBar();
+            this.ram_label = new System.Windows.Forms.Label();
+            this.x_label = new System.Windows.Forms.Label();
+            this.resy_box = new System.Windows.Forms.NumericUpDown();
+            this.resx_box = new System.Windows.Forms.NumericUpDown();
+            this.res_label = new System.Windows.Forms.Label();
+            this.gamedir_button = new System.Windows.Forms.Button();
+            this.gamedir_box = new System.Windows.Forms.TextBox();
+            this.gamedir_label = new System.Windows.Forms.Label();
+            this.filter_button = new System.Windows.Forms.Button();
+            this.version_box = new System.Windows.Forms.ComboBox();
+            this.version_label = new System.Windows.Forms.Label();
+            this.name_box = new System.Windows.Forms.TextBox();
+            this.instname_label = new System.Windows.Forms.Label();
+            this.cancel = new System.Windows.Forms.Button();
+            this.save = new System.Windows.Forms.Button();
+            this.filter_menu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.installed_only = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.show_snapshots = new System.Windows.Forms.ToolStripMenuItem();
+            this.predown = new System.Windows.Forms.CheckBox();
+            this.ScrollablePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ram_box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ram_bar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resy_box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resx_box)).BeginInit();
+            this.filter_menu.SuspendLayout();
+            this.SuspendLayout();
             // 
             // ScrollablePanel
             // 
-            ScrollablePanel.AutoScroll = true;
-            ScrollablePanel.Controls.Add(jvmarg_box);
-            ScrollablePanel.Controls.Add(mcarg_box);
-            ScrollablePanel.Controls.Add(jvmarg_label);
-            ScrollablePanel.Controls.Add(mcarg_label);
-            ScrollablePanel.Controls.Add(gc_box);
-            ScrollablePanel.Controls.Add(gc_label);
-            ScrollablePanel.Controls.Add(mib_label);
-            ScrollablePanel.Controls.Add(ram_box);
-            ScrollablePanel.Controls.Add(ram_bar);
-            ScrollablePanel.Controls.Add(ram_label);
-            ScrollablePanel.Controls.Add(x_label);
-            ScrollablePanel.Controls.Add(resy_box);
-            ScrollablePanel.Controls.Add(resx_box);
-            ScrollablePanel.Controls.Add(res_label);
-            ScrollablePanel.Controls.Add(gamedir_button);
-            ScrollablePanel.Controls.Add(gamedir_box);
-            ScrollablePanel.Controls.Add(gamedir_label);
-            ScrollablePanel.Controls.Add(filter_button);
-            ScrollablePanel.Controls.Add(version_box);
-            ScrollablePanel.Controls.Add(version_label);
-            ScrollablePanel.Controls.Add(name_box);
-            ScrollablePanel.Controls.Add(instname_label);
-            ScrollablePanel.Location = new System.Drawing.Point(0, 0);
-            ScrollablePanel.Name = "ScrollablePanel";
-            ScrollablePanel.Size = new System.Drawing.Size(320, 200);
-            ScrollablePanel.TabIndex = 2;
+            this.ScrollablePanel.AutoScroll = true;
+            this.ScrollablePanel.Controls.Add(this.jre_button);
+            this.ScrollablePanel.Controls.Add(this.jre_label);
+            this.ScrollablePanel.Controls.Add(this.jre_box);
+            this.ScrollablePanel.Controls.Add(this.jvmarg_box);
+            this.ScrollablePanel.Controls.Add(this.mcarg_box);
+            this.ScrollablePanel.Controls.Add(this.jvmarg_label);
+            this.ScrollablePanel.Controls.Add(this.mcarg_label);
+            this.ScrollablePanel.Controls.Add(this.gc_box);
+            this.ScrollablePanel.Controls.Add(this.gc_label);
+            this.ScrollablePanel.Controls.Add(this.mib_label);
+            this.ScrollablePanel.Controls.Add(this.ram_box);
+            this.ScrollablePanel.Controls.Add(this.ram_bar);
+            this.ScrollablePanel.Controls.Add(this.ram_label);
+            this.ScrollablePanel.Controls.Add(this.x_label);
+            this.ScrollablePanel.Controls.Add(this.resy_box);
+            this.ScrollablePanel.Controls.Add(this.resx_box);
+            this.ScrollablePanel.Controls.Add(this.res_label);
+            this.ScrollablePanel.Controls.Add(this.gamedir_button);
+            this.ScrollablePanel.Controls.Add(this.gamedir_box);
+            this.ScrollablePanel.Controls.Add(this.gamedir_label);
+            this.ScrollablePanel.Controls.Add(this.filter_button);
+            this.ScrollablePanel.Controls.Add(this.version_box);
+            this.ScrollablePanel.Controls.Add(this.version_label);
+            this.ScrollablePanel.Controls.Add(this.name_box);
+            this.ScrollablePanel.Controls.Add(this.instname_label);
+            this.ScrollablePanel.Location = new System.Drawing.Point(0, 0);
+            this.ScrollablePanel.Name = "ScrollablePanel";
+            this.ScrollablePanel.Size = new System.Drawing.Size(320, 200);
+            this.ScrollablePanel.TabIndex = 2;
+            // 
+            // jre_button
+            // 
+            this.jre_button.BackColor = System.Drawing.Color.DimGray;
+            this.jre_button.FlatAppearance.BorderSize = 0;
+            this.jre_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.jre_button.Location = new System.Drawing.Point(230, 369);
+            this.jre_button.Name = "jre_button";
+            this.jre_button.Size = new System.Drawing.Size(70, 20);
+            this.jre_button.TabIndex = 25;
+            this.jre_button.Text = "Browse...";
+            this.jre_button.UseVisualStyleBackColor = false;
+            this.jre_button.Click += new System.EventHandler(this.jre_button_Click);
+            // 
+            // jre_label
+            // 
+            this.jre_label.Location = new System.Drawing.Point(9, 354);
+            this.jre_label.Name = "jre_label";
+            this.jre_label.Size = new System.Drawing.Size(290, 15);
+            this.jre_label.TabIndex = 24;
+            this.jre_label.Text = "Custom Runtime";
+            this.jre_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // jre_box
+            // 
+            this.jre_box.Location = new System.Drawing.Point(8, 369);
+            this.jre_box.Name = "jre_box";
+            this.jre_box.Size = new System.Drawing.Size(217, 20);
+            this.jre_box.TabIndex = 23;
             // 
             // jvmarg_box
             // 
-            jvmarg_box.Location = new System.Drawing.Point(10, 329);
-            jvmarg_box.Name = "jvmarg_box";
-            jvmarg_box.Size = new System.Drawing.Size(286, 20);
-            jvmarg_box.TabIndex = 22;
+            this.jvmarg_box.Location = new System.Drawing.Point(10, 329);
+            this.jvmarg_box.Name = "jvmarg_box";
+            this.jvmarg_box.Size = new System.Drawing.Size(292, 20);
+            this.jvmarg_box.TabIndex = 22;
             // 
             // mcarg_box
             // 
-            mcarg_box.Location = new System.Drawing.Point(10, 289);
-            mcarg_box.Name = "mcarg_box";
-            mcarg_box.Size = new System.Drawing.Size(290, 20);
-            mcarg_box.TabIndex = 20;
+            this.mcarg_box.Location = new System.Drawing.Point(10, 289);
+            this.mcarg_box.Name = "mcarg_box";
+            this.mcarg_box.Size = new System.Drawing.Size(290, 20);
+            this.mcarg_box.TabIndex = 20;
             // 
             // jvmarg_label
             // 
-            jvmarg_label.Location = new System.Drawing.Point(10, 314);
-            jvmarg_label.Name = "jvmarg_label";
-            jvmarg_label.Size = new System.Drawing.Size(284, 15);
-            jvmarg_label.TabIndex = 21;
-            jvmarg_label.Text = "Java Arguments";
-            jvmarg_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.jvmarg_label.Location = new System.Drawing.Point(10, 314);
+            this.jvmarg_label.Name = "jvmarg_label";
+            this.jvmarg_label.Size = new System.Drawing.Size(290, 15);
+            this.jvmarg_label.TabIndex = 21;
+            this.jvmarg_label.Text = "Java Arguments";
+            this.jvmarg_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // mcarg_label
             // 
-            mcarg_label.Location = new System.Drawing.Point(10, 274);
-            mcarg_label.Name = "mcarg_label";
-            mcarg_label.Size = new System.Drawing.Size(284, 15);
-            mcarg_label.TabIndex = 19;
-            mcarg_label.Text = "Minecraft Arguments";
-            mcarg_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mcarg_label.Location = new System.Drawing.Point(10, 274);
+            this.mcarg_label.Name = "mcarg_label";
+            this.mcarg_label.Size = new System.Drawing.Size(284, 15);
+            this.mcarg_label.TabIndex = 19;
+            this.mcarg_label.Text = "Minecraft Arguments";
+            this.mcarg_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // gc_box
             // 
-            gc_box.DisplayMember = "name";
-            gc_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            gc_box.FormattingEnabled = true;
-            gc_box.Location = new System.Drawing.Point(10, 248);
-            gc_box.Name = "gc_box";
-            gc_box.Size = new System.Drawing.Size(290, 21);
-            gc_box.TabIndex = 18;
+            this.gc_box.DisplayMember = "name";
+            this.gc_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.gc_box.FormattingEnabled = true;
+            this.gc_box.Location = new System.Drawing.Point(10, 248);
+            this.gc_box.Name = "gc_box";
+            this.gc_box.Size = new System.Drawing.Size(290, 21);
+            this.gc_box.TabIndex = 18;
             // 
             // gc_label
             // 
-            gc_label.Location = new System.Drawing.Point(13, 232);
-            gc_label.Name = "gc_label";
-            gc_label.Size = new System.Drawing.Size(284, 15);
-            gc_label.TabIndex = 17;
-            gc_label.Text = "Garbage Collector Flags";
-            gc_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gc_label.Location = new System.Drawing.Point(13, 232);
+            this.gc_label.Name = "gc_label";
+            this.gc_label.Size = new System.Drawing.Size(284, 15);
+            this.gc_label.TabIndex = 17;
+            this.gc_label.Text = "Garbage Collector Flags";
+            this.gc_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // mib_label
             // 
-            mib_label.Location = new System.Drawing.Point(195, 207);
-            mib_label.Name = "mib_label";
-            mib_label.Size = new System.Drawing.Size(30, 20);
-            mib_label.TabIndex = 16;
-            mib_label.Text = "MiB";
-            mib_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mib_label.Location = new System.Drawing.Point(195, 207);
+            this.mib_label.Name = "mib_label";
+            this.mib_label.Size = new System.Drawing.Size(30, 20);
+            this.mib_label.TabIndex = 16;
+            this.mib_label.Text = "MiB";
+            this.mib_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ram_box
             // 
-            ram_box.Location = new System.Drawing.Point(120, 207);
-            ram_box.Name = "ram_box";
-            ram_box.Size = new System.Drawing.Size(75, 20);
-            ram_box.TabIndex = 15;
-            ram_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            ram_box.ValueChanged += new System.EventHandler(ram_box_ValueChanged);
+            this.ram_box.Location = new System.Drawing.Point(120, 207);
+            this.ram_box.Name = "ram_box";
+            this.ram_box.Size = new System.Drawing.Size(75, 20);
+            this.ram_box.TabIndex = 15;
+            this.ram_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.ram_box.ValueChanged += new System.EventHandler(this.ram_box_ValueChanged);
             // 
             // ram_bar
             // 
-            ram_bar.AutoSize = false;
-            ram_bar.LargeChange = 512;
-            ram_bar.Location = new System.Drawing.Point(10, 187);
-            ram_bar.Maximum = 131072;
-            ram_bar.Name = "ram_bar";
-            ram_bar.Size = new System.Drawing.Size(290, 20);
-            ram_bar.SmallChange = 256;
-            ram_bar.TabIndex = 14;
-            ram_bar.TickFrequency = 1024;
-            ram_bar.TickStyle = System.Windows.Forms.TickStyle.None;
-            ram_bar.Scroll += new System.EventHandler(ram_bar_Scroll);
+            this.ram_bar.AutoSize = false;
+            this.ram_bar.LargeChange = 512;
+            this.ram_bar.Location = new System.Drawing.Point(10, 187);
+            this.ram_bar.Maximum = 131072;
+            this.ram_bar.Name = "ram_bar";
+            this.ram_bar.Size = new System.Drawing.Size(290, 20);
+            this.ram_bar.SmallChange = 256;
+            this.ram_bar.TabIndex = 14;
+            this.ram_bar.TickFrequency = 1024;
+            this.ram_bar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.ram_bar.Scroll += new System.EventHandler(this.ram_bar_Scroll);
             // 
             // ram_label
             // 
-            ram_label.Location = new System.Drawing.Point(10, 172);
-            ram_label.Name = "ram_label";
-            ram_label.Size = new System.Drawing.Size(290, 15);
-            ram_label.TabIndex = 13;
-            ram_label.Text = "Allocated Memory";
-            ram_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ram_label.Location = new System.Drawing.Point(10, 172);
+            this.ram_label.Name = "ram_label";
+            this.ram_label.Size = new System.Drawing.Size(290, 15);
+            this.ram_label.TabIndex = 13;
+            this.ram_label.Text = "Allocated Memory";
+            this.ram_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // x_label
             // 
-            x_label.Location = new System.Drawing.Point(145, 145);
-            x_label.Name = "x_label";
-            x_label.Size = new System.Drawing.Size(20, 20);
-            x_label.TabIndex = 10;
-            x_label.Text = "X";
-            x_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.x_label.Location = new System.Drawing.Point(145, 145);
+            this.x_label.Name = "x_label";
+            this.x_label.Size = new System.Drawing.Size(20, 20);
+            this.x_label.TabIndex = 10;
+            this.x_label.Text = "X";
+            this.x_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // resy_box
             // 
-            resy_box.Location = new System.Drawing.Point(170, 145);
-            resy_box.Name = "resy_box";
-            resy_box.Size = new System.Drawing.Size(130, 20);
-            resy_box.TabIndex = 11;
-            resy_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.resy_box.Location = new System.Drawing.Point(170, 145);
+            this.resy_box.Name = "resy_box";
+            this.resy_box.Size = new System.Drawing.Size(130, 20);
+            this.resy_box.TabIndex = 11;
+            this.resy_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // resx_box
             // 
-            resx_box.Location = new System.Drawing.Point(10, 145);
-            resx_box.Name = "resx_box";
-            resx_box.Size = new System.Drawing.Size(130, 20);
-            resx_box.TabIndex = 9;
-            resx_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.resx_box.Location = new System.Drawing.Point(10, 145);
+            this.resx_box.Name = "resx_box";
+            this.resx_box.Size = new System.Drawing.Size(130, 20);
+            this.resx_box.TabIndex = 9;
+            this.resx_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // res_label
             // 
-            res_label.Location = new System.Drawing.Point(10, 130);
-            res_label.Name = "res_label";
-            res_label.Size = new System.Drawing.Size(290, 15);
-            res_label.TabIndex = 8;
-            res_label.Text = "Resolution";
-            res_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.res_label.Location = new System.Drawing.Point(10, 130);
+            this.res_label.Name = "res_label";
+            this.res_label.Size = new System.Drawing.Size(290, 15);
+            this.res_label.TabIndex = 8;
+            this.res_label.Text = "Resolution";
+            this.res_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // gamedir_button
             // 
-            gamedir_button.BackColor = System.Drawing.Color.DimGray;
-            gamedir_button.FlatAppearance.BorderSize = 0;
-            gamedir_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            gamedir_button.Location = new System.Drawing.Point(230, 105);
-            gamedir_button.Name = "gamedir_button";
-            gamedir_button.Size = new System.Drawing.Size(70, 20);
-            gamedir_button.TabIndex = 7;
-            gamedir_button.Text = "Browse...";
-            gamedir_button.UseVisualStyleBackColor = false;
-            gamedir_button.Click += new System.EventHandler(gamedir_button_Click);
+            this.gamedir_button.BackColor = System.Drawing.Color.DimGray;
+            this.gamedir_button.FlatAppearance.BorderSize = 0;
+            this.gamedir_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gamedir_button.Location = new System.Drawing.Point(230, 105);
+            this.gamedir_button.Name = "gamedir_button";
+            this.gamedir_button.Size = new System.Drawing.Size(70, 20);
+            this.gamedir_button.TabIndex = 7;
+            this.gamedir_button.Text = "Browse...";
+            this.gamedir_button.UseVisualStyleBackColor = false;
+            this.gamedir_button.Click += new System.EventHandler(this.gamedir_button_Click);
             // 
             // gamedir_box
             // 
-            gamedir_box.Location = new System.Drawing.Point(10, 105);
-            gamedir_box.Name = "gamedir_box";
-            gamedir_box.Size = new System.Drawing.Size(215, 20);
-            gamedir_box.TabIndex = 6;
+            this.gamedir_box.Location = new System.Drawing.Point(10, 105);
+            this.gamedir_box.Name = "gamedir_box";
+            this.gamedir_box.Size = new System.Drawing.Size(215, 20);
+            this.gamedir_box.TabIndex = 6;
             // 
             // gamedir_label
             // 
-            gamedir_label.Location = new System.Drawing.Point(10, 90);
-            gamedir_label.Name = "gamedir_label";
-            gamedir_label.Size = new System.Drawing.Size(290, 15);
-            gamedir_label.TabIndex = 5;
-            gamedir_label.Text = "Game Folder";
-            gamedir_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gamedir_label.Location = new System.Drawing.Point(10, 90);
+            this.gamedir_label.Name = "gamedir_label";
+            this.gamedir_label.Size = new System.Drawing.Size(290, 15);
+            this.gamedir_label.TabIndex = 5;
+            this.gamedir_label.Text = "Game Folder";
+            this.gamedir_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // filter_button
             // 
-            filter_button.BackColor = System.Drawing.Color.DimGray;
-            filter_button.FlatAppearance.BorderSize = 0;
-            filter_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            filter_button.Image = global::Sandstone_Launcher.Properties.Resources.more;
-            filter_button.Location = new System.Drawing.Point(275, 65);
-            filter_button.Name = "filter_button";
-            filter_button.Size = new System.Drawing.Size(25, 20);
-            filter_button.TabIndex = 4;
-            filter_button.UseVisualStyleBackColor = false;
-            filter_button.Click += new System.EventHandler(filter_button_Click);
+            this.filter_button.BackColor = System.Drawing.Color.DimGray;
+            this.filter_button.FlatAppearance.BorderSize = 0;
+            this.filter_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.filter_button.Image = global::Sandstone_Launcher.Properties.Resources.more;
+            this.filter_button.Location = new System.Drawing.Point(275, 65);
+            this.filter_button.Name = "filter_button";
+            this.filter_button.Size = new System.Drawing.Size(25, 20);
+            this.filter_button.TabIndex = 4;
+            this.filter_button.UseVisualStyleBackColor = false;
+            this.filter_button.Click += new System.EventHandler(this.filter_button_Click);
             // 
             // version_box
             // 
-            version_box.DisplayMember = "Name";
-            version_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            version_box.FormattingEnabled = true;
-            version_box.Location = new System.Drawing.Point(10, 65);
-            version_box.Name = "version_box";
-            version_box.Size = new System.Drawing.Size(260, 21);
-            version_box.TabIndex = 3;
+            this.version_box.DisplayMember = "Name";
+            this.version_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.version_box.FormattingEnabled = true;
+            this.version_box.Location = new System.Drawing.Point(10, 65);
+            this.version_box.Name = "version_box";
+            this.version_box.Size = new System.Drawing.Size(260, 21);
+            this.version_box.TabIndex = 3;
             // 
             // version_label
             // 
-            version_label.Location = new System.Drawing.Point(10, 50);
-            version_label.Name = "version_label";
-            version_label.Size = new System.Drawing.Size(290, 15);
-            version_label.TabIndex = 2;
-            version_label.Text = "Game Version";
-            version_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.version_label.Location = new System.Drawing.Point(10, 50);
+            this.version_label.Name = "version_label";
+            this.version_label.Size = new System.Drawing.Size(290, 15);
+            this.version_label.TabIndex = 2;
+            this.version_label.Text = "Game Version";
+            this.version_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // name_box
             // 
-            name_box.Location = new System.Drawing.Point(10, 25);
-            name_box.Name = "name_box";
-            name_box.Size = new System.Drawing.Size(290, 20);
-            name_box.TabIndex = 1;
+            this.name_box.Location = new System.Drawing.Point(10, 25);
+            this.name_box.Name = "name_box";
+            this.name_box.Size = new System.Drawing.Size(290, 20);
+            this.name_box.TabIndex = 1;
             // 
             // instname_label
             // 
-            instname_label.Location = new System.Drawing.Point(10, 10);
-            instname_label.Name = "instname_label";
-            instname_label.Size = new System.Drawing.Size(290, 15);
-            instname_label.TabIndex = 0;
-            instname_label.Text = "Instance Name";
-            instname_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.instname_label.Location = new System.Drawing.Point(10, 10);
+            this.instname_label.Name = "instname_label";
+            this.instname_label.Size = new System.Drawing.Size(290, 15);
+            this.instname_label.TabIndex = 0;
+            this.instname_label.Text = "Instance Name";
+            this.instname_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cancel
             // 
-            cancel.BackColor = System.Drawing.Color.DimGray;
-            cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            cancel.FlatAppearance.BorderSize = 0;
-            cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            cancel.Location = new System.Drawing.Point(5, 230);
-            cancel.Name = "cancel";
-            cancel.Size = new System.Drawing.Size(310, 23);
-            cancel.TabIndex = 0;
-            cancel.Text = "Cancel";
-            cancel.UseVisualStyleBackColor = false;
+            this.cancel.BackColor = System.Drawing.Color.DimGray;
+            this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancel.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cancel.Location = new System.Drawing.Point(165, 225);
+            this.cancel.Name = "cancel";
+            this.cancel.Size = new System.Drawing.Size(145, 23);
+            this.cancel.TabIndex = 0;
+            this.cancel.Text = "Cancel";
+            this.cancel.UseVisualStyleBackColor = false;
             // 
             // save
             // 
-            save.BackColor = System.Drawing.Color.DimGray;
-            save.FlatAppearance.BorderSize = 0;
-            save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            save.Location = new System.Drawing.Point(5, 205);
-            save.Name = "save";
-            save.Size = new System.Drawing.Size(310, 23);
-            save.TabIndex = 1;
-            save.Text = "Save";
-            save.UseVisualStyleBackColor = false;
-            save.Click += new System.EventHandler(save_Click);
+            this.save.BackColor = System.Drawing.Color.DimGray;
+            this.save.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.save.Location = new System.Drawing.Point(10, 225);
+            this.save.Name = "save";
+            this.save.Size = new System.Drawing.Size(145, 23);
+            this.save.TabIndex = 1;
+            this.save.Text = "Save";
+            this.save.UseVisualStyleBackColor = false;
+            this.save.Click += new System.EventHandler(this.save_Click);
             // 
             // filter_menu
             // 
-            filter_menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            installed_only,
-            toolStripSeparator1,
-            show_snapshots});
-            filter_menu.Name = "filter_menu";
-            filter_menu.Size = new System.Drawing.Size(161, 54);
+            this.filter_menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.installed_only,
+            this.toolStripSeparator1,
+            this.show_snapshots});
+            this.filter_menu.Name = "filter_menu";
+            this.filter_menu.Size = new System.Drawing.Size(161, 54);
             // 
             // installed_only
             // 
-            installed_only.CheckOnClick = true;
-            installed_only.Name = "installed_only";
-            installed_only.Size = new System.Drawing.Size(160, 22);
-            installed_only.Text = "Installed Only";
-            installed_only.CheckedChanged += new System.EventHandler(installed_only_CheckedChanged);
+            this.installed_only.CheckOnClick = true;
+            this.installed_only.Name = "installed_only";
+            this.installed_only.Size = new System.Drawing.Size(160, 22);
+            this.installed_only.Text = "Installed Only";
+            this.installed_only.CheckedChanged += new System.EventHandler(this.installed_only_CheckedChanged);
             // 
             // toolStripSeparator1
             // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
             // 
             // show_snapshots
             // 
-            show_snapshots.CheckOnClick = true;
-            show_snapshots.Name = "show_snapshots";
-            show_snapshots.Size = new System.Drawing.Size(160, 22);
-            show_snapshots.Text = "Show Snapshots";
-            show_snapshots.CheckedChanged += new System.EventHandler(show_snapshots_CheckedChanged);
+            this.show_snapshots.CheckOnClick = true;
+            this.show_snapshots.Name = "show_snapshots";
+            this.show_snapshots.Size = new System.Drawing.Size(160, 22);
+            this.show_snapshots.Text = "Show Snapshots";
+            this.show_snapshots.CheckedChanged += new System.EventHandler(this.show_snapshots_CheckedChanged);
+            // 
+            // predown
+            // 
+            this.predown.Location = new System.Drawing.Point(10, 205);
+            this.predown.Name = "predown";
+            this.predown.Size = new System.Drawing.Size(300, 19);
+            this.predown.TabIndex = 3;
+            this.predown.Text = "Predownload files";
+            this.predown.UseVisualStyleBackColor = true;
             // 
             // InstanceDialog
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            ClientSize = new System.Drawing.Size(320, 260);
-            Controls.Add(save);
-            Controls.Add(cancel);
-            Controls.Add(ScrollablePanel);
-            ForeColor = System.Drawing.Color.White;
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            Icon = global::Sandstone_Launcher.Properties.Resources.sandstone;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "InstanceDialog";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            Text = "Instance Action";
-            ScrollablePanel.ResumeLayout(false);
-            ScrollablePanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(ram_box)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(ram_bar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(resy_box)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(resx_box)).EndInit();
-            filter_menu.ResumeLayout(false);
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ClientSize = new System.Drawing.Size(320, 260);
+            this.Controls.Add(this.predown);
+            this.Controls.Add(this.save);
+            this.Controls.Add(this.cancel);
+            this.Controls.Add(this.ScrollablePanel);
+            this.ForeColor = System.Drawing.Color.White;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = global::Sandstone_Launcher.Properties.Resources.sandstone;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "InstanceDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Instance Action";
+            this.ScrollablePanel.ResumeLayout(false);
+            this.ScrollablePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ram_box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ram_bar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resy_box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resx_box)).EndInit();
+            this.filter_menu.ResumeLayout(false);
+            this.ResumeLayout(false);
 
         }
 
@@ -414,5 +460,9 @@
         public System.Windows.Forms.ToolStripMenuItem installed_only;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         public System.Windows.Forms.ToolStripMenuItem show_snapshots;
+        public System.Windows.Forms.CheckBox predown;
+        public System.Windows.Forms.Label jre_label;
+        public System.Windows.Forms.TextBox jre_box;
+        public System.Windows.Forms.Button jre_button;
     }
 }

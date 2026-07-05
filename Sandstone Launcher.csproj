@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LauncherLib.cs" />
     <Compile Include="Misc\Accounts.cs" />
     <Compile Include="Misc\ArgSplitter.cs" />
     <Compile Include="Misc\Background.cs" />
@@ -115,13 +116,14 @@
     <Compile Include="Misc\AccountFlowWindow.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Misc\SharedMethods.cs" />
     <Compile Include="Misc\WebHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="LauncherLib.cs" />
+    <None Include="LauncherLib_old.cs" />
     <Compile Include="Misc\Console.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -215,6 +217,12 @@
     <None Include="Resources\msa.png" />
     <None Include="Resources\playstation.png" />
     <None Include="Resources\sandstone.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Microsoft.Web.WebView2.1.0.4022.49\build\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.4022.49\build\Microsoft.Web.WebView2.targets')" />

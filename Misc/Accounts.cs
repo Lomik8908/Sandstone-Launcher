@@ -101,21 +101,22 @@ namespace Sandstone_Launcher
             catch (Exception ex) { Logger.Err($"Error occured during Ely.by login: {ex.Message}"); }
         }
         static public void RefreshEly(User user) {
-            if (user.usertype == "ely")
-            {
-                var ElyResponse = httpClient.PostAsync(Urls.ElyAuthUri, new StringContent(JsonSerializer.Serialize(new { user.accessToken, clientToken = Program.settings.clientId }), Encoding.UTF8, "application/json")).Result;
-                if (ElyResponse.IsSuccessStatusCode)
+            if (user.usertype == "ely") try
                 {
-                    var JNode = JsonNode.Parse(ElyResponse.Content.ReadAsStringAsync().Result);
-                    if (JNode?["accessToken"] != null)
+                    var ElyResponse = httpClient.PostAsync(Urls.ElyAuthUri, new StringContent(JsonSerializer.Serialize(new { user.accessToken, clientToken = Program.settings.clientId }), Encoding.UTF8, "application/json")).Result;
+                    if (ElyResponse.IsSuccessStatusCode)
                     {
-                        user.username = JNode?["selectedProfile"]?["name"]?.ToString();
-                        user.uuid = JNode?["selectedProfile"]?["id"]?.ToString();
-                        user.accessToken = JNode?["accessToken"]?.ToString();
-                        Program.LoadUsersList();
+                        var JNode = JsonNode.Parse(ElyResponse.Content.ReadAsStringAsync().Result);
+                        if (JNode?["accessToken"] != null)
+                        {
+                            user.username = JNode?["selectedProfile"]?["name"]?.ToString();
+                            user.uuid = JNode?["selectedProfile"]?["id"]?.ToString();
+                            user.accessToken = JNode?["accessToken"]?.ToString();
+                            Program.LoadUsersList();
+                        }
                     }
                 }
-            }
+                catch (Exception ex) { Logger.Warn($"Couldn't refresh Ely.by token: {ex.Message}"); }
         }
         static private string GetElyCode()
         {
@@ -338,8 +339,8 @@ namespace Sandstone_Launcher
                             {
                                 if (!File.Exists(path) || Rewrite || (CheckHash && HashDoRewrite256(Asset["digest"]?.ToString()?.Replace("sha256:", ""), path)))
                                 {
-                                    Directory.CreateDirectory(Directory.GetParent(path).FullName);
-                                    BWC.DownloadFile(Asset["browser_download_url"].ToString(), path);
+                                    //Directory.CreateDirectory(Directory.GetParent(path).FullName);
+                                    LauncherLib.AddDownload(Asset["browser_download_url"].ToString(), path);
                                 }
                             }
                         }

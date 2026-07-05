@@ -8,7 +8,9 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace Sandstone_Launcher
 {
@@ -69,37 +71,57 @@ namespace Sandstone_Launcher
         static BetterWebClient Client = new BetterWebClient();
 
         static public string SaveFolder = Path.Combine(Appdata, "SandstoneLauncher");
-        static public string GameDir = Path.Combine(Appdata, ".minecraft");
+        static public string GameDir { get; private set; } = Path.Combine(Appdata, ".minecraft");
         static public readonly string DefaultGameDir = Path.Combine(Appdata, ".minecraft");
-        static private bool OperationRunning = false;
+        static public bool OperationRunning { get; private set; } = false;
+
+        static private readonly object downlock = new object();
+        static private Dictionary<string, string> PendingDownloads = new Dictionary<string, string>();
+        static private readonly object extrlock = new object();
+        static private HashSet<ExtractFile> ExtractList = new HashSet<ExtractFile>();
 
         static public string VersionManifest = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
         static public string JavaManifest = "https://piston-meta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json";
 
-        static public Action<int, int> OnJavaUpdate;
-        static public Action<int, int> OnClientUpdate;
-        static public Action<int, int> OnAssetUpdate;
+        //static public Action<int, int> OnJavaUpdate;
+        //static public Action<int, int> OnClientUpdate;
+        //static public Action<int, int> OnAssetUpdate;
+        static public Action<int, int> OnDownUpdate;
 
         static LauncherLib()
         {
+ 
+            Client.Headers.Add("User-Agent", "CSharp/7.3");
             Directory.CreateDirectory(SaveFolder);
         }
 
+        static public void SetGameDir(string path="")
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                GameDir = DefaultGameDir;
+            else
+                GameDir = path;
+            Directory.CreateDirectory(GameDir);
+            string Profiles = Path.Combine(GameDir, "launcher_profiles.json");
+            if (!File.Exists(Profiles)) File.WriteAllText(Profiles, "{\"profiles\" : {}, \"version\" : 3}");
+        }
+
         //Manifests And Stuff
+        static JsonNode VersionManifestNode = null;
         static public JsonNode GetVersionsManifest()
         {
-            string JPath = Path.Combine(SaveFolder, "version_manifest_v2.json");
-            try { Client.DownloadFile(VersionManifest, JPath); } catch (Exception ex) { Logger.Err($"Could not download version_manifest_v2.json: {ex.Message}"); }
-            if (File.Exists(JPath)) try
+            //string JPath = Path.Combine(SaveFolder, "version_manifest_v2.json");
+            //if (!DownloadedVersionManifest) try { Client.DownloadFile(VersionManifest, JPath); DownloadedVersionManifest = true; } catch (Exception ex) { Logger.Err($"Could not download version_manifest_v2.json: {ex.Message}"); }
+            //if (File.Exists(JPath)) 
+            try
             {
-                JsonNode node = JsonNode.Parse(File.ReadAllText(JPath));
-                return node;
+                VersionManifestNode = JsonNode.Parse(Client.DownloadString(VersionManifest));
             }
             catch (Exception ex)
             {
                 Logger.Err($"Could not get version manifest: {ex.Message}");
             }
-            return null;
+            return VersionManifestNode;
         }
         static public JsonNode GetManifestOf(string Version, bool Rewrite = false)
         {
@@ -131,22 +153,22 @@ namespace Sandstone_Launcher
                 }
             return null;
         }
+        static JsonNode JavaManifestNode = null;
         static public JsonNode GetJavaManifest()
-        {
+        {   
             try
             {
-                JsonNode node = JsonNode.Parse(Client.DownloadString(JavaManifest));
-                return node;
+                JavaManifestNode = JsonNode.Parse(Client.DownloadString(JavaManifest));
             }
             catch (Exception ex)
             {
                 Logger.Err($"Could not get java manifest: {ex.Message}");
             }
-            return null;
+            return JavaManifestNode;
         }
 
-        //downloading game
-        static public string DownloadJava(string Version="jre-legacy", bool Rewrite=false, bool CheckHash = false)
+        //checking game
+        static public string CheckJava(string Version = "jre-legacy", bool Rewrite = false, bool CheckHash = false)
         {
             OperationRunning = true;
             string osArch = Environment.Is64BitOperatingSystem ? "x64" : "x86";
@@ -156,65 +178,56 @@ namespace Sandstone_Launcher
                     string manifestUri = GetJavaManifest()?[$"windows-{osArch}"]?[Version]?[0]?["manifest"]?["url"]?.ToString();
                     if (manifestUri != null)
                     {
-                        Logger.Log($"Downloading {Version} manifest");
-                        Directory.CreateDirectory(Directory.GetParent(mfPath).FullName);
-                        Client.DownloadFile(manifestUri, mfPath);
+                        //Logger.Log($"Pending {Version} manifest");
+                        AddDownload(manifestUri, mfPath);
                     }
                 }
                 catch (Exception ex) { Logger.Err($"Couldn't download {Version} manifest: {ex.Message}"); }
-            if (!File.Exists(mfPath)) return null;
+            if (!File.Exists(mfPath)) { OperationRunning = false; return null; }
             JsonNode jManifest = null;
             try { jManifest = JsonNode.Parse(File.ReadAllText(mfPath)); } catch { }
-            if (jManifest?["files"] == null) return null;
+            if (jManifest?["files"] == null) { OperationRunning = false; return null; }
             JsonObject jFiles = jManifest["files"].AsObject();
-            int index = 0;
-            DateTime lastCall = DateTime.UtcNow;
+            //int index = 0;
+            //DateTime lastCall = DateTime.UtcNow;
             foreach (var jFile in jFiles)
             {
                 if (!OperationRunning) break;
-                index++;
-                if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == jFiles.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnJavaUpdate?.Invoke(index, jFiles.Count)); }
+                //index++;
+                //if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == jFiles.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnJavaUpdate?.Invoke(index, jFiles.Count)); }
                 if (jFile.Value?["type"]?.ToString() == "dictionary" || jFile.Value?["downloads"]?["raw"] == null) continue;
                 string FilePath = Path.Combine(SaveFolder, "java", Version, jFile.Key);
                 if (!File.Exists(FilePath) || Rewrite || (CheckHash && LibUtil.HashDoRewrite(jFile.Value["downloads"]["raw"], FilePath)))
                 {
-                    Logger.Log($"Downloading {Version}/{jFile.Key}");
-                    try
-                    {
-                        Directory.CreateDirectory(Directory.GetParent(FilePath).FullName);
-                        Client.DownloadFile(jFile.Value["downloads"]["raw"]["url"].ToString(), FilePath);
-                    }
-                    catch (Exception ex) { Logger.Err($"Couldn't download {Version}/{jFile.Key}: {ex.Message}"); }
+                    //Logger.Log($"Pending {Version}/{jFile.Key}");
+                    AddDownload(jFile.Value["downloads"]["raw"]["url"].ToString(), FilePath);
                 }
             }
             OperationRunning = false;
             string javaPath = Path.Combine(SaveFolder, "java", Version, "bin", "javaw.exe");
             return File.Exists(javaPath) ? javaPath : null;
         }
-        static public string DownloadClasses(JsonNode manifest, string Version, bool Rewrite = false, bool CheckHash = false)
+        static public string CheckClasses(JsonNode manifest, string Version, bool Rewrite = false, bool CheckHash = false)
         {
             OperationRunning = true;
             string VersionPath = Path.Combine(GameDir, "versions", Version, Version + ".jar");
             string NativeDir = Path.Combine(GameDir, "versions", Version, "natives");
-            if (!File.Exists(VersionPath) || Rewrite || (CheckHash && LibUtil.HashDoRewrite(manifest["downloads"]["client"], VersionPath))) try
-                {
-                    Directory.CreateDirectory(Directory.GetParent(VersionPath).FullName);
-                    Client.DownloadFile(manifest["downloads"]["client"]["url"].ToString(), VersionPath);
-                }
-                catch (Exception ex) { Logger.Err($"Couldn't download {Version}: {ex.Message}"); }
+            if (!File.Exists(VersionPath) || Rewrite || (CheckHash && LibUtil.HashDoRewrite(manifest["downloads"]["client"], VersionPath)))
+                AddDownload(manifest["downloads"]["client"]["url"].ToString(), VersionPath);
             Directory.CreateDirectory(NativeDir);
 
             List<string> ClassPath = new List<string>();
             JsonArray allLibs = manifest["libraries"].AsArray();
-            int index = 0;
-            DateTime lastCall = DateTime.UtcNow;
+            //int index = 0;
+            //DateTime lastCall = DateTime.UtcNow;
             foreach (JsonNode lib in allLibs)
             {
                 if (!OperationRunning) break;
-                index++;
-                if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == allLibs.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnClientUpdate?.Invoke(index, allLibs.Count)); }
+                //index++;
+                //if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == allLibs.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnClientUpdate?.Invoke(index, allLibs.Count)); }
                 if (lib["name"] == null) continue;
-                if (lib["rules"] != null) {
+                if (lib["rules"] != null)
+                {
                     bool RuleBad = true;
                     foreach (JsonNode Rule in lib["rules"].AsArray())
                         if (!RuleAllows(Rule)) { RuleBad = false; break; }
@@ -232,13 +245,8 @@ namespace Sandstone_Launcher
                         string libPath = Path.Combine(GameDir, "libraries", lib["downloads"]["artifact"]["path"]?.ToString() ?? clibPath);
                         if (!File.Exists(libPath) || Rewrite || (CheckHash && LibUtil.HashDoRewrite(lib["downloads"]["artifact"], libPath)))
                         {
-                            Logger.Log($"Downloading artifact {lib["name"]}");
-                            try
-                            {
-                                Directory.CreateDirectory(Directory.GetParent(libPath).FullName);
-                                Client.DownloadFile(lib["downloads"]["artifact"]["url"].ToString(), libPath);
-                            }
-                            catch (Exception ex) { Logger.Err($"Error downloading {lib["name"]}: {ex.Message}"); }
+                            //Logger.Log($"Pending artifact {lib["name"]}");
+                            AddDownload(lib["downloads"]["artifact"]["url"].ToString(), libPath);
                         }
                         if (!ClassPath.Contains(libPath)) ClassPath.Add(libPath);
                     }
@@ -251,16 +259,11 @@ namespace Sandstone_Launcher
                         bool ReExtract = Rewrite;
                         if (!File.Exists(libPath) || Rewrite || (CheckHash && LibUtil.HashDoRewrite(Classifier, libPath)))
                         {
-                            Logger.Log($"Downloading classifier {lib["name"]}");
-                            try
-                            {
-                                Directory.CreateDirectory(Directory.GetParent(libPath).FullName);
-                                Client.DownloadFile(Classifier["url"].ToString(), libPath);
-                                ReExtract = true;
-                            }
-                            catch (Exception ex) { Logger.Warn($"Couldn't download {lib["name"]}: {ex.Message}"); }
+                            //Logger.Log($"Pending classifier {lib["name"]}");
+                            AddDownload(Classifier["url"].ToString(), libPath);
+                            ReExtract = true;
                         }
-                        if (lib["extract"] != null) LibUtil.ExtractNativeJar(libPath, NativeDir, ReExtract);
+                        if (lib["extract"] != null) AddExtract(libPath, NativeDir, ReExtract);
                         else if (!ClassPath.Contains(libPath)) ClassPath.Add(libPath);
                     }
                 }
@@ -270,13 +273,8 @@ namespace Sandstone_Launcher
                     if ((!File.Exists(libPath) || Rewrite || (CheckHash && LibUtil.HashDoRewrite(lib, libPath))) && lib["url"] != null)
                     {
                         string libUrl = lib["url"].ToString() + clibPath;
-                        Logger.Log($"Downloading {lib["name"]}");
-                        try
-                        {
-                            Directory.CreateDirectory(Directory.GetParent(libPath).FullName);
-                            Client.DownloadFile(libUrl, libPath);
-                        }
-                        catch (Exception ex) { Logger.Warn($"Couldn't download {lib["name"]}: {ex.Message}"); }
+                        //Logger.Log($"Pending {lib["name"]}");
+                        AddDownload(libUrl, libPath);
                     }
                     if (!ClassPath.Contains(libPath)) ClassPath.Add(libPath);
                 }
@@ -285,33 +283,30 @@ namespace Sandstone_Launcher
             ClassPath.Add(VersionPath);
             return string.Join(";", ClassPath);
         }
-        static public void DownloadAssets(JsonNode manifest, string InstanceDir, bool Rewrite = false, bool CheckHash = false)
+        static public void CheckAssets(JsonNode manifest, string InstanceDir, bool Rewrite = false, bool CheckHash = false)
         {
             OperationRunning = true;
-            if (manifest?["assetIndex"] == null) return;
+            if (manifest?["assetIndex"] == null) { OperationRunning = false; return; }
+            ;
             string assetId = manifest["assetIndex"]["id"].ToString();
             string indexPath = Path.Combine(GameDir, "assets", "indexes", assetId + ".json");
             if (!File.Exists(indexPath) || Rewrite || (CheckHash && LibUtil.HashDoRewrite(manifest["assetIndex"], indexPath)))
             {
-                Logger.Log($"Downloading {assetId} assetIndex");
-                try
-                {
-                    Directory.CreateDirectory(Directory.GetParent(indexPath).FullName);
-                    Client.DownloadFile(manifest["assetIndex"]["url"].ToString(), indexPath);
-                } catch (Exception ex) { Logger.Warn($"Couldn't download {assetId} assetIndex: {ex.Message}"); }
+                //Logger.Log($"Pending {assetId} assetIndex");
+                AddDownload(manifest["assetIndex"]["url"].ToString(), indexPath);
             }
-            if (!File.Exists(indexPath)) return;
+            if (!File.Exists(indexPath)) { OperationRunning = false; return; }
             JsonNode AssetIndex = null;
             try { AssetIndex = JsonNode.Parse(File.ReadAllText(indexPath)); } catch { }
-            if (AssetIndex?["objects"] == null) return;
+            if (AssetIndex?["objects"] == null) { OperationRunning = false; return; }
             JsonObject objects = AssetIndex["objects"].AsObject();
-            int index = 0;
-            DateTime lastCall = DateTime.UtcNow;
+            //int index = 0;
+            //DateTime lastCall = DateTime.UtcNow;
             foreach (var aFile in objects)
             {
                 if (!OperationRunning) break;
-                index++;
-                if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == objects.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnAssetUpdate?.Invoke(index, objects.Count)); }
+                //index++;
+                //if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == objects.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnAssetUpdate?.Invoke(index, objects.Count)); }
                 string AssetPath;
                 string hash = aFile.Value["hash"].ToString();
                 string subhash = hash.Substring(0, 2);
@@ -329,16 +324,72 @@ namespace Sandstone_Launcher
                 }
                 if (!File.Exists(AssetPath) || Rewrite || (CheckHash && LibUtil.ComputeSHA1(AssetPath) != hash))
                 {
-                    Logger.Log($"Downloading asset {aFile.Key}");
-                    try
-                    {
-                        Directory.CreateDirectory(Directory.GetParent(AssetPath).FullName);
-                        Client.DownloadFile($"https://resources.download.minecraft.net/{subhash}/{hash}", AssetPath);
-                    }
-                    catch (Exception ex) { Logger.Warn($"Couldn't download asset '{aFile.Key}': {ex.Message}"); }
+                    //Logger.Log($"Pending asset {aFile.Key}");
+                    AddDownload($"https://resources.download.minecraft.net/{subhash}/{hash}", AssetPath);
                 }
             }
             OperationRunning = false;
+        }
+
+        //Downloading
+        static public void AddDownload(string Url, string FilePath)
+        {
+            lock (downlock)
+                if (!PendingDownloads.ContainsKey(FilePath))
+                    PendingDownloads.Add(FilePath, Url);
+        }
+        static public void AddExtract(string Path, string Destination, bool Rewrite)
+        {
+            lock (extrlock)
+                ExtractList.Add(new ExtractFile { Path = Path, Dest = Destination, Rewrite = Rewrite });
+        }
+        static public void DownloadAll()
+        {
+            OperationRunning = true;
+            int index = 0;
+            DateTime lastCall = DateTime.UtcNow;
+            lock (downlock)
+            {
+                foreach (var kp in PendingDownloads)
+                {
+                    if (!OperationRunning) break;
+                    index++;
+                    if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == PendingDownloads.Count) { lastCall = DateTime.UtcNow; OnDownUpdate?.Invoke(index, PendingDownloads.Count); }
+                    try
+                    {
+                        Logger.Log($"Downloading file {Path.GetFileName(kp.Key)}");
+                        Directory.CreateDirectory(Directory.GetParent(kp.Key).FullName);
+                        Client.DownloadFile(kp.Value, kp.Key);
+                    }
+                    catch (Exception ex) { Logger.Warn($"Couldn't download file '{Path.GetFileName(kp.Key)}': {ex.Message}"); }
+                }
+                PendingDownloads.Clear();
+            }
+            OperationRunning = false;
+        }
+        static public void ExtractAll()
+        {
+            OperationRunning = true;
+            lock (extrlock)
+            {
+                foreach (ExtractFile extr in ExtractList)
+                {
+                    if (!OperationRunning) break;
+                    LibUtil.ExtractNativeJar(extr.Path, extr.Dest, extr.Rewrite);
+                }
+                ExtractList.Clear();
+            }
+            OperationRunning = false;
+        }
+        static public void ClearDownloads()
+        {
+            lock (downlock)
+                PendingDownloads.Clear();
+        }
+        static public void ClearExtracts()
+        {
+            lock (extrlock)
+                ExtractList.Clear();
         }
 
         //Getting
@@ -484,7 +535,8 @@ namespace Sandstone_Launcher
             }
             return Arguments;
         }
-        static public List<string> GetInstalledVersions() {
+        static public List<string> GetInstalledVersions()
+        {
             List<string> Versions = new List<string>();
             string VersPath = Path.Combine(GameDir, "versions");
             if (Directory.Exists(VersPath))
@@ -509,7 +561,7 @@ namespace Sandstone_Launcher
                     {
                         if (Regex.IsMatch(Environment.OSVersion.Version.ToString(), Rule["os"]["version"].ToString()))
                             return Allows;
-                    }    
+                    }
                     else
                         return Allows;
                 if (Rule["os"]?["arch"] != null && Rule["os"]["arch"].ToString() != (Environment.Is64BitOperatingSystem ? "x64" : "x86"))
@@ -551,10 +603,17 @@ namespace Sandstone_Launcher
             //}
             //return Into;
         }
-        static public bool GetOperationRunning() => OperationRunning;
+        //static public void WaitForOperations() { while (OperationRunning) Thread.Sleep(200); }
         static public void StopOperation() => OperationRunning = false;
-    }
-    public class JvmArguments
+
+        private class ExtractFile
+        {
+            public string Path;
+            public string Dest;
+            public bool Rewrite;
+        }
+}
+public class JvmArguments
     {
         public string Xmx;
         public string Xms;
@@ -562,7 +621,7 @@ namespace Sandstone_Launcher
         public string Classpath;
         public IEnumerable<string> Additional;
     }
-
+    
     public class GameArguments
     {
         public string Username;

@@ -16,7 +16,7 @@ namespace Sandstone_Launcher
                 foreach (var PossibleLang in Directory.GetFiles("Languages"))
                     if (Path.GetExtension(PossibleLang).ToLowerInvariant() == ".json")
                         try {
-                            Language Lang = JsonSerializer.Deserialize<Language>(File.ReadAllText(PossibleLang), new JsonSerializerOptions { AllowTrailingCommas = true });
+                            Language Lang = JsonSerializer.Deserialize<Language>(File.ReadAllText(PossibleLang), Program.defaultJsonOptions);
                             if (!AllLanguages.Any(v => v.lang_id == Lang.lang_id)) AllLanguages.Add(Lang);
                         } catch (Exception ex) {
                             Logger.Log($"Bad language {Path.GetFileName(PossibleLang)}: {ex.Message}");
@@ -42,7 +42,6 @@ namespace Sandstone_Launcher
                 homeWindow.OpenAccounts.Text = language.accounts;
                 homeWindow.accounts_label.Text = language.accounts;
                 homeWindow.file_update.Text = language.updating;
-                homeWindow.checkUpdates.Text = language.check_update;
                 homeWindow.updateclient_box.Text = language.upd_client;
                 homeWindow.updateassets_box.Text = language.upd_assets;
                 homeWindow.updatejava_box.Text = language.upd_java;
@@ -68,13 +67,15 @@ namespace Sandstone_Launcher
                 homeWindow.updates_box.Text = language.auto_upd;
                 homeWindow.lang_label.Text = language.langs;
                 homeWindow.bg_label.Text = language.bg;
-                homeWindow.bgs_label.Text = language.custom_bgs;
                 homeWindow.bg_folder.Text = language.open_bg;
-                homeWindow.bg_button.Text = language.browses;
+                homeWindow.bg_button.Text = language.add_bg;
                 homeWindow.jre_button.Text = language.browses;
                 homeWindow.authlib_box.Text = language.use_authinj;
                 homeWindow.load_instances.Text = language.load_inst;
                 homeWindow.load_users.Text = language.load_user;
+                homeWindow.stop_minecraft.Text = language.stop_minecraft;
+                homeWindow.stop_operations.Text = language.stop_operations;
+                homeWindow.other_label.Text = language.other;
 
                 homeWindow.onlaunch_box.DisplayMember = null;
                 homeWindow.onlaunch_box.DisplayMember = "Name";
@@ -99,6 +100,7 @@ namespace Sandstone_Launcher
                 instanceDialog.installed_only.Text = language.installed_only;
                 instanceDialog.show_snapshots.Text = language.show_snap;
 
+                instanceDialog.predown.Text = language.predown_files;
                 instanceDialog.save.Text = language.save;
                 instanceDialog.cancel.Text = language.cancel;
 
@@ -123,7 +125,7 @@ namespace Sandstone_Launcher
 
     class Language {
         public string lang_id { get; set; } = "en_us";
-        public string lang_name { get; set; } = "English (US)";
+        public string lang_name { get; set; } = "English";
         public string acc_box { get; set; } = "Account:";
         public string inst_box { get; set; } = "Instance:";
         public string play { get; set; } = "Play!";
@@ -168,6 +170,7 @@ namespace Sandstone_Launcher
         public string game_ver { get; set; } = "Game Version";
         public string edit_inst { get; set; } = "Editing an Instance";
         public string add_inst { get; set; } = "Adding an Instance";
+        public string clone_inst { get; set; } = "Cloning an Instance";
         public string username { get; set; } = "Username";
         public string add_acc { get; set; } = "Adding an Account";
         public string edit_acc { get; set; } = "Editing an Account";
@@ -178,11 +181,11 @@ namespace Sandstone_Launcher
         public string username_warn { get; set; } = "While using this username you might encounter:\nGame Crashes\nServer Bugs\nUnexpected Behaviour\nUse this username at your own risk!";
         public string sel_ver_warn { get; set; } = "Select the game version for this instance!";
         public string make_name_warn { get; set; } = "Create a name for this instance!";
-        public string open_bg { get; set; } = "Folder";
-        public string custom_bgs { get; set; } = "Custom Backgrounds:";
-        public string down_asset { get; set; } = "Checking assets ({0}/{1})";
-        public string down_client { get; set; } = "Checking client ({0}/{1})";
-        public string down_java { get; set; } = "Checking java ({0}/{1})";
+        public string open_bg { get; set; } = "Open Folder";
+        public string add_bg { get; set; } = "Add Custom";
+        //public string down_asset { get; set; } = "Checking assets ({0}/{1})";
+        //public string down_client { get; set; } = "Checking client ({0}/{1})";
+        //public string down_java { get; set; } = "Checking java ({0}/{1})";
         public string login_into { get; set; } = "Login into {0}";
         public string stop { get; set; } = "Stop!";
         public string blogin_info { get; set; } = "Logging into {0}...";
@@ -204,5 +207,12 @@ namespace Sandstone_Launcher
         public string show_snap { get; set; } = "Show Snapshots";
         public string load_user { get; set; } = "Load Missing Accounts";
         public string load_inst { get; set; } = "Load Missing Instances";
+        public string upd_version { get; set; } = "New Version: {0}";
+        public string checking_file { get; set; } = "Checking files...";
+        public string down_status { get; set; } = "Downloading files ({0}/{1})";
+        public string predown_files { get; set; } = "Predownload files";
+        public string stop_operations { get; set; } = "Stop Operations";
+        public string stop_minecraft { get; set; } = "Stop Minecraft";
+        public string other { get; set; } = "Other";
     }
 }

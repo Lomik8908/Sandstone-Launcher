@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sandstone_Launcher
@@ -37,17 +38,13 @@ namespace Sandstone_Launcher
 
             instance_list.LargeImageList = InstanceImages;
             account_list.SmallImageList = AccountImages;
-            //instance_box.MouseWheel += HandleScroll;
-            //account_box.MouseWheel += HandleScroll;
-            //lang_box.MouseWheel += HandleScroll;
-            //gc_box.MouseWheel += HandleScroll;
-            //bg_box.MouseWheel += HandleScroll;
-            //onlaunch_box.MouseWheel += HandleScroll;
+            instance_box.MouseWheel += SharedMethods.HandleScroll;
+            account_box.MouseWheel += SharedMethods.HandleScroll;
+            lang_box.MouseWheel += SharedMethods.HandleScroll;
+            gc_box.MouseWheel += SharedMethods.HandleScroll;
+            bg_box.MouseWheel += SharedMethods.HandleScroll;
+            onlaunch_box.MouseWheel += SharedMethods.HandleScroll;
         }
-        //private void HandleScroll(object sender, MouseEventArgs e) {
-        //    if (!(sender is ComboBox box) || !box.DroppedDown)
-        //        ((HandledMouseEventArgs)e).Handled = true;
-        //}
         public void OpenMenu(int Screen)
         {
             settings_box.Visible = Screen == 1;
@@ -222,11 +219,46 @@ namespace Sandstone_Launcher
                 if (confirm == DialogResult.OK)
                 {
                     Program.instanceDialog.EditInstance(selectedInst);
-                    instance_box.DataSource = null;
-                    instance_box.DataSource = Program.Instances;
+                    instance_box.DisplayMember = null;
                     instance_box.DisplayMember = "name";
+                    if (Program.instanceDialog.predown.Checked) {
+                        bool checkJre = !File.Exists(jre_box.Text);
+                        bool checkHash = hash_box.Checked;
+                        Task.Run(() => Program.DownloadFiles(selectedInst.version, selectedInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre));
+                    }
                     Program.LoadInstanceList();
                     Program.SaveInstances();
+                }
+            }
+        }
+
+        private void instance_clone_Click(object sender, EventArgs e)
+        {
+            Instance selectedInst = null;
+            if (instance_list.SelectedItems.Count > 0)
+                selectedInst = instance_list.SelectedItems[0].Tag as Instance;
+
+            if (selectedInst != null)
+            {
+                Program.instanceDialog.NoFilters();
+                Program.instanceDialog.SetValues(selectedInst);
+                Program.instanceDialog.Text = Program.Lang?.clone_inst ?? "Cloning an Instance";
+                DialogResult confirm = Program.instanceDialog.ShowDialog();
+                if (confirm == DialogResult.OK)
+                {
+                    Instance NewInst = Program.instanceDialog.NewInstance();
+                    if (NewInst != null)
+                    {
+                        Program.Instances.Add(NewInst);
+                        if (Program.instanceDialog.predown.Checked)
+                        {
+                            bool checkJre = !File.Exists(jre_box.Text);
+                            bool checkHash = hash_box.Checked;
+                            Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre));
+                        }
+                        Program.LoadInstanceList();
+                        Program.SaveInstances();
+                    }
                 }
             }
         }
@@ -242,6 +274,12 @@ namespace Sandstone_Launcher
                 if (NewInst != null)
                 {
                     Program.Instances.Add(NewInst);
+                    if (Program.instanceDialog.predown.Checked)
+                    {
+                        bool checkJre = !File.Exists(jre_box.Text);
+                        bool checkHash = hash_box.Checked;
+                        Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre));
+                    }
                     Program.LoadInstanceList();
                     Program.SaveInstances();
                 }
@@ -276,11 +314,6 @@ namespace Sandstone_Launcher
                 Backgrounds.LoadBackgrounds();
             }
         }
-        private void jre_check_CheckedChanged(object sender, EventArgs e)
-        {
-            jre_box.Enabled = jre_check.Checked;
-            jre_button.Enabled = jre_check.Checked;
-        }
         private void jre_button_Click(object sender, EventArgs e)
         {
             string EXE = SelectFile("Executable Files (*.exe)|*.exe");
@@ -290,5 +323,29 @@ namespace Sandstone_Launcher
 
         private void load_instances_Click(object sender, EventArgs e) => Program.LoadInstances();
         private void load_users_Click(object sender, EventArgs e) => Program.LoadUsers();
+        private void openupd_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => Process.Start("https://github.com/Lomik8908/Sandstone-Launcher/releases");
+
+        private void console_box_CheckedChanged(object sender, EventArgs e)
+        {
+            if (console_box.Checked)
+                Conhost.ShowConsole();
+            else
+                Conhost.HideConsole();    
+        }
+
+        private void stop_minecraft_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Program.GameProcess?.Refresh();
+                if (Program.GameProcess?.HasExited == false) Program.GameProcess?.Kill();
+            } catch {}
+        }
+
+        private void stop_operations_Click(object sender, EventArgs e)
+        {
+            LauncherLib.StopOperation();
+            Program.StopLaunch();
+        }
     }
 }

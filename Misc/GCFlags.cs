@@ -22,7 +22,7 @@ namespace Sandstone_Launcher
                 foreach (var GCPath in Directory.GetFiles("GCFlags"))
                     if (Path.GetExtension(GCPath).ToLowerInvariant() == ".json") try
                         {
-                            GCTemplate gctemp = JsonSerializer.Deserialize<GCTemplate>(File.ReadAllText(GCPath), new JsonSerializerOptions { AllowTrailingCommas = true });
+                            GCTemplate gctemp = JsonSerializer.Deserialize<GCTemplate>(File.ReadAllText(GCPath), Program.defaultJsonOptions);
                             GCTemplates.Add(gctemp);
                         }
                         catch (Exception ex) { Logger.Warn($"Couldn't load GCFlags {Path.GetFileName(GCPath)}: {ex.Message}"); }

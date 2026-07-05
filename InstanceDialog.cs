@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Windows.Forms;
@@ -15,6 +16,8 @@ namespace Sandstone_Launcher
             gc_box.Items.Add(Program.NamedClasses["default"]);
             ram_bar.Maximum = (int)(Program.pcInfo.TotalPhysicalMemory / (1024 * 1024));
             LoadGameVers();
+
+            gc_box.MouseWheel += SharedMethods.HandleScroll;
         }
 
         public void SetValues(Instance inst = null)
@@ -32,6 +35,8 @@ namespace Sandstone_Launcher
             else gc_box.SelectedItem = GC;
             mcarg_box.Text = inst?.mc_args;
             jvmarg_box.Text = inst?.java_args;
+            jre_box.Text = inst?.java_path;
+            predown.Checked = false;
         }
         public void NoFilters()
         {
@@ -40,13 +45,12 @@ namespace Sandstone_Launcher
         }
         public Instance NewInstance()
         {
-            if (string.IsNullOrWhiteSpace(name_box.Text) || version_box.SelectedItem == null)
+            if (version_box.SelectedItem == null)
                 return null;
-
             return new Instance
             {
-                name = name_box.Text,
-                version = version_box.SelectedItem as string,
+                name = string.IsNullOrWhiteSpace(name_box.Text) ? version_box.SelectedItem as string ?? (version_box.SelectedItem as NameClass)?.Name : name_box.Text,
+                version = version_box.SelectedItem as string ?? (version_box.SelectedItem as NameClass)?.Id,
                 gamedir = string.IsNullOrWhiteSpace(gamedir_box.Text) ? null : gamedir_box.Text,
                 width = resx_box.Value > 0 ? (int?)resx_box.Value : null,
                 height = resy_box.Value > 0 ? (int?)resy_box.Value : null,
@@ -54,15 +58,16 @@ namespace Sandstone_Launcher
                 gc_preset = (gc_box.SelectedItem as GCTemplate)?.id ?? (gc_box.SelectedItem as NameClass)?.Id ?? "default",
                 mc_args = string.IsNullOrWhiteSpace(mcarg_box.Text) ? null : mcarg_box.Text,
                 java_args = string.IsNullOrWhiteSpace(jvmarg_box.Text) ? null : jvmarg_box.Text,
+                java_path = string.IsNullOrWhiteSpace(jre_box.Text) ? null : jre_box.Text,
                 uuid = Guid.NewGuid().ToString()
             };
         }
         public void EditInstance(Instance inst)
         {
-            if (string.IsNullOrWhiteSpace(name_box.Text) || version_box.SelectedItem == null)
+            if (version_box.SelectedItem == null)
                 return;
-            inst.name = name_box.Text;
-            inst.version = version_box.SelectedItem as string;
+            inst.name = string.IsNullOrWhiteSpace(name_box.Text) ? version_box.SelectedItem as string ?? (version_box.SelectedItem as NameClass)?.Name : name_box.Text;
+            inst.version = version_box.SelectedItem as string ?? (version_box.SelectedItem as NameClass)?.Id;
             inst.gamedir = string.IsNullOrWhiteSpace(gamedir_box.Text) ? null : gamedir_box.Text;
             inst.width = resx_box.Value > 0 ? (int?)resx_box.Value : null;
             inst.height = resy_box.Value > 0 ? (int?)resy_box.Value : null;
@@ -73,6 +78,7 @@ namespace Sandstone_Launcher
                 inst.gc_preset = (gc_box.SelectedItem as GCTemplate)?.id;
             inst.mc_args = string.IsNullOrWhiteSpace(mcarg_box.Text) ? null : mcarg_box.Text;
             inst.java_args = string.IsNullOrWhiteSpace(jvmarg_box.Text) ? null : jvmarg_box.Text;
+            inst.java_path = string.IsNullOrWhiteSpace(jre_box.Text) ? null : jre_box.Text;
         }
         public void LoadGameVers(string SelectVer = null) {
             string Version = SelectVer ?? version_box.SelectedItem as string;
@@ -87,7 +93,7 @@ namespace Sandstone_Launcher
             if (!installed_only.Checked)
             {
                 JsonArray Vers = LauncherLib.GetVersionsManifest()?["versions"]?.AsArray();
-                if (Vers == null) return;
+                if (Vers != null)
                 foreach (JsonNode Ver in Vers)
                 {
                     if (Ver["type"].ToString() == "snapshot" && !show_snapshots.Checked) continue;
@@ -110,13 +116,10 @@ namespace Sandstone_Launcher
         private void ram_box_ValueChanged(object sender, EventArgs e) => ram_bar.Value = (int)Math.Max(ram_bar.Minimum, Math.Min(ram_box.Value, ram_bar.Maximum));
         private void save_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(name_box.Text))
-                if (version_box.SelectedItem != null)
-                    DialogResult = DialogResult.OK;
-                else
-                    MessageBox.Show(Program.Lang?.sel_ver_warn ?? "Select the game version for this instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (version_box.SelectedItem != null)
+                DialogResult = DialogResult.OK;
             else
-                MessageBox.Show(Program.Lang?.make_name_warn ?? "Create a name for this instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Program.Lang?.sel_ver_warn ?? "Select the game version for this instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void installed_only_CheckedChanged(object sender, EventArgs e) => LoadGameVers();
         private void show_snapshots_CheckedChanged(object sender, EventArgs e) => LoadGameVers();
@@ -126,6 +129,13 @@ namespace Sandstone_Launcher
             string Path = Program.homeWindow.SelectFolder();
             if (Path != null)
                 gamedir_box.Text = Path;
+        }
+
+        private void jre_button_Click(object sender, EventArgs e)
+        {
+            string EXE = Program.homeWindow.SelectFile("Executable Files (*.exe)|*.exe");
+            if (File.Exists(EXE))
+                jre_box.Text = EXE;
         }
     }
 }

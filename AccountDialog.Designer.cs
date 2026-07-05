@@ -40,7 +40,7 @@
             // username_label
             // 
             this.username_label.ForeColor = System.Drawing.Color.White;
-            this.username_label.Location = new System.Drawing.Point(10, 55);
+            this.username_label.Location = new System.Drawing.Point(10, 50);
             this.username_label.Name = "username_label";
             this.username_label.Size = new System.Drawing.Size(270, 15);
             this.username_label.TabIndex = 37;
@@ -49,7 +49,7 @@
             // 
             // username_box
             // 
-            this.username_box.Location = new System.Drawing.Point(10, 70);
+            this.username_box.Location = new System.Drawing.Point(10, 65);
             this.username_box.Name = "username_box";
             this.username_box.Size = new System.Drawing.Size(270, 20);
             this.username_box.TabIndex = 39;
@@ -57,12 +57,12 @@
             // save
             // 
             this.save.BackColor = System.Drawing.Color.DimGray;
-            this.save.FlatAppearance.BorderSize = 0;
+            this.save.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.save.ForeColor = System.Drawing.Color.White;
-            this.save.Location = new System.Drawing.Point(10, 100);
+            this.save.Location = new System.Drawing.Point(150, 90);
             this.save.Name = "save";
-            this.save.Size = new System.Drawing.Size(270, 20);
+            this.save.Size = new System.Drawing.Size(130, 25);
             this.save.TabIndex = 38;
             this.save.Text = "Save";
             this.save.UseVisualStyleBackColor = false;
@@ -72,12 +72,12 @@
             // 
             this.cancel.BackColor = System.Drawing.Color.DimGray;
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.FlatAppearance.BorderSize = 0;
+            this.cancel.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cancel.ForeColor = System.Drawing.Color.White;
-            this.cancel.Location = new System.Drawing.Point(10, 125);
+            this.cancel.Location = new System.Drawing.Point(10, 90);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(270, 20);
+            this.cancel.Size = new System.Drawing.Size(130, 25);
             this.cancel.TabIndex = 36;
             this.cancel.Text = "Cancel";
             this.cancel.UseVisualStyleBackColor = false;
@@ -106,11 +106,11 @@
             // login_button
             // 
             this.login_button.BackColor = System.Drawing.Color.DimGray;
-            this.login_button.FlatAppearance.BorderSize = 0;
+            this.login_button.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.login_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.login_button.ForeColor = System.Drawing.Color.White;
             this.login_button.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.login_button.Location = new System.Drawing.Point(10, 55);
+            this.login_button.Location = new System.Drawing.Point(10, 50);
             this.login_button.Name = "login_button";
             this.login_button.Size = new System.Drawing.Size(270, 35);
             this.login_button.TabIndex = 42;
@@ -124,12 +124,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(290, 155);
+            this.ClientSize = new System.Drawing.Size(290, 125);
+            this.Controls.Add(this.login_button);
             this.Controls.Add(this.usertype_label);
             this.Controls.Add(this.usertype_box);
             this.Controls.Add(this.save);
             this.Controls.Add(this.cancel);
-            this.Controls.Add(this.login_button);
             this.Controls.Add(this.username_box);
             this.Controls.Add(this.username_label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

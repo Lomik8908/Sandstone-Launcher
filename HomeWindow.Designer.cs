@@ -41,6 +41,7 @@
             this.settings_box = new System.Windows.Forms.Panel();
             this.launcher_group = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.other_label = new System.Windows.Forms.Label();
             this.load_instances = new System.Windows.Forms.Button();
             this.load_users = new System.Windows.Forms.Button();
             this.onlaunch_label = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@
             this.onlaunch_box = new System.Windows.Forms.ComboBox();
             this.bg_folder = new System.Windows.Forms.Button();
             this.console_box = new System.Windows.Forms.CheckBox();
-            this.bgs_label = new System.Windows.Forms.Label();
             this.fullargs_box = new System.Windows.Forms.CheckBox();
             this.updates_box = new System.Windows.Forms.CheckBox();
             this.lang_label = new System.Windows.Forms.Label();
@@ -60,7 +60,6 @@
             this.bg_box = new System.Windows.Forms.ComboBox();
             this.game_group = new System.Windows.Forms.GroupBox();
             this.ScrollablePanel = new System.Windows.Forms.Panel();
-            this.jre_check = new System.Windows.Forms.CheckBox();
             this.jre_label = new System.Windows.Forms.Label();
             this.jre_box = new System.Windows.Forms.TextBox();
             this.jre_button = new System.Windows.Forms.Button();
@@ -93,12 +92,13 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenAccounts = new System.Windows.Forms.ToolStripMenuItem();
             this.file_update = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkUpdates = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.updateclient_box = new System.Windows.Forms.ToolStripMenuItem();
             this.updateassets_box = new System.Windows.Forms.ToolStripMenuItem();
             this.updatejava_box = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_operations = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_minecraft = new System.Windows.Forms.ToolStripMenuItem();
             this.instances_box = new System.Windows.Forms.Panel();
+            this.instance_clone = new System.Windows.Forms.Button();
             this.instance_add = new System.Windows.Forms.Button();
             this.instance_edit = new System.Windows.Forms.Button();
             this.instance_remove = new System.Windows.Forms.Button();
@@ -118,6 +118,7 @@
             this.open_instance = new System.Windows.Forms.ToolStripMenuItem();
             this.GameDirBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.FileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.openupd = new System.Windows.Forms.LinkLabel();
             this.bottom_holder.SuspendLayout();
             this.settings_box.SuspendLayout();
             this.launcher_group.SuspendLayout();
@@ -137,7 +138,7 @@
             // launch
             // 
             this.launch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.launch.FlatAppearance.BorderSize = 0;
+            this.launch.FlatAppearance.BorderColor = System.Drawing.Color.Green;
             this.launch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.launch.Font = new System.Drawing.Font("Segoe UI", 15F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.launch.ForeColor = System.Drawing.Color.White;
@@ -210,7 +211,7 @@
             // more
             // 
             this.more.BackColor = System.Drawing.Color.DimGray;
-            this.more.FlatAppearance.BorderSize = 0;
+            this.more.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.more.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.more.ForeColor = System.Drawing.Color.White;
             this.more.Image = global::Sandstone_Launcher.Properties.Resources.more;
@@ -249,6 +250,7 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.other_label);
             this.panel1.Controls.Add(this.load_instances);
             this.panel1.Controls.Add(this.load_users);
             this.panel1.Controls.Add(this.onlaunch_label);
@@ -256,7 +258,6 @@
             this.panel1.Controls.Add(this.onlaunch_box);
             this.panel1.Controls.Add(this.bg_folder);
             this.panel1.Controls.Add(this.console_box);
-            this.panel1.Controls.Add(this.bgs_label);
             this.panel1.Controls.Add(this.fullargs_box);
             this.panel1.Controls.Add(this.updates_box);
             this.panel1.Controls.Add(this.lang_label);
@@ -272,15 +273,24 @@
             this.panel1.Size = new System.Drawing.Size(294, 216);
             this.panel1.TabIndex = 37;
             // 
+            // other_label
+            // 
+            this.other_label.Location = new System.Drawing.Point(5, 209);
+            this.other_label.Name = "other_label";
+            this.other_label.Size = new System.Drawing.Size(270, 15);
+            this.other_label.TabIndex = 39;
+            this.other_label.Text = "Other";
+            this.other_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // load_instances
             // 
             this.load_instances.AutoEllipsis = true;
             this.load_instances.BackColor = System.Drawing.Color.DimGray;
-            this.load_instances.FlatAppearance.BorderSize = 0;
+            this.load_instances.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.load_instances.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.load_instances.Location = new System.Drawing.Point(5, 254);
+            this.load_instances.Location = new System.Drawing.Point(5, 252);
             this.load_instances.Name = "load_instances";
-            this.load_instances.Size = new System.Drawing.Size(270, 19);
+            this.load_instances.Size = new System.Drawing.Size(270, 23);
             this.load_instances.TabIndex = 38;
             this.load_instances.Text = "Load Missing Instances";
             this.load_instances.UseVisualStyleBackColor = false;
@@ -290,11 +300,11 @@
             // 
             this.load_users.AutoEllipsis = true;
             this.load_users.BackColor = System.Drawing.Color.DimGray;
-            this.load_users.FlatAppearance.BorderSize = 0;
+            this.load_users.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.load_users.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.load_users.Location = new System.Drawing.Point(5, 229);
+            this.load_users.Location = new System.Drawing.Point(5, 224);
             this.load_users.Name = "load_users";
-            this.load_users.Size = new System.Drawing.Size(270, 19);
+            this.load_users.Size = new System.Drawing.Size(270, 23);
             this.load_users.TabIndex = 37;
             this.load_users.Text = "Load Missing Accounts";
             this.load_users.UseVisualStyleBackColor = false;
@@ -332,13 +342,13 @@
             // bg_folder
             // 
             this.bg_folder.BackColor = System.Drawing.Color.DimGray;
-            this.bg_folder.FlatAppearance.BorderSize = 0;
+            this.bg_folder.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.bg_folder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bg_folder.Location = new System.Drawing.Point(195, 204);
+            this.bg_folder.Location = new System.Drawing.Point(5, 179);
             this.bg_folder.Name = "bg_folder";
-            this.bg_folder.Size = new System.Drawing.Size(80, 20);
+            this.bg_folder.Size = new System.Drawing.Size(130, 25);
             this.bg_folder.TabIndex = 35;
-            this.bg_folder.Text = "Folder";
+            this.bg_folder.Text = "Open Folder";
             this.bg_folder.UseVisualStyleBackColor = false;
             this.bg_folder.Click += new System.EventHandler(this.bg_folder_Click);
             // 
@@ -350,15 +360,7 @@
             this.console_box.TabIndex = 24;
             this.console_box.Text = "Show Console";
             this.console_box.UseVisualStyleBackColor = true;
-            // 
-            // bgs_label
-            // 
-            this.bgs_label.Location = new System.Drawing.Point(5, 180);
-            this.bgs_label.Name = "bgs_label";
-            this.bgs_label.Size = new System.Drawing.Size(190, 43);
-            this.bgs_label.TabIndex = 34;
-            this.bgs_label.Text = "Custom Backgrounds:";
-            this.bgs_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.console_box.CheckedChanged += new System.EventHandler(this.console_box_CheckedChanged);
             // 
             // fullargs_box
             // 
@@ -430,13 +432,13 @@
             // bg_button
             // 
             this.bg_button.BackColor = System.Drawing.Color.DimGray;
-            this.bg_button.FlatAppearance.BorderSize = 0;
+            this.bg_button.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.bg_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bg_button.Location = new System.Drawing.Point(195, 180);
+            this.bg_button.Location = new System.Drawing.Point(145, 180);
             this.bg_button.Name = "bg_button";
-            this.bg_button.Size = new System.Drawing.Size(80, 20);
+            this.bg_button.Size = new System.Drawing.Size(130, 24);
             this.bg_button.TabIndex = 33;
-            this.bg_button.Text = "Browse...";
+            this.bg_button.Text = "Add Custom";
             this.bg_button.UseVisualStyleBackColor = false;
             this.bg_button.Click += new System.EventHandler(this.bg_button_Click);
             // 
@@ -465,7 +467,6 @@
             // ScrollablePanel
             // 
             this.ScrollablePanel.AutoScroll = true;
-            this.ScrollablePanel.Controls.Add(this.jre_check);
             this.ScrollablePanel.Controls.Add(this.jre_label);
             this.ScrollablePanel.Controls.Add(this.jre_box);
             this.ScrollablePanel.Controls.Add(this.jre_button);
@@ -493,19 +494,9 @@
             this.ScrollablePanel.Size = new System.Drawing.Size(294, 216);
             this.ScrollablePanel.TabIndex = 0;
             // 
-            // jre_check
-            // 
-            this.jre_check.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.jre_check.Location = new System.Drawing.Point(10, 295);
-            this.jre_check.Name = "jre_check";
-            this.jre_check.Size = new System.Drawing.Size(20, 20);
-            this.jre_check.TabIndex = 19;
-            this.jre_check.UseVisualStyleBackColor = true;
-            this.jre_check.CheckedChanged += new System.EventHandler(this.jre_check_CheckedChanged);
-            // 
             // jre_label
             // 
-            this.jre_label.Location = new System.Drawing.Point(6, 280);
+            this.jre_label.Location = new System.Drawing.Point(6, 278);
             this.jre_label.Name = "jre_label";
             this.jre_label.Size = new System.Drawing.Size(270, 15);
             this.jre_label.TabIndex = 18;
@@ -514,19 +505,17 @@
             // 
             // jre_box
             // 
-            this.jre_box.Enabled = false;
-            this.jre_box.Location = new System.Drawing.Point(30, 295);
+            this.jre_box.Location = new System.Drawing.Point(5, 294);
             this.jre_box.Name = "jre_box";
-            this.jre_box.Size = new System.Drawing.Size(166, 20);
+            this.jre_box.Size = new System.Drawing.Size(190, 20);
             this.jre_box.TabIndex = 20;
             // 
             // jre_button
             // 
             this.jre_button.BackColor = System.Drawing.Color.DimGray;
-            this.jre_button.Enabled = false;
             this.jre_button.FlatAppearance.BorderSize = 0;
             this.jre_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.jre_button.Location = new System.Drawing.Point(201, 295);
+            this.jre_button.Location = new System.Drawing.Point(200, 293);
             this.jre_button.Name = "jre_button";
             this.jre_button.Size = new System.Drawing.Size(75, 20);
             this.jre_button.TabIndex = 21;
@@ -794,9 +783,11 @@
             this.OpenAccounts,
             this.toolStripSeparator1,
             this.file_update,
+            this.stop_operations,
+            this.stop_minecraft,
             this.OpenAbout});
             this.more_menu.Name = "more_menu";
-            this.more_menu.Size = new System.Drawing.Size(174, 148);
+            this.more_menu.Size = new System.Drawing.Size(174, 192);
             // 
             // OpenFolder
             // 
@@ -822,8 +813,6 @@
             // file_update
             // 
             this.file_update.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkUpdates,
-            this.toolStripSeparator3,
             this.updateclient_box,
             this.updateassets_box,
             this.updatejava_box});
@@ -836,7 +825,7 @@
             this.updateclient_box.CheckOnClick = true;
             this.updateclient_box.Image = global::Sandstone_Launcher.Properties.Resources.game;
             this.updateclient_box.Name = "updateclient_box";
-            this.updateclient_box.Size = new System.Drawing.Size(170, 22);
+            this.updateclient_box.Size = new System.Drawing.Size(148, 22);
             this.updateclient_box.Text = "Update Client";
             // 
             // updateassets_box
@@ -844,7 +833,7 @@
             this.updateassets_box.CheckOnClick = true;
             this.updateassets_box.Image = global::Sandstone_Launcher.Properties.Resources.assets;
             this.updateassets_box.Name = "updateassets_box";
-            this.updateassets_box.Size = new System.Drawing.Size(170, 22);
+            this.updateassets_box.Size = new System.Drawing.Size(148, 22);
             this.updateassets_box.Text = "Update Assets";
             // 
             // updatejava_box
@@ -852,32 +841,62 @@
             this.updatejava_box.CheckOnClick = true;
             this.updatejava_box.Image = global::Sandstone_Launcher.Properties.Resources.java;
             this.updatejava_box.Name = "updatejava_box";
-            this.updatejava_box.Size = new System.Drawing.Size(170, 22);
+            this.updatejava_box.Size = new System.Drawing.Size(148, 22);
             this.updatejava_box.Text = "Update Java";
+            // 
+            // stop_operations
+            // 
+            this.stop_operations.Image = global::Sandstone_Launcher.Properties.Resources.stop;
+            this.stop_operations.Name = "stop_operations";
+            this.stop_operations.Size = new System.Drawing.Size(173, 22);
+            this.stop_operations.Text = "Stop Operation";
+            this.stop_operations.Click += new System.EventHandler(this.stop_operations_Click);
+            // 
+            // stop_minecraft
+            // 
+            this.stop_minecraft.Image = global::Sandstone_Launcher.Properties.Resources.game;
+            this.stop_minecraft.Name = "stop_minecraft";
+            this.stop_minecraft.Size = new System.Drawing.Size(173, 22);
+            this.stop_minecraft.Text = "Stop Minecraft";
+            this.stop_minecraft.Click += new System.EventHandler(this.stop_minecraft_Click);
             // 
             // instances_box
             // 
             this.instances_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.instances_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.instances_box.Controls.Add(this.instance_clone);
             this.instances_box.Controls.Add(this.instance_add);
             this.instances_box.Controls.Add(this.instance_edit);
             this.instances_box.Controls.Add(this.instance_remove);
             this.instances_box.Controls.Add(this.instance_list);
             this.instances_box.Controls.Add(this.inst_back);
             this.instances_box.Controls.Add(this.instances_label);
-            this.instances_box.Location = new System.Drawing.Point(135, 40);
+            this.instances_box.Location = new System.Drawing.Point(120, 40);
             this.instances_box.Name = "instances_box";
-            this.instances_box.Size = new System.Drawing.Size(430, 265);
+            this.instances_box.Size = new System.Drawing.Size(460, 265);
             this.instances_box.TabIndex = 5;
             this.instances_box.Visible = false;
+            // 
+            // instance_clone
+            // 
+            this.instance_clone.BackColor = System.Drawing.Color.DimGray;
+            this.instance_clone.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.instance_clone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.instance_clone.Image = global::Sandstone_Launcher.Properties.Resources.copy;
+            this.instance_clone.Location = new System.Drawing.Point(420, 185);
+            this.instance_clone.Name = "instance_clone";
+            this.instance_clone.Size = new System.Drawing.Size(35, 35);
+            this.instance_clone.TabIndex = 6;
+            this.instance_clone.UseVisualStyleBackColor = false;
+            this.instance_clone.Click += new System.EventHandler(this.instance_clone_Click);
             // 
             // instance_add
             // 
             this.instance_add.BackColor = System.Drawing.Color.DimGray;
-            this.instance_add.FlatAppearance.BorderSize = 0;
+            this.instance_add.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.instance_add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.instance_add.Image = global::Sandstone_Launcher.Properties.Resources.add;
-            this.instance_add.Location = new System.Drawing.Point(390, 225);
+            this.instance_add.Location = new System.Drawing.Point(420, 225);
             this.instance_add.Name = "instance_add";
             this.instance_add.Size = new System.Drawing.Size(35, 35);
             this.instance_add.TabIndex = 3;
@@ -888,10 +907,10 @@
             // 
             this.instance_edit.BackColor = System.Drawing.Color.DimGray;
             this.instance_edit.Enabled = false;
-            this.instance_edit.FlatAppearance.BorderSize = 0;
+            this.instance_edit.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.instance_edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.instance_edit.Image = global::Sandstone_Launcher.Properties.Resources.edit;
-            this.instance_edit.Location = new System.Drawing.Point(390, 185);
+            this.instance_edit.Location = new System.Drawing.Point(420, 145);
             this.instance_edit.Name = "instance_edit";
             this.instance_edit.Size = new System.Drawing.Size(35, 35);
             this.instance_edit.TabIndex = 4;
@@ -902,10 +921,10 @@
             // 
             this.instance_remove.BackColor = System.Drawing.Color.DimGray;
             this.instance_remove.Enabled = false;
-            this.instance_remove.FlatAppearance.BorderSize = 0;
+            this.instance_remove.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.instance_remove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.instance_remove.Image = global::Sandstone_Launcher.Properties.Resources.delete;
-            this.instance_remove.Location = new System.Drawing.Point(390, 145);
+            this.instance_remove.Location = new System.Drawing.Point(420, 105);
             this.instance_remove.Name = "instance_remove";
             this.instance_remove.Size = new System.Drawing.Size(35, 35);
             this.instance_remove.TabIndex = 5;
@@ -920,7 +939,7 @@
             this.instance_list.Location = new System.Drawing.Point(5, 30);
             this.instance_list.MultiSelect = false;
             this.instance_list.Name = "instance_list";
-            this.instance_list.Size = new System.Drawing.Size(380, 230);
+            this.instance_list.Size = new System.Drawing.Size(410, 230);
             this.instance_list.TabIndex = 2;
             this.instance_list.UseCompatibleStateImageBehavior = false;
             this.instance_list.SelectedIndexChanged += new System.EventHandler(this.instance_list_SelectedIndexChanged);
@@ -944,7 +963,7 @@
             this.instances_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.instances_label.Location = new System.Drawing.Point(0, 0);
             this.instances_label.Name = "instances_label";
-            this.instances_label.Size = new System.Drawing.Size(440, 25);
+            this.instances_label.Size = new System.Drawing.Size(460, 25);
             this.instances_label.TabIndex = 1;
             this.instances_label.Text = "Instances";
             this.instances_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -993,7 +1012,7 @@
             // 
             this.account_delete.BackColor = System.Drawing.Color.DimGray;
             this.account_delete.Enabled = false;
-            this.account_delete.FlatAppearance.BorderSize = 0;
+            this.account_delete.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.account_delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.account_delete.ForeColor = System.Drawing.Color.White;
             this.account_delete.Image = global::Sandstone_Launcher.Properties.Resources.delete;
@@ -1007,7 +1026,7 @@
             // account_add
             // 
             this.account_add.BackColor = System.Drawing.Color.DimGray;
-            this.account_add.FlatAppearance.BorderSize = 0;
+            this.account_add.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.account_add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.account_add.ForeColor = System.Drawing.Color.White;
             this.account_add.Image = global::Sandstone_Launcher.Properties.Resources.add;
@@ -1036,7 +1055,7 @@
             // 
             this.account_edit.BackColor = System.Drawing.Color.DimGray;
             this.account_edit.Enabled = false;
-            this.account_edit.FlatAppearance.BorderSize = 0;
+            this.account_edit.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.account_edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.account_edit.ForeColor = System.Drawing.Color.White;
             this.account_edit.Image = global::Sandstone_Launcher.Properties.Resources.edit;
@@ -1091,19 +1110,33 @@
             // 
             this.FileDialog.Title = "Select a background image";
             // 
+            // openupd
+            // 
+            this.openupd.AutoSize = true;
+            this.openupd.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.openupd.Location = new System.Drawing.Point(0, 0);
+            this.openupd.Name = "openupd";
+            this.openupd.Size = new System.Drawing.Size(70, 13);
+            this.openupd.TabIndex = 18;
+            this.openupd.TabStop = true;
+            this.openupd.Text = "New Version:";
+            this.openupd.Visible = false;
+            this.openupd.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.openupd_LinkClicked);
+            // 
             // HomeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Gray;
+            this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(700, 400);
-            this.Controls.Add(this.settings_box);
+            this.Controls.Add(this.openupd);
             this.Controls.Add(this.version_id);
             this.Controls.Add(this.more);
             this.Controls.Add(this.launch);
             this.Controls.Add(this.bottom_holder);
             this.Controls.Add(this.accounts_box);
             this.Controls.Add(this.instances_box);
+            this.Controls.Add(this.settings_box);
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1191,7 +1224,6 @@
         public System.Windows.Forms.ToolStripMenuItem updateassets_box;
         public System.Windows.Forms.ToolStripMenuItem updatejava_box;
         public System.Windows.Forms.ComboBox gc_box;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         public System.Windows.Forms.Panel instances_box;
         public System.Windows.Forms.Button inst_back;
         public System.Windows.Forms.Label instances_label;
@@ -1207,21 +1239,23 @@
         public System.Windows.Forms.Button instance_add;
         public System.Windows.Forms.Button instance_edit;
         public System.Windows.Forms.Button instance_remove;
-        public System.Windows.Forms.ToolStripMenuItem checkUpdates;
         public System.Windows.Forms.Label jre_label;
         public System.Windows.Forms.TextBox jre_box;
         public System.Windows.Forms.Button jre_button;
-        public System.Windows.Forms.CheckBox jre_check;
         public System.Windows.Forms.ContextMenuStrip AskOpenFolder;
         public System.Windows.Forms.ToolStripMenuItem open_minecraft;
         public System.Windows.Forms.ToolStripMenuItem open_instance;
         public System.Windows.Forms.FolderBrowserDialog GameDirBrowse;
         public System.Windows.Forms.Button bg_folder;
-        public System.Windows.Forms.Label bgs_label;
         public System.Windows.Forms.OpenFileDialog FileDialog;
         public System.Windows.Forms.CheckBox authlib_box;
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.Button load_instances;
         public System.Windows.Forms.Button load_users;
+        public System.Windows.Forms.LinkLabel openupd;
+        public System.Windows.Forms.ToolStripMenuItem stop_operations;
+        public System.Windows.Forms.ToolStripMenuItem stop_minecraft;
+        public System.Windows.Forms.Label other_label;
+        public System.Windows.Forms.Button instance_clone;
     }
 }

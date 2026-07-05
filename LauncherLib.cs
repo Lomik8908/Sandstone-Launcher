@@ -113,14 +113,14 @@ namespace Sandstone_Launcher
             //string JPath = Path.Combine(SaveFolder, "version_manifest_v2.json");
             //if (!DownloadedVersionManifest) try { Client.DownloadFile(VersionManifest, JPath); DownloadedVersionManifest = true; } catch (Exception ex) { Logger.Err($"Could not download version_manifest_v2.json: {ex.Message}"); }
             //if (File.Exists(JPath)) 
-            try
-            {
-                VersionManifestNode = JsonNode.Parse(Client.DownloadString(VersionManifest));
-            }
-            catch (Exception ex)
-            {
-                Logger.Err($"Could not get version manifest: {ex.Message}");
-            }
+            if (VersionManifestNode == null) try
+                {
+                    VersionManifestNode = JsonNode.Parse(Client.DownloadString(VersionManifest));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Err($"Could not get version manifest: {ex.Message}");
+                }
             return VersionManifestNode;
         }
         static public JsonNode GetManifestOf(string Version, bool Rewrite = false)
@@ -155,15 +155,15 @@ namespace Sandstone_Launcher
         }
         static JsonNode JavaManifestNode = null;
         static public JsonNode GetJavaManifest()
-        {   
-            try
-            {
-                JavaManifestNode = JsonNode.Parse(Client.DownloadString(JavaManifest));
-            }
-            catch (Exception ex)
-            {
-                Logger.Err($"Could not get java manifest: {ex.Message}");
-            }
+        {
+            if (JavaManifestNode == null) try
+                {
+                    JavaManifestNode = JsonNode.Parse(Client.DownloadString(JavaManifest));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Err($"Could not get java manifest: {ex.Message}");
+                }
             return JavaManifestNode;
         }
 

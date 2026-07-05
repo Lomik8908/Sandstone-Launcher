@@ -40,7 +40,7 @@ namespace Sandstone_Launcher
         };
 
         static public void MSBeginFlow() {
-            using (var BrowserWindow = new AccountFlowWindow { LoginUrl = Urls.MSFlowUri, StopOnUrl = Urls.MSFlowEndUri, Text = string.Format(Program.Lang?.login_into ?? "Login via {0}", "Microsoft") })
+            using (var BrowserWindow = new AccountFlowWindow { LoginUrl = Urls.MSFlowUri, StopOnUrl = Urls.MSFlowEndUri, Text = SharedMethods.ReplaceFormat(Program.Lang?.login_into ?? "Login via {0}", "Microsoft") })
             {
                 BrowserWindow.OnCodeReceived += (code) => MSBackground(code);
                 BrowserWindow.ShowDialog();
@@ -49,7 +49,7 @@ namespace Sandstone_Launcher
         static public void ElyBeginFlow()
         {
             OnAccountBegin?.Invoke("ely");
-            using (var Window = new ElyFlow { Text = string.Format(Program.Lang?.login_into ?? "Login via {0}", "Ely.by") })
+            using (var Window = new ElyFlow { Text = SharedMethods.ReplaceFormat(Program.Lang?.login_into ?? "Login via {0}", "Ely.by") })
             {
                 DialogResult result = Window.ShowDialog();
                 if (result == DialogResult.OK)
@@ -223,7 +223,7 @@ namespace Sandstone_Launcher
                 string XUserHash = XSTSRespond?["DisplayClaims"]?["xui"]?[0]?["uhs"]?.ToString();
                 var MCResponse = await httpClient.PostAsync(
                     Urls.MCLoginUri,
-                    new StringContent(JsonSerializer.Serialize(new { identityToken = string.Format("XBL3.0 x={0};{1}", XUserHash, XSTSRespond?["Token"]) }), Encoding.UTF8, "application/json")
+                    new StringContent(JsonSerializer.Serialize(new { identityToken = $"XBL3.0 x={XUserHash};{XSTSRespond?["Token"]}" }), Encoding.UTF8, "application/json")
                 );
 
                 if (!MCResponse.IsSuccessStatusCode)

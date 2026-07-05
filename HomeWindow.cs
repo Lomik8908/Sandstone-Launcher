@@ -124,7 +124,7 @@ namespace Sandstone_Launcher
                 selectedUser = account_list.SelectedItems[0].Tag as User;
             if (selectedUser != null)
             {
-                DialogResult confirm = MessageBox.Show(string.Format(Program.Lang?.del_user ?? "Remove account \"{0}\"?", selectedUser.username), "Sandstone Launcher", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                DialogResult confirm = MessageBox.Show(SharedMethods.ReplaceFormat(Program.Lang?.del_user ?? "Remove account \"{0}\"?", selectedUser.username), "Sandstone Launcher", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                 if (confirm == DialogResult.Yes)
                 {
                     lock (Program.AccountLock)
@@ -195,7 +195,7 @@ namespace Sandstone_Launcher
                 selectedInst = instance_list.SelectedItems[0].Tag as Instance;
             if (selectedInst != null)
             {
-                DialogResult confirm = MessageBox.Show(string.Format(Program.Lang?.del_inst ?? "Remove instance \"{0}\"?", selectedInst.name), "Sandstone Launcher", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                DialogResult confirm = MessageBox.Show(SharedMethods.ReplaceFormat(Program.Lang?.del_inst ?? "Remove instance \"{0}\"?", selectedInst.name), "Sandstone Launcher", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                 if (confirm == DialogResult.Yes)
                 {
                     Program.Instances.Remove(selectedInst);
@@ -224,7 +224,7 @@ namespace Sandstone_Launcher
                     if (Program.instanceDialog.predown.Checked) {
                         bool checkJre = !File.Exists(jre_box.Text);
                         bool checkHash = hash_box.Checked;
-                        Task.Run(() => Program.DownloadFiles(selectedInst.version, selectedInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre));
+                        Task.Run(() => Program.DownloadFiles(selectedInst.version, selectedInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre, selectedInst));
                     }
                     Program.LoadInstanceList();
                     Program.SaveInstances();
@@ -254,7 +254,7 @@ namespace Sandstone_Launcher
                         {
                             bool checkJre = !File.Exists(jre_box.Text);
                             bool checkHash = hash_box.Checked;
-                            Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre));
+                            Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre, NewInst));
                         }
                         Program.LoadInstanceList();
                         Program.SaveInstances();
@@ -278,7 +278,7 @@ namespace Sandstone_Launcher
                     {
                         bool checkJre = !File.Exists(jre_box.Text);
                         bool checkHash = hash_box.Checked;
-                        Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre));
+                        Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre, NewInst));
                     }
                     Program.LoadInstanceList();
                     Program.SaveInstances();

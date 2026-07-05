@@ -9,6 +9,8 @@ namespace Sandstone_Launcher
 {
     public partial class InstanceDialog : Form
     {
+        NameClass Snapshot = new NameClass { Id = "latest-snapshot", Name = "Latest Snapshot" };
+        NameClass Release = new NameClass { Id = "latest-release", Name = "Latest Release" };
         public InstanceDialog()
         {
             InitializeComponent();
@@ -23,7 +25,23 @@ namespace Sandstone_Launcher
         public void SetValues(Instance inst = null)
         {
             name_box.Text = inst?.name;
-            version_box.SelectedItem = inst?.version;
+            if (inst?.version == Release.Id) version_box.SelectedItem = Release;
+            else if (inst?.version == Snapshot.Id)
+            {
+                show_snapshots.Checked = true;
+                version_box.SelectedItem = Snapshot;
+            }
+            else if (inst?.version != null)
+            {
+                if (!version_box.Items.Contains(inst.version))
+                {
+                    JsonArray Vers = LauncherLib.GetVersionsManifest()?["versions"]?.AsArray();
+                    if (Vers?.Any(v => v["id"]?.ToString() == inst.version && v["type"]?.ToString() == "snapshot") == true)
+                        show_snapshots.Checked = true;
+                }
+                version_box.SelectedItem = inst?.version;
+            }
+            else version_box.SelectedItem = null;
             gamedir_box.Text = inst?.gamedir;
             resx_box.Value = inst?.width ?? 0;
             resy_box.Value = inst?.height ?? 0;
@@ -80,14 +98,14 @@ namespace Sandstone_Launcher
             inst.java_args = string.IsNullOrWhiteSpace(jvmarg_box.Text) ? null : jvmarg_box.Text;
             inst.java_path = string.IsNullOrWhiteSpace(jre_box.Text) ? null : jre_box.Text;
         }
-        public void LoadGameVers(string SelectVer = null) {
-            string Version = SelectVer ?? version_box.SelectedItem as string;
+        public void LoadGameVers() {
+            string Version = version_box.SelectedItem as string;
             version_box.Items.Clear();
             int InsertAt = 1;
-            version_box.Items.Add(new NameClass { Id = "latest-release", Name = "Latest Release" });
-            if (show_snapshots.Checked)
+            version_box.Items.Add(Release);
+            if (show_snapshots.Checked || Version == Snapshot.Id)
             {
-                version_box.Items.Add(new NameClass { Id = "latest-shapshot", Name = "Latest Snapshot" });
+                version_box.Items.Add(Snapshot);
                 InsertAt = 2;
             }
             if (!installed_only.Checked)

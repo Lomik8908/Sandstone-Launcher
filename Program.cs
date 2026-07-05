@@ -84,11 +84,11 @@ namespace Sandstone_Launcher
             //LauncherLib.OnAssetUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_asset ?? "Checking assets ({0}/{1})", index, count));
             //LauncherLib.OnClientUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_client ?? "Checking client ({0}/{1})", index, count));
             //LauncherLib.OnJavaUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_java ?? "Checking java ({0}/{1})", index, count));
-            LauncherLib.OnDownUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_status ?? "Downloading files ({0}/{1})", index, count));
+            LauncherLib.OnDownUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = SharedMethods.ReplaceFormat(Lang?.down_status ?? "Downloading files ({0}/{1})", index, count));
             Accounts.OnAccountFinished += (_) => InvokeUI(() => { homeWindow.info_text.Text = string.Empty; });
             Accounts.OnAccountBegin += (t) => {
                 AccountType AccType = Accounts.accountTypes.FirstOrDefault(v => v.id == t);
-                InvokeUI(() => { homeWindow.info_text.Text = string.Format(Lang?.blogin_info ?? "Logging into {0}...", AccType?.name ?? "Account"); });
+                InvokeUI(() => { homeWindow.info_text.Text = SharedMethods.ReplaceFormat(Lang?.blogin_info ?? "Logging into {0}...", AccType?.name ?? "Account"); });
             };
 
             if (settings.check_upd) CheckForUpdates();
@@ -117,7 +117,7 @@ namespace Sandstone_Launcher
             else
             {
                 Instances.Add(new Instance { uuid = "latest-release", name = "Latest Release", version = "latest-release" });
-                Instances.Add(new Instance { uuid = "latest-shapshot", name = "Latest Snapshot", version = "latest-shapshot" });
+                Instances.Add(new Instance { uuid = "latest-snapshot", name = "Latest Snapshot", version = "latest-snapshot" });
             }
         }
         static public void LoadUsers() {
@@ -271,7 +271,7 @@ namespace Sandstone_Launcher
                     var Latest = JsonNode.Parse(BWC.DownloadString("https://api.github.com/repos/Lomik8908/Launshell/releases/latest"));
                     if (Latest?["assets"] != null && int.TryParse(Latest?["tag_name"]?.ToString() ?? "0", out int repoVer) && repoVer > AppVersion)
                     {
-                        homeWindow.openupd.Text = string.Format(Lang?.upd_version ?? "New Version: {0}", Latest?["name"]);
+                        homeWindow.openupd.Text = SharedMethods.ReplaceFormat(Lang?.upd_version ?? "New Version: {0}", Latest?["name"]);
                         homeWindow.openupd.Visible = true;
                         return;
                     }
@@ -290,12 +290,21 @@ namespace Sandstone_Launcher
             LoadInstances();
             LoadUsers();
         }
-        static public void DownloadFiles(string gameVersion, string gameDir, bool checkHash, bool checkJre)
+        static public void DownloadFiles(string gameVersion, string gameDir, bool checkHash, bool checkJre, Instance instance)
         {
             if (string.IsNullOrWhiteSpace(gameDir))
                 gameDir = LauncherLib.GameDir;
-            if (gameVersion == "latest-release") gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["release"]?.ToString();
-            else if (gameVersion == "latest-snapshot") gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["snapshot"]?.ToString();
+
+            if (gameVersion == "latest-release")
+            {
+                gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["release"]?.ToString() ?? instance.last_version;
+                instance.last_version = gameVersion;
+            }
+            else if (gameVersion == "latest-snapshot")
+            {
+                gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["snapshot"]?.ToString() ?? instance.last_version;
+                instance.last_version = gameVersion;
+            }
 
             JsonNode mfJson = LauncherLib.GetManifestOf(gameVersion);
             if (mfJson == null) { return; }
@@ -397,9 +406,17 @@ namespace Sandstone_Launcher
                     if (!Launching) { EndLaunch(true); return; }
                 }
 
-                if (gameVersion == "latest-release") gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["release"]?.ToString();
-                else if (gameVersion == "latest-snapshot") gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["snapshot"]?.ToString();
-
+                if (gameVersion == "latest-release")
+                {
+                    gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["release"]?.ToString() ?? instance.last_version;
+                    instance.last_version = gameVersion;
+                }
+                else if (gameVersion == "latest-snapshot")
+                {
+                    gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["snapshot"]?.ToString() ?? instance.last_version;
+                    instance.last_version = gameVersion;
+                }
+                Logger.Log($"Beggining '{gameVersion}' launch");
                 JsonNode mfJson = LauncherLib.GetManifestOf(gameVersion, reCli);
                 if (mfJson == null || !Launching) { EndLaunch(); return; }
 
@@ -589,6 +606,7 @@ namespace Sandstone_Launcher
         public string name { get; set; }
         public string uuid { get; set; }
         public string version { get; set; }
+        public string last_version { get; set; }
         public string gamedir { get; set; }
         public int? width { get; set; }
         public int? height { get; set; }

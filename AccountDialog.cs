@@ -33,7 +33,7 @@ namespace Sandstone_Launcher
                 save.Enabled = false;
                 login_button.Visible = true;
                 login_button.ImageKey = AccType.id;
-                login_button.Text = string.Format(Program.Lang?.login_into ?? "Login into {0}", AccType.name);
+                login_button.Text = SharedMethods.ReplaceFormat(Program.Lang?.login_into ?? "Login into {0}", AccType.name);
             }
             else
             {

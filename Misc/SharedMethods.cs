@@ -9,5 +9,17 @@ namespace Sandstone_Launcher
             if (!(sender is ComboBox box) || !box.DroppedDown)
                 ((HandledMouseEventArgs)e).Handled = true;
         }
+
+        static public string ReplaceFormat(string format, params object[] strings)
+        {
+            string formatted = format;
+            int idx = 0;
+            foreach (object obj in strings)
+            {
+                formatted = formatted.Replace($"{{{idx}}}", obj.ToString());
+                idx++;
+            }
+            return formatted;
+        }
     }
 }

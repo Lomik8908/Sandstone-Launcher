@@ -16,8 +16,8 @@ namespace Sandstone_Launcher
 {
     static class Program
     {
-        static public string AppVersionString = "1.0.0 rc-1.3";
-        static public int AppVersion = 2;
+        static public string AppVersionString = "1.0.0 rc-1.4";
+        static public int AppVersion = 3;
         static public ComputerInfo pcInfo = new ComputerInfo();
 
         static public Settings settings = new Settings();

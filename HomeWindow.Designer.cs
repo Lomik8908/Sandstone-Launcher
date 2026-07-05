@@ -831,18 +831,6 @@
             this.file_update.Size = new System.Drawing.Size(173, 22);
             this.file_update.Text = "Updating";
             // 
-            // checkUpdates
-            // 
-            this.checkUpdates.Image = global::Sandstone_Launcher.Properties.Resources.isometric_block;
-            this.checkUpdates.Name = "checkUpdates";
-            this.checkUpdates.Size = new System.Drawing.Size(170, 22);
-            this.checkUpdates.Text = "Check for updates";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(167, 6);
-            // 
             // updateclient_box
             // 
             this.updateclient_box.CheckOnClick = true;

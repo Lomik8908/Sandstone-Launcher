@@ -105,7 +105,12 @@ namespace Sandstone_Launcher
             if (instance_box.SelectedItem is Instance inst)
                 Process.Start("explorer", inst.gamedir);
         }
-        private void HomeWindow_FormClosing(object sender, FormClosingEventArgs e) => Program.SaveExit();
+        private void HomeWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Program.Launching) Program.StopLaunch();
+            if (LauncherLib.OperationRunning) LauncherLib.StopOperation();
+            Program.SaveExit();
+        }
         private void account_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (account_list.Enabled)

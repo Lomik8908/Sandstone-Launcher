@@ -10,22 +10,23 @@ namespace Sandstone_Launcher
         public static void Log(object Value)
         {
             Console.ResetColor();
-            Console.Out.WriteLineAsync($"[{DateTime.Now:HH:mm:ss}]: {Value?.ToString()}");
+            Console.Out.WriteLine($"[{DateTime.Now:HH:mm:ss}]: {Value?.ToString()}");
         }
         public static void Err(object Value)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Error.WriteLineAsync($"[{DateTime.Now:HH:mm:ss}] [ERR]: {Value?.ToString()}");
+            Console.Error.WriteLine($"[{DateTime.Now:HH:mm:ss}] [ERR]: {Value?.ToString()}");
         }
         public static void Warn(object Value)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Out.WriteLineAsync($"[{DateTime.Now:HH:mm:ss}] [WRN]: {Value?.ToString()}");
+            Console.Out.WriteLine($"[{DateTime.Now:HH:mm:ss}] [WRN]: {Value?.ToString()}");
         }
         public static void ErrorLine(object Value)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Error.WriteLineAsync(Value?.ToString());
+            Console.Error.WriteLine(Value?.ToString());
+            Console.ResetColor();
         }
     }
     static class Conhost {

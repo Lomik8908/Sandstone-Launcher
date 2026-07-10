@@ -546,7 +546,7 @@ namespace Sandstone_Launcher
                     {
                         GameProcess = gameProcess;
                         gameProcess.Start();
-                        gameProcess.OutputDataReceived += (_, e) => Console.Out.WriteLineAsync(e.Data);
+                        gameProcess.OutputDataReceived += (_, e) => Console.Out.WriteLine(e.Data);
                         gameProcess.ErrorDataReceived += (_, e) => Logger.ErrorLine(e.Data);
                         gameProcess.BeginErrorReadLine();
                         gameProcess.BeginOutputReadLine();

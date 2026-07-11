@@ -82,6 +82,10 @@ namespace Sandstone_Launcher
 
                 homeWindow.gc_box.DisplayMember = null;
                 homeWindow.gc_box.DisplayMember = "Name";
+
+                homeWindow.javalist_btn.Text = language.open_javas;
+
+                homeWindow.UpdateJavaLabel();
             }
             if (instanceDialog != null)
             {
@@ -106,6 +110,10 @@ namespace Sandstone_Launcher
 
                 instanceDialog.gc_box.DisplayMember = null;
                 instanceDialog.gc_box.DisplayMember = "Name";
+
+                instanceDialog.javalist_btn.Text = language.open_javas;
+                instanceDialog.jre_label.Text = language.custom_java;
+                instanceDialog.jre_button.Text = language.browses;
             }
 
             AccountType offline = Accounts.accountTypes.FirstOrDefault(v => v.id == "offline");
@@ -214,5 +222,10 @@ namespace Sandstone_Launcher
         public string stop_operations { get; set; } = "Stop Operations";
         public string stop_minecraft { get; set; } = "Stop Minecraft";
         public string other { get; set; } = "Other";
+        public string java_list { get; set; } = "Java List";
+        public string select { get; set; } = "Select";
+        public string java_ver { get; set; } = "Version: {0}";
+        public string open_javas { get; set; } = "Open Java List";
+        public string sel_java { get; set; } = "Select a java version!";
     }
 }

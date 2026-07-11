@@ -49,6 +49,9 @@
             // 
             // username_box
             // 
+            this.username_box.BackColor = System.Drawing.Color.DimGray;
+            this.username_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.username_box.ForeColor = System.Drawing.Color.White;
             this.username_box.Location = new System.Drawing.Point(10, 65);
             this.username_box.Name = "username_box";
             this.username_box.Size = new System.Drawing.Size(270, 20);
@@ -84,8 +87,11 @@
             // 
             // usertype_box
             // 
+            this.usertype_box.BackColor = System.Drawing.Color.DimGray;
             this.usertype_box.DisplayMember = "name";
             this.usertype_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.usertype_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.usertype_box.ForeColor = System.Drawing.Color.White;
             this.usertype_box.FormattingEnabled = true;
             this.usertype_box.Location = new System.Drawing.Point(10, 25);
             this.usertype_box.Name = "usertype_box";
@@ -125,11 +131,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(290, 125);
-            this.Controls.Add(this.login_button);
             this.Controls.Add(this.usertype_label);
             this.Controls.Add(this.usertype_box);
             this.Controls.Add(this.save);
             this.Controls.Add(this.cancel);
+            this.Controls.Add(this.login_button);
             this.Controls.Add(this.username_box);
             this.Controls.Add(this.username_label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

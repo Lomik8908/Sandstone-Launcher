@@ -31,6 +31,16 @@ namespace Sandstone_Launcher
             { "onlaunch_none", new NameClass { Name = "Do nothing" } }
         };
 
+        public static Dictionary<string, string> JavaIdToVersion = new Dictionary<string, string> {
+            { "java-runtime-alpha", "Java 16~" },
+            { "java-runtime-beta", "Java 17~" },
+            { "java-runtime-delta", "Java 21~" },
+            { "java-runtime-epsilon", "Java 25~" },
+            { "java-runtime-gamma", "Java 17~" },
+            { "java-runtime-gamma-snapshot", "Java 17~" },
+            { "jre-legacy", "Java 8~" }
+        };
+
         static public Language Lang = Languages.AllLanguages[0];
 
         static public BindingList<User> Users = new BindingList<User>();
@@ -92,7 +102,6 @@ namespace Sandstone_Launcher
             };
 
             if (settings.check_upd) CheckForUpdates();
-
             LoadAll();
             Application.Run(homeWindow);
         }
@@ -456,13 +465,23 @@ namespace Sandstone_Launcher
                     JavaExec = instance.java_path;
                 else if (File.Exists(custJrePath))
                     JavaExec = custJrePath;
+                else if (!string.IsNullOrEmpty(instance.java_type))
+                {
+                    JavaExec = LauncherLib.CheckJava(instance.java_type, reJava, checkHash);
+                    InvokeUI(() => { homeWindow.updatejava_box.Checked = false; });
+                }
+                else if (!string.IsNullOrEmpty(settings.java_type))
+                {
+                    JavaExec = LauncherLib.CheckJava(settings.java_type, reJava, checkHash);
+                    InvokeUI(() => { homeWindow.updatejava_box.Checked = false; });
+                }
                 else
                 {
                     JavaExec = LauncherLib.CheckJava(mfJson["javaVersion"]?["component"]?.ToString() ?? "jre-legacy", reJava, checkHash);
                     InvokeUI(() => { homeWindow.updatejava_box.Checked = false; });
                 }
 
-                if (!File.Exists(JavaExec) || !Launching) { EndLaunch(); return; }
+                if (!Launching) { EndLaunch(); return; }
 
                 string ALJPath = Path.Combine(LauncherLib.GameDir, "libraries", "authlib-injector.jar");
                 if (useInject && connected && user.usertype == "ely") Accounts.DownloadAuthLibInjector(ALJPath, reCli, checkHash);
@@ -600,6 +619,7 @@ namespace Sandstone_Launcher
         public string bg { get; set; } = "Burberry";
         public bool use_authinjector { get; set; } = true;
         public string java_path { get; set; }
+        public string java_type { get; set; }
     }
     public class Instance
     {
@@ -615,6 +635,7 @@ namespace Sandstone_Launcher
         public string mc_args { get; set; }
         public string java_args { get; set; }
         public string java_path { get; set; }
+        public string java_type { get; set; }
     }
     public class User
     {

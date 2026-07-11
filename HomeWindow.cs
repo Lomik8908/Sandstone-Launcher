@@ -10,6 +10,7 @@ namespace Sandstone_Launcher
 {
     public partial class HomeWindow : BackgroundForm
     {
+        public static string JavaRegex = "^\\w+ version \"(.+)\"$";
         public ImageList AccountImages = new ImageList { ImageSize = new Size(24, 24), ColorDepth = ColorDepth.Depth32Bit };
         public ImageList InstanceImages = new ImageList { ImageSize = new Size(32, 32), ColorDepth = ColorDepth.Depth32Bit };
         public HomeWindow()
@@ -36,6 +37,8 @@ namespace Sandstone_Launcher
             gc_box.Items.Add(Program.NamedClasses["none"]);
             ram_bar.Maximum = (int)(Program.pcInfo.TotalPhysicalMemory / (1024 * 1024));
 
+            UpdateJavaLabel();
+
             instance_list.LargeImageList = InstanceImages;
             account_list.SmallImageList = AccountImages;
             instance_box.MouseWheel += SharedMethods.HandleScroll;
@@ -44,6 +47,20 @@ namespace Sandstone_Launcher
             gc_box.MouseWheel += SharedMethods.HandleScroll;
             bg_box.MouseWheel += SharedMethods.HandleScroll;
             onlaunch_box.MouseWheel += SharedMethods.HandleScroll;
+            ram_bar.MouseWheel += SharedMethods.HandleScroll;
+            ram_box.MouseWheel += SharedMethods.HandleScroll;
+            resx_box.MouseWheel += SharedMethods.HandleScroll;
+            resy_box.MouseWheel += SharedMethods.HandleScroll;
+            DarkModeTitle.SetDarkMode(Handle, true);
+        }
+        public void UpdateJavaLabel()
+        {
+            if (string.IsNullOrEmpty(Program.settings.java_type))
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", Program.NamedClasses["default"].Name);
+            else if (Program.JavaIdToVersion.ContainsKey(Program.settings.java_type))
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", $"{Program.JavaIdToVersion[Program.settings.java_type]} ({Program.settings.java_type})");
+            else
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", Program.settings.java_type);
         }
         public void OpenMenu(int Screen)
         {
@@ -351,6 +368,21 @@ namespace Sandstone_Launcher
         {
             LauncherLib.StopOperation();
             Program.StopLaunch();
+        }
+
+        private void javalist_btn_Click(object sender, EventArgs e)
+        {
+            using (var javaWindow = new JavaList(Program.settings.java_type)) {
+                DialogResult result = javaWindow.ShowDialog();
+                if (result == DialogResult.OK && javaWindow.list.SelectedItem is NameClass java)
+                {
+                    java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", java.Name);
+                    if (java.Id == Program.NamedClasses["default"].Id)
+                        Program.settings.java_type = null;
+                    else
+                        Program.settings.java_type = java.Id;
+                }
+            }
         }
     }
 }

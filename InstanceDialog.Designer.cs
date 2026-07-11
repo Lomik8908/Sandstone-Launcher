@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ScrollablePanel = new System.Windows.Forms.Panel();
+            this.javalist_btn = new System.Windows.Forms.Button();
             this.jre_button = new System.Windows.Forms.Button();
             this.jre_label = new System.Windows.Forms.Label();
             this.jre_box = new System.Windows.Forms.TextBox();
@@ -62,6 +63,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.show_snapshots = new System.Windows.Forms.ToolStripMenuItem();
             this.predown = new System.Windows.Forms.CheckBox();
+            this.java_ver = new System.Windows.Forms.Label();
             this.ScrollablePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ram_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ram_bar)).BeginInit();
@@ -73,6 +75,8 @@
             // ScrollablePanel
             // 
             this.ScrollablePanel.AutoScroll = true;
+            this.ScrollablePanel.Controls.Add(this.java_ver);
+            this.ScrollablePanel.Controls.Add(this.javalist_btn);
             this.ScrollablePanel.Controls.Add(this.jre_button);
             this.ScrollablePanel.Controls.Add(this.jre_label);
             this.ScrollablePanel.Controls.Add(this.jre_box);
@@ -103,6 +107,19 @@
             this.ScrollablePanel.Size = new System.Drawing.Size(320, 200);
             this.ScrollablePanel.TabIndex = 2;
             // 
+            // javalist_btn
+            // 
+            this.javalist_btn.BackColor = System.Drawing.Color.DimGray;
+            this.javalist_btn.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.javalist_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.javalist_btn.Location = new System.Drawing.Point(10, 394);
+            this.javalist_btn.Name = "javalist_btn";
+            this.javalist_btn.Size = new System.Drawing.Size(290, 25);
+            this.javalist_btn.TabIndex = 26;
+            this.javalist_btn.Text = "Open Java List";
+            this.javalist_btn.UseVisualStyleBackColor = false;
+            this.javalist_btn.Click += new System.EventHandler(this.javalist_btn_Click);
+            // 
             // jre_button
             // 
             this.jre_button.BackColor = System.Drawing.Color.DimGray;
@@ -127,13 +144,19 @@
             // 
             // jre_box
             // 
-            this.jre_box.Location = new System.Drawing.Point(8, 369);
+            this.jre_box.BackColor = System.Drawing.Color.DimGray;
+            this.jre_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.jre_box.ForeColor = System.Drawing.Color.White;
+            this.jre_box.Location = new System.Drawing.Point(10, 369);
             this.jre_box.Name = "jre_box";
             this.jre_box.Size = new System.Drawing.Size(217, 20);
             this.jre_box.TabIndex = 23;
             // 
             // jvmarg_box
             // 
+            this.jvmarg_box.BackColor = System.Drawing.Color.DimGray;
+            this.jvmarg_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.jvmarg_box.ForeColor = System.Drawing.Color.White;
             this.jvmarg_box.Location = new System.Drawing.Point(10, 329);
             this.jvmarg_box.Name = "jvmarg_box";
             this.jvmarg_box.Size = new System.Drawing.Size(292, 20);
@@ -141,6 +164,9 @@
             // 
             // mcarg_box
             // 
+            this.mcarg_box.BackColor = System.Drawing.Color.DimGray;
+            this.mcarg_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mcarg_box.ForeColor = System.Drawing.Color.White;
             this.mcarg_box.Location = new System.Drawing.Point(10, 289);
             this.mcarg_box.Name = "mcarg_box";
             this.mcarg_box.Size = new System.Drawing.Size(290, 20);
@@ -166,8 +192,11 @@
             // 
             // gc_box
             // 
+            this.gc_box.BackColor = System.Drawing.Color.DimGray;
             this.gc_box.DisplayMember = "name";
             this.gc_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.gc_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gc_box.ForeColor = System.Drawing.Color.White;
             this.gc_box.FormattingEnabled = true;
             this.gc_box.Location = new System.Drawing.Point(10, 248);
             this.gc_box.Name = "gc_box";
@@ -273,6 +302,9 @@
             // 
             // gamedir_box
             // 
+            this.gamedir_box.BackColor = System.Drawing.Color.DimGray;
+            this.gamedir_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gamedir_box.ForeColor = System.Drawing.Color.White;
             this.gamedir_box.Location = new System.Drawing.Point(10, 105);
             this.gamedir_box.Name = "gamedir_box";
             this.gamedir_box.Size = new System.Drawing.Size(215, 20);
@@ -302,8 +334,11 @@
             // 
             // version_box
             // 
+            this.version_box.BackColor = System.Drawing.Color.DimGray;
             this.version_box.DisplayMember = "Name";
             this.version_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.version_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.version_box.ForeColor = System.Drawing.Color.White;
             this.version_box.FormattingEnabled = true;
             this.version_box.Location = new System.Drawing.Point(10, 65);
             this.version_box.Name = "version_box";
@@ -321,6 +356,9 @@
             // 
             // name_box
             // 
+            this.name_box.BackColor = System.Drawing.Color.DimGray;
+            this.name_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.name_box.ForeColor = System.Drawing.Color.White;
             this.name_box.Location = new System.Drawing.Point(10, 25);
             this.name_box.Name = "name_box";
             this.name_box.Size = new System.Drawing.Size(290, 20);
@@ -341,9 +379,9 @@
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancel.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancel.Location = new System.Drawing.Point(165, 225);
+            this.cancel.Location = new System.Drawing.Point(10, 225);
             this.cancel.Name = "cancel";
-            this.cancel.Size = new System.Drawing.Size(145, 23);
+            this.cancel.Size = new System.Drawing.Size(145, 25);
             this.cancel.TabIndex = 0;
             this.cancel.Text = "Cancel";
             this.cancel.UseVisualStyleBackColor = false;
@@ -353,9 +391,9 @@
             this.save.BackColor = System.Drawing.Color.DimGray;
             this.save.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.save.Location = new System.Drawing.Point(10, 225);
+            this.save.Location = new System.Drawing.Point(165, 225);
             this.save.Name = "save";
-            this.save.Size = new System.Drawing.Size(145, 23);
+            this.save.Size = new System.Drawing.Size(145, 25);
             this.save.TabIndex = 1;
             this.save.Text = "Save";
             this.save.UseVisualStyleBackColor = false;
@@ -399,6 +437,15 @@
             this.predown.TabIndex = 3;
             this.predown.Text = "Predownload files";
             this.predown.UseVisualStyleBackColor = true;
+            // 
+            // java_ver
+            // 
+            this.java_ver.Location = new System.Drawing.Point(10, 424);
+            this.java_ver.Name = "java_ver";
+            this.java_ver.Size = new System.Drawing.Size(290, 13);
+            this.java_ver.TabIndex = 24;
+            this.java_ver.Text = "Version: Default";
+            this.java_ver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // InstanceDialog
             // 
@@ -464,5 +511,7 @@
         public System.Windows.Forms.Label jre_label;
         public System.Windows.Forms.TextBox jre_box;
         public System.Windows.Forms.Button jre_button;
+        private System.Windows.Forms.Label java_ver;
+        public System.Windows.Forms.Button javalist_btn;
     }
 }

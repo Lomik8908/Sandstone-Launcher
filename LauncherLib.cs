@@ -175,23 +175,30 @@ namespace Sandstone_Launcher
             string mfPath = Path.Combine(SaveFolder, "java", $"{Version}-{osArch}.json");
             if (!File.Exists(mfPath) || Rewrite) try
                 {
-                    string manifestUri = GetJavaManifest()?[$"windows-{osArch}"]?[Version]?[0]?["manifest"]?["url"]?.ToString();
-                    if (manifestUri != null)
-                    {
-                        //Logger.Log($"Pending {Version} manifest");
-                        AddDownload(manifestUri, mfPath);
+                    JsonNode jvList = GetJavaManifest()?[$"windows-{osArch}"]?[Version];
+                    if (jvList?.GetValueKind() == JsonValueKind.Array && jvList.AsArray().Count > 0) {
+                        string manifestUri = jvList[0]?["manifest"]?["url"]?.ToString();
+                        if (manifestUri != null)
+                        {
+                            Logger.Log($"Downloading {Version} manifest");
+                            Directory.CreateDirectory(Directory.GetParent(mfPath).FullName);
+                            Client.DownloadFile(manifestUri, mfPath);
+                        }
                     }
                 }
                 catch (Exception ex) { Logger.Err($"Couldn't download {Version} manifest: {ex.Message}"); }
             if (!File.Exists(mfPath)) { OperationRunning = false; return null; }
             JsonNode jManifest = null;
             try { jManifest = JsonNode.Parse(File.ReadAllText(mfPath)); } catch { }
+            Console.WriteLine("here1");
             if (jManifest?["files"] == null) { OperationRunning = false; return null; }
+            Console.WriteLine("here2");
             JsonObject jFiles = jManifest["files"].AsObject();
             //int index = 0;
             //DateTime lastCall = DateTime.UtcNow;
             foreach (var jFile in jFiles)
             {
+                Console.WriteLine("here3");
                 if (!OperationRunning) break;
                 //index++;
                 //if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == jFiles.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnJavaUpdate?.Invoke(index, jFiles.Count)); }
@@ -205,7 +212,7 @@ namespace Sandstone_Launcher
             }
             OperationRunning = false;
             string javaPath = Path.Combine(SaveFolder, "java", Version, "bin", "javaw.exe");
-            return File.Exists(javaPath) ? javaPath : null;
+            return javaPath;
         }
         static public string CheckClasses(JsonNode manifest, string Version, bool Rewrite = false, bool CheckHash = false)
         {

@@ -19,9 +19,15 @@ namespace Sandstone_Launcher
             ram_bar.Maximum = (int)(Program.pcInfo.TotalPhysicalMemory / (1024 * 1024));
             LoadGameVers();
 
+            version_box.MouseWheel += SharedMethods.HandleScroll;
+            ram_bar.MouseWheel += SharedMethods.HandleScroll;
+            ram_box.MouseWheel += SharedMethods.HandleScroll;
+            resx_box.MouseWheel += SharedMethods.HandleScroll;
+            resy_box.MouseWheel += SharedMethods.HandleScroll;
             gc_box.MouseWheel += SharedMethods.HandleScroll;
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
-
+        string CurrentJavaVer = null;
         public void SetValues(Instance inst = null)
         {
             name_box.Text = inst?.name;
@@ -55,6 +61,15 @@ namespace Sandstone_Launcher
             jvmarg_box.Text = inst?.java_args;
             jre_box.Text = inst?.java_path;
             predown.Checked = false;
+
+            if (string.IsNullOrEmpty(inst?.java_type))
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", Program.NamedClasses["default"].Name);
+            else if (Program.JavaIdToVersion.ContainsKey(inst.java_type))
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", $"{Program.JavaIdToVersion[inst.java_type]} ({inst.java_type})");
+            else
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", inst.java_type);
+
+            CurrentJavaVer = inst?.java_type;
         }
         public void NoFilters()
         {
@@ -77,6 +92,7 @@ namespace Sandstone_Launcher
                 mc_args = string.IsNullOrWhiteSpace(mcarg_box.Text) ? null : mcarg_box.Text,
                 java_args = string.IsNullOrWhiteSpace(jvmarg_box.Text) ? null : jvmarg_box.Text,
                 java_path = string.IsNullOrWhiteSpace(jre_box.Text) ? null : jre_box.Text,
+                java_type = CurrentJavaVer,
                 uuid = Guid.NewGuid().ToString()
             };
         }
@@ -97,6 +113,7 @@ namespace Sandstone_Launcher
             inst.mc_args = string.IsNullOrWhiteSpace(mcarg_box.Text) ? null : mcarg_box.Text;
             inst.java_args = string.IsNullOrWhiteSpace(jvmarg_box.Text) ? null : jvmarg_box.Text;
             inst.java_path = string.IsNullOrWhiteSpace(jre_box.Text) ? null : jre_box.Text;
+            inst.java_type = CurrentJavaVer;
         }
         public void LoadGameVers() {
             string Version = version_box.SelectedItem as string;
@@ -154,6 +171,22 @@ namespace Sandstone_Launcher
             string EXE = Program.homeWindow.SelectFile("Executable Files (*.exe)|*.exe");
             if (File.Exists(EXE))
                 jre_box.Text = EXE;
+        }
+
+        private void javalist_btn_Click(object sender, EventArgs e)
+        {
+            using (var javaWindow = new JavaList(CurrentJavaVer))
+            {
+                DialogResult result = javaWindow.ShowDialog();
+                if (result == DialogResult.OK && javaWindow.list.SelectedItem is NameClass java)
+                {
+                    java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", java.Name);
+                    if (java.Id == Program.NamedClasses["default"].Id)
+                        CurrentJavaVer = null;
+                    else
+                        CurrentJavaVer = java.Id;
+                }
+            }
         }
     }
 }

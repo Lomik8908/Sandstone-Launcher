@@ -22,6 +22,7 @@ namespace Sandstone_Launcher.Misc
             login.Text = Program.Lang?.login ?? "Login";
             cancel.Text = Program.Lang?.cancel ?? "Cancel";
             register_button.Text = Program.Lang?.register ?? "You don't have an account? Register one!";
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void InitializeComponent()

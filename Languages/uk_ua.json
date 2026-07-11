@@ -86,4 +86,9 @@
     "stop_operations": "Зупинити Операції",
     "stop_minecraft": "Зупинити Minecraft",
     "other": "Інше",
+    "java_list": "Список Java",
+    "select": "Вибрати",
+    "java_ver": "Версія: {0}",
+    "open_javas": "Відкрити Список Java",
+    "sel_java": "Виберіть версію Java!"
 }

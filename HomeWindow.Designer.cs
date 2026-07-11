@@ -60,6 +60,8 @@
             this.bg_box = new System.Windows.Forms.ComboBox();
             this.game_group = new System.Windows.Forms.GroupBox();
             this.ScrollablePanel = new System.Windows.Forms.Panel();
+            this.java_ver = new System.Windows.Forms.Label();
+            this.javalist_btn = new System.Windows.Forms.Button();
             this.jre_label = new System.Windows.Forms.Label();
             this.jre_box = new System.Windows.Forms.TextBox();
             this.jre_button = new System.Windows.Forms.Button();
@@ -137,6 +139,7 @@
             // 
             // launch
             // 
+            this.launch.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.launch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.launch.FlatAppearance.BorderColor = System.Drawing.Color.Green;
             this.launch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -158,6 +161,7 @@
             this.bottom_holder.Controls.Add(this.info_text);
             this.bottom_holder.Controls.Add(this.account_label);
             this.bottom_holder.Controls.Add(this.account_box);
+            this.bottom_holder.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.bottom_holder.Location = new System.Drawing.Point(0, 350);
             this.bottom_holder.Name = "bottom_holder";
             this.bottom_holder.Size = new System.Drawing.Size(700, 50);
@@ -165,6 +169,7 @@
             // 
             // instance_label
             // 
+            this.instance_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.instance_label.Location = new System.Drawing.Point(545, 5);
             this.instance_label.Name = "instance_label";
             this.instance_label.Size = new System.Drawing.Size(145, 15);
@@ -174,8 +179,12 @@
             // 
             // instance_box
             // 
+            this.instance_box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.instance_box.BackColor = System.Drawing.Color.DimGray;
+            this.instance_box.Cursor = System.Windows.Forms.Cursors.Default;
             this.instance_box.DisplayMember = "name";
-            this.instance_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.instance_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.instance_box.ForeColor = System.Drawing.Color.White;
             this.instance_box.FormattingEnabled = true;
             this.instance_box.Location = new System.Drawing.Point(545, 20);
             this.instance_box.Name = "instance_box";
@@ -184,6 +193,7 @@
             // 
             // info_text
             // 
+            this.info_text.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.info_text.Location = new System.Drawing.Point(165, 30);
             this.info_text.Name = "info_text";
             this.info_text.Size = new System.Drawing.Size(370, 15);
@@ -192,6 +202,7 @@
             // 
             // account_label
             // 
+            this.account_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.account_label.Location = new System.Drawing.Point(10, 5);
             this.account_label.Name = "account_label";
             this.account_label.Size = new System.Drawing.Size(145, 15);
@@ -201,7 +212,11 @@
             // 
             // account_box
             // 
-            this.account_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.account_box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.account_box.BackColor = System.Drawing.Color.DimGray;
+            this.account_box.Cursor = System.Windows.Forms.Cursors.Default;
+            this.account_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.account_box.ForeColor = System.Drawing.Color.White;
             this.account_box.FormattingEnabled = true;
             this.account_box.Location = new System.Drawing.Point(10, 20);
             this.account_box.Name = "account_box";
@@ -210,6 +225,7 @@
             // 
             // more
             // 
+            this.more.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.more.BackColor = System.Drawing.Color.DimGray;
             this.more.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.more.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -224,6 +240,7 @@
             // 
             // settings_box
             // 
+            this.settings_box.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.settings_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.settings_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.settings_box.Controls.Add(this.launcher_group);
@@ -238,6 +255,8 @@
             // 
             // launcher_group
             // 
+            this.launcher_group.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.launcher_group.Controls.Add(this.panel1);
             this.launcher_group.ForeColor = System.Drawing.Color.White;
             this.launcher_group.Location = new System.Drawing.Point(315, 30);
@@ -331,8 +350,11 @@
             // 
             // onlaunch_box
             // 
+            this.onlaunch_box.BackColor = System.Drawing.Color.DimGray;
             this.onlaunch_box.DisplayMember = "name";
             this.onlaunch_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.onlaunch_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.onlaunch_box.ForeColor = System.Drawing.Color.White;
             this.onlaunch_box.FormattingEnabled = true;
             this.onlaunch_box.Location = new System.Drawing.Point(5, 15);
             this.onlaunch_box.Name = "onlaunch_box";
@@ -341,6 +363,7 @@
             // 
             // bg_folder
             // 
+            this.bg_folder.AutoEllipsis = true;
             this.bg_folder.BackColor = System.Drawing.Color.DimGray;
             this.bg_folder.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.bg_folder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -354,6 +377,7 @@
             // 
             // console_box
             // 
+            this.console_box.AutoEllipsis = true;
             this.console_box.Location = new System.Drawing.Point(5, 40);
             this.console_box.Name = "console_box";
             this.console_box.Size = new System.Drawing.Size(135, 20);
@@ -393,6 +417,7 @@
             // 
             // hash_box
             // 
+            this.hash_box.AutoEllipsis = true;
             this.hash_box.Location = new System.Drawing.Point(140, 60);
             this.hash_box.Name = "hash_box";
             this.hash_box.Size = new System.Drawing.Size(135, 20);
@@ -402,8 +427,11 @@
             // 
             // lang_box
             // 
+            this.lang_box.BackColor = System.Drawing.Color.DimGray;
             this.lang_box.DisplayMember = "lang_name";
             this.lang_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.lang_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lang_box.ForeColor = System.Drawing.Color.White;
             this.lang_box.FormattingEnabled = true;
             this.lang_box.Location = new System.Drawing.Point(5, 115);
             this.lang_box.Name = "lang_box";
@@ -413,6 +441,7 @@
             // 
             // asset_box
             // 
+            this.asset_box.AutoEllipsis = true;
             this.asset_box.Location = new System.Drawing.Point(5, 60);
             this.asset_box.Name = "asset_box";
             this.asset_box.Size = new System.Drawing.Size(135, 20);
@@ -431,6 +460,7 @@
             // 
             // bg_button
             // 
+            this.bg_button.AutoEllipsis = true;
             this.bg_button.BackColor = System.Drawing.Color.DimGray;
             this.bg_button.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.bg_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -444,8 +474,11 @@
             // 
             // bg_box
             // 
+            this.bg_box.BackColor = System.Drawing.Color.DimGray;
             this.bg_box.DisplayMember = "Name";
             this.bg_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.bg_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bg_box.ForeColor = System.Drawing.Color.White;
             this.bg_box.FormattingEnabled = true;
             this.bg_box.Location = new System.Drawing.Point(5, 155);
             this.bg_box.Name = "bg_box";
@@ -455,6 +488,8 @@
             // 
             // game_group
             // 
+            this.game_group.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.game_group.Controls.Add(this.ScrollablePanel);
             this.game_group.ForeColor = System.Drawing.Color.White;
             this.game_group.Location = new System.Drawing.Point(5, 30);
@@ -467,6 +502,8 @@
             // ScrollablePanel
             // 
             this.ScrollablePanel.AutoScroll = true;
+            this.ScrollablePanel.Controls.Add(this.java_ver);
+            this.ScrollablePanel.Controls.Add(this.javalist_btn);
             this.ScrollablePanel.Controls.Add(this.jre_label);
             this.ScrollablePanel.Controls.Add(this.jre_box);
             this.ScrollablePanel.Controls.Add(this.jre_button);
@@ -494,6 +531,28 @@
             this.ScrollablePanel.Size = new System.Drawing.Size(294, 216);
             this.ScrollablePanel.TabIndex = 0;
             // 
+            // java_ver
+            // 
+            this.java_ver.Location = new System.Drawing.Point(5, 347);
+            this.java_ver.Name = "java_ver";
+            this.java_ver.Size = new System.Drawing.Size(270, 13);
+            this.java_ver.TabIndex = 23;
+            this.java_ver.Text = "Version: Default";
+            this.java_ver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // javalist_btn
+            // 
+            this.javalist_btn.BackColor = System.Drawing.Color.DimGray;
+            this.javalist_btn.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.javalist_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.javalist_btn.Location = new System.Drawing.Point(5, 318);
+            this.javalist_btn.Name = "javalist_btn";
+            this.javalist_btn.Size = new System.Drawing.Size(270, 25);
+            this.javalist_btn.TabIndex = 22;
+            this.javalist_btn.Text = "Open Java List";
+            this.javalist_btn.UseVisualStyleBackColor = false;
+            this.javalist_btn.Click += new System.EventHandler(this.javalist_btn_Click);
+            // 
             // jre_label
             // 
             this.jre_label.Location = new System.Drawing.Point(6, 278);
@@ -505,6 +564,9 @@
             // 
             // jre_box
             // 
+            this.jre_box.BackColor = System.Drawing.Color.DimGray;
+            this.jre_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.jre_box.ForeColor = System.Drawing.Color.White;
             this.jre_box.Location = new System.Drawing.Point(5, 294);
             this.jre_box.Name = "jre_box";
             this.jre_box.Size = new System.Drawing.Size(190, 20);
@@ -515,7 +577,7 @@
             this.jre_button.BackColor = System.Drawing.Color.DimGray;
             this.jre_button.FlatAppearance.BorderSize = 0;
             this.jre_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.jre_button.Location = new System.Drawing.Point(200, 293);
+            this.jre_button.Location = new System.Drawing.Point(200, 294);
             this.jre_button.Name = "jre_button";
             this.jre_button.Size = new System.Drawing.Size(75, 20);
             this.jre_button.TabIndex = 21;
@@ -525,8 +587,11 @@
             // 
             // gc_box
             // 
+            this.gc_box.BackColor = System.Drawing.Color.DimGray;
             this.gc_box.DisplayMember = "Name";
             this.gc_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.gc_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gc_box.ForeColor = System.Drawing.Color.White;
             this.gc_box.FormattingEnabled = true;
             this.gc_box.Location = new System.Drawing.Point(5, 175);
             this.gc_box.Name = "gc_box";
@@ -544,6 +609,9 @@
             // 
             // jvmarg_box
             // 
+            this.jvmarg_box.BackColor = System.Drawing.Color.DimGray;
+            this.jvmarg_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.jvmarg_box.ForeColor = System.Drawing.Color.White;
             this.jvmarg_box.Location = new System.Drawing.Point(5, 255);
             this.jvmarg_box.Name = "jvmarg_box";
             this.jvmarg_box.Size = new System.Drawing.Size(270, 20);
@@ -569,6 +637,9 @@
             // 
             // gamedir_box
             // 
+            this.gamedir_box.BackColor = System.Drawing.Color.DimGray;
+            this.gamedir_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gamedir_box.ForeColor = System.Drawing.Color.White;
             this.gamedir_box.Location = new System.Drawing.Point(5, 15);
             this.gamedir_box.Name = "gamedir_box";
             this.gamedir_box.Size = new System.Drawing.Size(195, 20);
@@ -577,6 +648,9 @@
             // 
             // mcarg_box
             // 
+            this.mcarg_box.BackColor = System.Drawing.Color.DimGray;
+            this.mcarg_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mcarg_box.ForeColor = System.Drawing.Color.White;
             this.mcarg_box.Location = new System.Drawing.Point(5, 215);
             this.mcarg_box.Name = "mcarg_box";
             this.mcarg_box.Size = new System.Drawing.Size(270, 20);
@@ -642,6 +716,7 @@
             // 
             // ram_box
             // 
+            this.ram_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ram_box.Increment = new decimal(new int[] {
             512,
             0,
@@ -862,6 +937,7 @@
             // 
             // instances_box
             // 
+            this.instances_box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.instances_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.instances_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.instances_box.Controls.Add(this.instance_clone);
@@ -879,6 +955,7 @@
             // 
             // instance_clone
             // 
+            this.instance_clone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.instance_clone.BackColor = System.Drawing.Color.DimGray;
             this.instance_clone.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.instance_clone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -892,6 +969,7 @@
             // 
             // instance_add
             // 
+            this.instance_add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.instance_add.BackColor = System.Drawing.Color.DimGray;
             this.instance_add.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.instance_add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -905,6 +983,7 @@
             // 
             // instance_edit
             // 
+            this.instance_edit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.instance_edit.BackColor = System.Drawing.Color.DimGray;
             this.instance_edit.Enabled = false;
             this.instance_edit.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
@@ -919,6 +998,7 @@
             // 
             // instance_remove
             // 
+            this.instance_remove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.instance_remove.BackColor = System.Drawing.Color.DimGray;
             this.instance_remove.Enabled = false;
             this.instance_remove.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
@@ -933,6 +1013,9 @@
             // 
             // instance_list
             // 
+            this.instance_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.instance_list.BackColor = System.Drawing.Color.DimGray;
             this.instance_list.ForeColor = System.Drawing.Color.White;
             this.instance_list.HideSelection = false;
@@ -979,6 +1062,7 @@
             // 
             // accounts_box
             // 
+            this.accounts_box.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.accounts_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.accounts_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.accounts_box.Controls.Add(this.account_list);
@@ -995,6 +1079,8 @@
             // 
             // account_list
             // 
+            this.account_list.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.account_list.BackColor = System.Drawing.Color.DimGray;
             this.account_list.ForeColor = System.Drawing.Color.White;
             this.account_list.HideSelection = false;
@@ -1010,6 +1096,7 @@
             // 
             // account_delete
             // 
+            this.account_delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.account_delete.BackColor = System.Drawing.Color.DimGray;
             this.account_delete.Enabled = false;
             this.account_delete.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
@@ -1025,6 +1112,7 @@
             // 
             // account_add
             // 
+            this.account_add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.account_add.BackColor = System.Drawing.Color.DimGray;
             this.account_add.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.account_add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -1053,6 +1141,7 @@
             // 
             // account_edit
             // 
+            this.account_edit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.account_edit.BackColor = System.Drawing.Color.DimGray;
             this.account_edit.Enabled = false;
             this.account_edit.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
@@ -1129,6 +1218,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(700, 400);
+            this.Controls.Add(this.settings_box);
             this.Controls.Add(this.openupd);
             this.Controls.Add(this.version_id);
             this.Controls.Add(this.more);
@@ -1136,12 +1226,12 @@
             this.Controls.Add(this.bottom_holder);
             this.Controls.Add(this.accounts_box);
             this.Controls.Add(this.instances_box);
-            this.Controls.Add(this.settings_box);
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = global::Sandstone_Launcher.Properties.Resources.sandstone;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(716, 439);
             this.Name = "HomeWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sandstone Launcher";
@@ -1257,5 +1347,7 @@
         public System.Windows.Forms.ToolStripMenuItem stop_minecraft;
         public System.Windows.Forms.Label other_label;
         public System.Windows.Forms.Button instance_clone;
+        public System.Windows.Forms.Button javalist_btn;
+        public System.Windows.Forms.Label java_ver;
     }
 }

@@ -81,6 +81,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JavaList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JavaList.Designer.cs">
+      <DependentUpon>JavaList.cs</DependentUpon>
+    </Compile>
     <Compile Include="LauncherLib.cs" />
     <Compile Include="Misc\Accounts.cs" />
     <Compile Include="Misc\ArgSplitter.cs" />
@@ -94,6 +100,7 @@
     <Compile Include="InstanceDialog.Designer.cs">
       <DependentUpon>InstanceDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Misc\DarkModeTitle.cs" />
     <Compile Include="Misc\Ely2Step.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InstanceDialog.resx">
       <DependentUpon>InstanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JavaList.resx">
+      <DependentUpon>JavaList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Misc\Backgrounds.resx">
       <Generator>ResXFileCodeGenerator</Generator>

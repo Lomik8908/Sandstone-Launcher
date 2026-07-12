@@ -663,9 +663,9 @@ namespace Sandstone_Launcher
         {
             if (usertype == "msa")
                 return $"[MS] {username}";
-            if (usertype == "ely")
+            else if (usertype == "ely")
                 return $"[ELY] {username}";
-            if (usertype == "custom")
+            else if (!string.IsNullOrEmpty(usertype))
                 return $"[>] {username}";
             return username;
         }

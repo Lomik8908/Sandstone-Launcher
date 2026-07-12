@@ -185,6 +185,7 @@
             this.instance_box.BackColor = System.Drawing.Color.DimGray;
             this.instance_box.Cursor = System.Windows.Forms.Cursors.Default;
             this.instance_box.DisplayMember = "name";
+            this.instance_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.instance_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.instance_box.ForeColor = System.Drawing.Color.White;
             this.instance_box.FormattingEnabled = true;
@@ -217,6 +218,7 @@
             this.account_box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.account_box.BackColor = System.Drawing.Color.DimGray;
             this.account_box.Cursor = System.Windows.Forms.Cursors.Default;
+            this.account_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.account_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.account_box.ForeColor = System.Drawing.Color.White;
             this.account_box.FormattingEnabled = true;

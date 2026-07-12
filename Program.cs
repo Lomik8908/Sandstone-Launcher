@@ -49,9 +49,9 @@ namespace Sandstone_Launcher
 
         static public bool Launching { get; private set; }
         static bool WaitingForTasks;
-        static bool saveSetting = false;
-        static bool saveUser = false;
-        static bool saveInstance = false;
+        static bool saveSetting = true;
+        static bool saveUser = true;
+        static bool saveInstance = true;
         static public JsonSerializerOptions defaultJsonOptions = new JsonSerializerOptions { AllowTrailingCommas = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
 
         static public Process GameProcess;

@@ -15,8 +15,8 @@ namespace Sandstone_Launcher
 {
     static class Program
     {
-        static public string AppVersionString = "1.0.0 rc-1.4";
-        static public int AppVersion = 3;
+        static public string AppVersionString = "1.0.0 rc-1.5";
+        static public int AppVersion = 4;
         static public ComputerInfo pcInfo = new ComputerInfo();
 
         static public Settings settings = new Settings();
@@ -100,8 +100,8 @@ namespace Sandstone_Launcher
                 InvokeUI(() => { homeWindow.info_text.Text = SharedMethods.ReplaceFormat(Lang?.blogin_info ?? "Logging into {0}...", AccType?.name ?? "Account"); });
             };
 
-            if (settings.check_upd) CheckForUpdates();
             LoadAll();
+            if (settings.check_upd) CheckForUpdates();
             Application.Run(homeWindow);
         }
 

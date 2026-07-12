@@ -332,6 +332,7 @@ namespace Sandstone_Launcher
             if (File.Exists(BG))
             {
                 FileInfo BGInfo = new FileInfo(BG);
+                Directory.CreateDirectory("Backgrounds");
                 File.Copy(BG, Path.Combine("Backgrounds", BGInfo.Name));
                 Backgrounds.LoadBackgrounds();
             }

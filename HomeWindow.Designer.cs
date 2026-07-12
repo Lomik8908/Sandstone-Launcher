@@ -41,6 +41,7 @@
             this.settings_box = new System.Windows.Forms.Panel();
             this.launcher_group = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.bgcolor = new System.Windows.Forms.Panel();
             this.other_label = new System.Windows.Forms.Label();
             this.load_instances = new System.Windows.Forms.Button();
             this.load_users = new System.Windows.Forms.Button();
@@ -121,6 +122,7 @@
             this.GameDirBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.FileDialog = new System.Windows.Forms.OpenFileDialog();
             this.openupd = new System.Windows.Forms.LinkLabel();
+            this.ColorPick = new System.Windows.Forms.ColorDialog();
             this.bottom_holder.SuspendLayout();
             this.settings_box.SuspendLayout();
             this.launcher_group.SuspendLayout();
@@ -269,6 +271,7 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.bgcolor);
             this.panel1.Controls.Add(this.other_label);
             this.panel1.Controls.Add(this.load_instances);
             this.panel1.Controls.Add(this.load_users);
@@ -291,6 +294,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(294, 216);
             this.panel1.TabIndex = 37;
+            // 
+            // bgcolor
+            // 
+            this.bgcolor.BackColor = System.Drawing.Color.DimGray;
+            this.bgcolor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.bgcolor.Location = new System.Drawing.Point(250, 155);
+            this.bgcolor.Name = "bgcolor";
+            this.bgcolor.Size = new System.Drawing.Size(25, 20);
+            this.bgcolor.TabIndex = 40;
+            this.bgcolor.Click += new System.EventHandler(this.bgcolor_Click);
             // 
             // other_label
             // 
@@ -367,7 +380,7 @@
             this.bg_folder.BackColor = System.Drawing.Color.DimGray;
             this.bg_folder.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.bg_folder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bg_folder.Location = new System.Drawing.Point(5, 179);
+            this.bg_folder.Location = new System.Drawing.Point(5, 180);
             this.bg_folder.Name = "bg_folder";
             this.bg_folder.Size = new System.Drawing.Size(130, 25);
             this.bg_folder.TabIndex = 35;
@@ -464,7 +477,7 @@
             this.bg_button.BackColor = System.Drawing.Color.DimGray;
             this.bg_button.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.bg_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bg_button.Location = new System.Drawing.Point(145, 180);
+            this.bg_button.Location = new System.Drawing.Point(145, 181);
             this.bg_button.Name = "bg_button";
             this.bg_button.Size = new System.Drawing.Size(130, 24);
             this.bg_button.TabIndex = 33;
@@ -482,7 +495,7 @@
             this.bg_box.FormattingEnabled = true;
             this.bg_box.Location = new System.Drawing.Point(5, 155);
             this.bg_box.Name = "bg_box";
-            this.bg_box.Size = new System.Drawing.Size(270, 21);
+            this.bg_box.Size = new System.Drawing.Size(240, 21);
             this.bg_box.TabIndex = 31;
             this.bg_box.SelectedIndexChanged += new System.EventHandler(this.bg_box_SelectedIndexChanged);
             // 
@@ -1212,6 +1225,11 @@
             this.openupd.Visible = false;
             this.openupd.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.openupd_LinkClicked);
             // 
+            // ColorPick
+            // 
+            this.ColorPick.AnyColor = true;
+            this.ColorPick.Color = System.Drawing.Color.DimGray;
+            // 
             // HomeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1349,5 +1367,7 @@
         public System.Windows.Forms.Button instance_clone;
         public System.Windows.Forms.Button javalist_btn;
         public System.Windows.Forms.Label java_ver;
+        public System.Windows.Forms.Panel bgcolor;
+        public System.Windows.Forms.ColorDialog ColorPick;
     }
 }

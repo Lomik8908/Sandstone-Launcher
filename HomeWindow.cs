@@ -126,7 +126,7 @@ namespace Sandstone_Launcher
         {
             if (Program.Launching) Program.StopLaunch();
             if (LauncherLib.OperationRunning) LauncherLib.StopOperation();
-            Program.SaveExit();
+            Program.SaveAll();
         }
         private void account_list_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -188,12 +188,12 @@ namespace Sandstone_Launcher
             {
                 lock (Program.AccountLock)
                     Program.Users.Add(new User
-                {
-                    username = Program.accountDialog.username_box.Text,
-                    usertype = "offline",
-                    accessToken = "0",
-                    uuid = Guid.NewGuid().ToString()
-                });
+                    {
+                        username = Program.accountDialog.username_box.Text,
+                        usertype = "offline",
+                        accessToken = "0",
+                        uuid = Guid.NewGuid().ToString()
+                    });
                 Program.LoadUsersList();
                 Program.SaveUsers();
             }
@@ -382,6 +382,20 @@ namespace Sandstone_Launcher
                     else
                         Program.settings.java_type = java.Id;
                 }
+            }
+        }
+
+        private void bgcolor_Click(object sender, EventArgs e)
+        {
+            DialogResult result = ColorPick.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                BackColor = ColorPick.Color;
+                bgcolor.BackColor = ColorPick.Color;
+                if (ColorPick.Color == Color.DimGray)
+                    Program.settings.bg_color = null;
+                else
+                    Program.settings.bg_color = ColorTranslator.ToHtml(ColorPick.Color);
             }
         }
     }

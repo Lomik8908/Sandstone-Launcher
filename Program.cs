@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
-using Microsoft.VisualBasic.Devices;
+﻿using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,9 +49,9 @@ namespace Sandstone_Launcher
 
         static public bool Launching { get; private set; }
         static bool WaitingForTasks;
-        static bool saveSetting = true;
-        static bool saveUser = true;
-        static bool saveInstance = true;
+        static bool saveSetting = false;
+        static bool saveUser = false;
+        static bool saveInstance = false;
         static public JsonSerializerOptions defaultJsonOptions = new JsonSerializerOptions { AllowTrailingCommas = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
 
         static public Process GameProcess;
@@ -175,6 +174,15 @@ namespace Sandstone_Launcher
             homeWindow.ram_bar.Value = Math.Max(homeWindow.ram_bar.Minimum, Math.Min(settings.memory, homeWindow.ram_bar.Maximum));
             homeWindow.ram_box.Value = Math.Max(homeWindow.ram_box.Minimum, Math.Min(settings.memory, homeWindow.ram_box.Maximum));
 
+            if (settings.bg_color != null) try
+                {
+                    var color = System.Drawing.ColorTranslator.FromHtml(settings.bg_color);
+                    homeWindow.BackColor = color;
+                    homeWindow.bgcolor.BackColor = color;
+                }
+            catch (Exception ex) { Logger.Warn($"Couldn't set background color: {ex.Message}"); }
+            
+
             // GC Box
             GCTemplate[] GCArray = GCFlags.GCTemplates.ToArray();
             homeWindow.gc_box.Items.AddRange(GCArray);
@@ -195,17 +203,18 @@ namespace Sandstone_Launcher
         }
         static public void LoadUsersList()
         {
-            
+
             homeWindow.account_list.Items.Clear();
             homeWindow.account_edit.Enabled = false;
             homeWindow.account_delete.Enabled = false;
-            foreach (User user in Users)
-                homeWindow.account_list.Items.Add(new ListViewItem
-                {
-                    ImageKey = user.usertype ?? "offline",
-                    Tag = user,
-                    Text = user.username
-                });
+            lock (AccountLock)
+                foreach (User user in Users)
+                    homeWindow.account_list.Items.Add(new ListViewItem
+                    {
+                        ImageKey = user.usertype ?? "offline",
+                        Tag = user,
+                        Text = user.username
+                    });
         }
         static public void LoadInstanceList()
         {
@@ -239,6 +248,7 @@ namespace Sandstone_Launcher
         static public void SaveSettings()
         {
             if (!saveSetting) return;
+            if (homeWindow.Disposing || homeWindow.IsDisposed) return;
             settings.gamedir = LauncherLib.GameDir;
             settings.fullscreen = homeWindow.fullscreen_box.Checked;
             settings.memory = (int)homeWindow.ram_box.Value;
@@ -262,7 +272,7 @@ namespace Sandstone_Launcher
             settings.user = (homeWindow.account_box.SelectedItem as User)?.uuid;
             try { File.WriteAllText("sl_settings.json", JsonSerializer.Serialize(settings, defaultJsonOptions)); } catch (Exception ex) { Logger.Err($"Couldn't save settings: {ex.Message}"); }
         }
-        static public void SaveExit()
+        static public void SaveAll()
         {
             SaveSettings();
             SaveUsers();
@@ -290,7 +300,8 @@ namespace Sandstone_Launcher
         }
         static public bool HasMSAccount()
         {
-            return Users.Any(v => v.usertype == "msa");
+            lock (AccountLock)
+                return Users.Any(v => v.usertype == "msa");
         }
         static public void SetGameDir(string sPath)
         {
@@ -371,10 +382,12 @@ namespace Sandstone_Launcher
             }
             if (!(homeWindow.account_box.SelectedItem is User user))
             {
-                MessageBox.Show(Users.Count <= 0 ? Lang.cresel_acc ?? "Create and select an account!" : Lang.sel_acc ?? "Select an account!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lock (AccountLock)
+                    MessageBox.Show(Users.Count <= 0 ? Lang.cresel_acc ?? "Create and select an account!" : Lang.sel_acc ?? "Select an account!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             };
-            if (!(homeWindow.instance_box.SelectedItem is Instance instance)) {
+            if (!(homeWindow.instance_box.SelectedItem is Instance instance))
+            {
                 MessageBox.Show(Instances.Count <= 0 ? Lang.cresel_inst ?? "Create and select an instance!" : Lang.sel_inst ?? "Select an instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -620,6 +633,7 @@ namespace Sandstone_Launcher
         public bool use_authinjector { get; set; } = true;
         public string java_path { get; set; }
         public string java_type { get; set; }
+        public string bg_color { get; set; }
     }
     public class Instance
     {

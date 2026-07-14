@@ -20,7 +20,7 @@ namespace Sandstone_Launcher
         static public ComputerInfo pcInfo = new ComputerInfo();
 
         static public Settings settings = new Settings();
-        static string[] CommonFlags = new string[] { "-XX:+AlwaysPreTouch", "-Dfml.ignoreInvalidMinecraftCertificates=true", "-Dfml.ignorePatchDiscrepancies=true", "-Djava.net.useSystemProxies=true", "-Dfile.encoding=UTF-8" };
+        static string[] CommonFlags = new string[] { "-Dfml.ignoreInvalidMinecraftCertificates=true", "-Dfml.ignorePatchDiscrepancies=true", "-Djava.net.useSystemProxies=true", "-Dfile.encoding=UTF-8" };
 
         static public Dictionary<string, NameClass> NamedClasses = new Dictionary<string, NameClass> {
             { "none", new NameClass { Id = "none", Name = "None" } },

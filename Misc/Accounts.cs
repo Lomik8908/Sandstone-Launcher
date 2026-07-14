@@ -235,9 +235,9 @@ namespace Sandstone_Launcher
 
                 // Then continue again by checking ownership (FINALLY something else than post)
                 var MCRespond = JsonNode.Parse(await MCResponse.Content.ReadAsStringAsync());
-                var HttpMessage = new HttpRequestMessage { RequestUri = new Uri(Urls.MSOwnership), Method = HttpMethod.Get };
-                HttpMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", MCRespond?["access_token"]?.ToString() ?? "None");
-                var StoreResponse = await httpClient.SendAsync(HttpMessage);
+                var OwnershipMessage = new HttpRequestMessage { RequestUri = new Uri(Urls.MSOwnership), Method = HttpMethod.Get };
+                OwnershipMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", MCRespond?["access_token"]?.ToString() ?? "None");
+                var StoreResponse = await httpClient.SendAsync(OwnershipMessage);
 
                 if (!StoreResponse.IsSuccessStatusCode)
                 {
@@ -250,11 +250,12 @@ namespace Sandstone_Launcher
                 if (StoreRespond?["items"] != null && StoreRespond["items"].AsArray().Any(v => v["name"].ToString() == "game_minecraft"))
                 {
                     // FINALLY WE END THE PAIN
-                    HttpMessage.RequestUri = new Uri(Urls.MCProfile);
-                    var ProfileResponse = await httpClient.SendAsync(HttpMessage);
+                    var MCProfileMessage = new HttpRequestMessage { RequestUri = new Uri(Urls.MCProfile), Method = HttpMethod.Get };
+                    MCProfileMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", MCRespond?["access_token"]?.ToString() ?? "None");
+                    var ProfileResponse = await httpClient.SendAsync(MCProfileMessage);
                     if (!ProfileResponse.IsSuccessStatusCode)
                     {
-                        Logger.Log($"[MS] Couldn't get Store Items: {StoreResponse.StatusCode}");
+                        Logger.Log($"[MS] Couldn't get Store Items: {ProfileResponse.StatusCode}");
                         OnAccountFinished?.Invoke("msa");
                         return;
                     }

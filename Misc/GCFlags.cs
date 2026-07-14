@@ -9,11 +9,11 @@ namespace Sandstone_Launcher
     public class GCFlags
     {
         static public BindingList<GCTemplate> GCTemplates = new BindingList<GCTemplate> {
-            new GCTemplate { id = "g1gc", name = "Default G1 GC", arguments = new List<string> { "-XX:+UseStringDeduplication", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M" } },
-            new GCTemplate { id = "m_g1gc", name = "Modified G1 GC", arguments = new List<string> { "-XX:+UseStringDeduplication", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=30", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=16M", "-XX:+ParallelRefProcEnabled", "-XX:+DisableExplicitGC", "-XX:G1MaxNewSizePercent=40" } },
-            new GCTemplate { id = "s_gc", name = "Shenandoah GC", arguments = new List<string> { "-XX:+UseShenandoahGC", "-XX:ShenandoahGCMode=iu" } },
-            new GCTemplate { id = "zgc", name = "ZGC", arguments = new List<string> { "-XX:+UseStringDeduplication",  "-XX:+UseZGC" } },
-            new GCTemplate { id = "cms", name = "Concurrent Mark Sweep GC", arguments = new List<string> { "-XX:+UseConcMarkSweepGC", "-XX:+CMSParallelRemarkEnabled", "-XX:+CMSClassUnloadingEnabled", "-XX:+UseCMSInitiatingOccupancyOnly" } }
+            new GCTemplate { id = "g1gc", name = "Default G1 GC", arguments = new List<string> { "-XX:+AlwaysPreTouch", "-XX:+UseStringDeduplication", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M" } },
+            new GCTemplate { id = "m_g1gc", name = "Modified G1 GC", arguments = new List<string> { "-XX:+AlwaysPreTouch", "-XX:+UseStringDeduplication", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=30", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=16M", "-XX:+ParallelRefProcEnabled", "-XX:+DisableExplicitGC", "-XX:G1MaxNewSizePercent=40" } },
+            new GCTemplate { id = "s_gc", name = "Shenandoah GC", arguments = new List<string> { "-XX:+AlwaysPreTouch", "-XX:+UseShenandoahGC", "-XX:ShenandoahGCMode=iu" } },
+            new GCTemplate { id = "zgc", name = "ZGC", arguments = new List<string> { "-XX:+AlwaysPreTouch", "-XX:+UseStringDeduplication",  "-XX:+UseZGC" } },
+            new GCTemplate { id = "cms", name = "Concurrent Mark Sweep GC", arguments = new List<string> { "-XX:+AlwaysPreTouch", "-XX:+UseConcMarkSweepGC", "-XX:+CMSParallelRemarkEnabled", "-XX:+CMSClassUnloadingEnabled", "-XX:+UseCMSInitiatingOccupancyOnly" } }
         };
 
         static public void LoadCustomFlags()

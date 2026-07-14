@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting;
 
 namespace Sandstone_Launcher
 {
@@ -51,6 +50,7 @@ namespace Sandstone_Launcher
         static public void ShowConsole() {
             AllocConsole();
             Console.Title = "Sandstone Console";
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             var hWnd = GetConsoleWindow();
             var hMenu = GetSystemMenu(hWnd, false);
             DeleteMenu(hMenu, 0xF060, 0x00000000);

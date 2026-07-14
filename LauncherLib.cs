@@ -103,7 +103,7 @@ namespace Sandstone_Launcher
                 GameDir = path;
             Directory.CreateDirectory(GameDir);
             string Profiles = Path.Combine(GameDir, "launcher_profiles.json");
-            if (!File.Exists(Profiles)) File.WriteAllText(Profiles, "{\"profiles\" : {}, \"version\" : 3}");
+            if (!File.Exists(Profiles)) File.WriteAllText(Profiles, "{\"profiles\": {}, \"version\": 3}");
         }
 
         //Manifests And Stuff
@@ -190,15 +190,12 @@ namespace Sandstone_Launcher
             if (!File.Exists(mfPath)) { OperationRunning = false; return null; }
             JsonNode jManifest = null;
             try { jManifest = JsonNode.Parse(File.ReadAllText(mfPath)); } catch { }
-            Console.WriteLine("here1");
             if (jManifest?["files"] == null) { OperationRunning = false; return null; }
-            Console.WriteLine("here2");
             JsonObject jFiles = jManifest["files"].AsObject();
             //int index = 0;
             //DateTime lastCall = DateTime.UtcNow;
             foreach (var jFile in jFiles)
             {
-                Console.WriteLine("here3");
                 if (!OperationRunning) break;
                 //index++;
                 //if (DateTime.UtcNow - lastCall > TimeSpan.FromMilliseconds(250) || index == jFiles.Count) { lastCall = DateTime.UtcNow; Task.Run(() => OnJavaUpdate?.Invoke(index, jFiles.Count)); }

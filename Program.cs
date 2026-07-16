@@ -15,8 +15,8 @@ namespace Sandstone_Launcher
 {
     static class Program
     {
-        static public string AppVersionString = "1.0.0 rc-1.6";
-        static public int AppVersion = 5;
+        static public string AppVersionString = "1.0.0 rc-1.7";
+        static public int AppVersion = 6;
         static public ComputerInfo pcInfo = new ComputerInfo();
 
         static public Settings settings = new Settings();
@@ -310,47 +310,60 @@ namespace Sandstone_Launcher
             LoadInstances();
             LoadUsers();
         }
-        static public void DownloadFiles(string gameVersion, string gameDir, bool checkHash, bool checkJre, Instance instance)
+        static public void DownloadFiles(Instance instance)
         {
-            if (string.IsNullOrWhiteSpace(gameDir))
-                gameDir = LauncherLib.GameDir;
+            bool jreExists = File.Exists(homeWindow.jre_box.Text);
+            bool checkHash = homeWindow.hash_box.Checked;
+            string gameVersion = instance.version;
+            string gameDir = instance.gamedir ?? LauncherLib.GameDir;
+            Task.Run(() => {
+                if (string.IsNullOrWhiteSpace(gameDir))
+                    gameDir = LauncherLib.GameDir;
 
-            if (gameVersion == "latest-release")
-            {
-                gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["release"]?.ToString() ?? instance.last_version;
-                instance.last_version = gameVersion;
-            }
-            else if (gameVersion == "latest-snapshot")
-            {
-                gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["snapshot"]?.ToString() ?? instance.last_version;
-                instance.last_version = gameVersion;
-            }
-
-            JsonNode mfJson = LauncherLib.GetManifestOf(gameVersion);
-            if (mfJson == null) { return; }
-
-            if (mfJson["inheritsFrom"] != null)
-            {
-                JsonNode ManifestTo = LauncherLib.GetManifestOf(mfJson["inheritsFrom"].ToString());
-                if (ManifestTo != null)
+                if (gameVersion == "latest-release")
                 {
-                    LauncherLib.MergeNode(ManifestTo, mfJson);
-                    string verJson = Path.Combine(LauncherLib.GameDir, "versions", gameVersion, gameVersion + ".json");
-                    if (ManifestTo is JsonObject JObject) JObject.Remove("inheritsFrom");
-                    try { File.WriteAllText(verJson, JsonSerializer.Serialize(ManifestTo, defaultJsonOptions)); }
-                    catch (Exception ex) { Logger.Warn($"Couldn't save manifest: {ex.Message}"); }
-                    mfJson = ManifestTo;
+                    gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["release"]?.ToString() ?? instance.last_version;
+                    instance.last_version = gameVersion;
                 }
-            }
+                else if (gameVersion == "latest-snapshot")
+                {
+                    gameVersion = LauncherLib.GetVersionsManifest()?["latest"]?["snapshot"]?.ToString() ?? instance.last_version;
+                    instance.last_version = gameVersion;
+                }
 
-            InvokeUI(() => { homeWindow.info_text.Text = Lang?.checking_file ?? "Checking files..."; });
-            if (checkJre)
-                LauncherLib.CheckJava(mfJson["javaVersion"]?["component"]?.ToString() ?? "jre-legacy", false, checkHash);
-            LauncherLib.CheckClasses(mfJson, gameVersion, false, checkHash);
-            LauncherLib.CheckAssets(mfJson, gameDir, false, checkHash);
-            LauncherLib.DownloadAll();
-            LauncherLib.ExtractAll();
-            InvokeUI(() => { homeWindow.info_text.Text = string.Empty; });
+                JsonNode mfJson = LauncherLib.GetManifestOf(gameVersion);
+                if (mfJson == null) { return; }
+
+                if (mfJson["inheritsFrom"] != null)
+                {
+                    JsonNode ManifestTo = LauncherLib.GetManifestOf(mfJson["inheritsFrom"].ToString());
+                    if (ManifestTo != null)
+                    {
+                        LauncherLib.MergeNode(ManifestTo, mfJson);
+                        string verJson = Path.Combine(LauncherLib.GameDir, "versions", gameVersion, gameVersion + ".json");
+                        if (ManifestTo is JsonObject JObject) JObject.Remove("inheritsFrom");
+                        try { File.WriteAllText(verJson, JsonSerializer.Serialize(ManifestTo, defaultJsonOptions)); }
+                        catch (Exception ex) { Logger.Warn($"Couldn't save manifest: {ex.Message}"); }
+                        mfJson = ManifestTo;
+                    }
+                }
+
+                InvokeUI(() => { homeWindow.info_text.Text = Lang?.checking_file ?? "Checking files..."; });
+                if (!File.Exists(instance.java_path) || !jreExists)
+                {
+                    if (!string.IsNullOrEmpty(instance.java_type))
+                        LauncherLib.CheckJava(instance.java_type, false, checkHash);
+                    else if (!string.IsNullOrEmpty(settings.java_type))
+                        LauncherLib.CheckJava(settings.java_type, false, checkHash);
+                    else
+                        LauncherLib.CheckJava(mfJson["javaVersion"]?["component"]?.ToString() ?? "jre-legacy", false, checkHash);
+                }
+                LauncherLib.CheckClasses(mfJson, gameVersion, false, checkHash);
+                LauncherLib.CheckAssets(mfJson, gameDir, false, checkHash);
+                LauncherLib.DownloadAll();
+                LauncherLib.ExtractAll();
+                InvokeUI(() => { homeWindow.info_text.Text = string.Empty; });
+            });
         }
 
         static void InvokeUI(Action action) { if (!homeWindow.IsDisposed) homeWindow.Invoke(action); }
@@ -466,8 +479,9 @@ namespace Sandstone_Launcher
 
                 if (connected && !Accounts.CheckValid(user))
                 {
+                    Logger.Log("Refreshing token...");
                     if (user.usertype == "msa")
-                        Accounts.MSBackground(user.refreshToken, user);
+                        Accounts.MSBackground(user.refreshToken, user).Wait();
                     else if (user.usertype == "ely")
                         Accounts.RefreshEly(user);
                 }

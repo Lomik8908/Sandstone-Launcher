@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sandstone_Launcher
@@ -137,7 +138,7 @@ namespace Sandstone_Launcher
             return code;
         }
 
-        static async public void MSBackground(string code, User refresh = null) {
+        static async public Task MSBackground(string code, User refresh = null) {
             OnAccountBegin?.Invoke("msa");
             try
             {

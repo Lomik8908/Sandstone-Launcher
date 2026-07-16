@@ -192,7 +192,7 @@ namespace Sandstone_Launcher
                         username = Program.accountDialog.username_box.Text,
                         usertype = "offline",
                         accessToken = "0",
-                        uuid = Guid.NewGuid().ToString()
+                        uuid = Guid.NewGuid().ToString("N")
                     });
                 Program.LoadUsersList();
                 Program.SaveUsers();
@@ -243,11 +243,8 @@ namespace Sandstone_Launcher
                     Program.instanceDialog.EditInstance(selectedInst);
                     instance_box.DisplayMember = null;
                     instance_box.DisplayMember = "name";
-                    if (Program.instanceDialog.predown.Checked) {
-                        bool checkJre = !File.Exists(jre_box.Text);
-                        bool checkHash = hash_box.Checked;
-                        Task.Run(() => Program.DownloadFiles(selectedInst.version, selectedInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre, selectedInst));
-                    }
+                    if (Program.instanceDialog.predown.Checked)
+                        Program.DownloadFiles(selectedInst);
                     Program.LoadInstanceList();
                     Program.SaveInstances();
                 }
@@ -273,11 +270,7 @@ namespace Sandstone_Launcher
                     {
                         Program.Instances.Add(NewInst);
                         if (Program.instanceDialog.predown.Checked)
-                        {
-                            bool checkJre = !File.Exists(jre_box.Text);
-                            bool checkHash = hash_box.Checked;
-                            Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre, NewInst));
-                        }
+                            Program.DownloadFiles(NewInst);
                         Program.LoadInstanceList();
                         Program.SaveInstances();
                     }
@@ -297,11 +290,7 @@ namespace Sandstone_Launcher
                 {
                     Program.Instances.Add(NewInst);
                     if (Program.instanceDialog.predown.Checked)
-                    {
-                        bool checkJre = !File.Exists(jre_box.Text);
-                        bool checkHash = hash_box.Checked;
-                        Task.Run(() => Program.DownloadFiles(NewInst.version, NewInst.gamedir ?? LauncherLib.GameDir, checkHash, checkJre, NewInst));
-                    }
+                        Program.DownloadFiles(NewInst);
                     Program.LoadInstanceList();
                     Program.SaveInstances();
                 }

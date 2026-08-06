@@ -16,7 +16,8 @@ namespace SandstoneControls
 
         public new BackgroundSizeMode BackgroundImageLayout { get => m_sizeMode; set { m_sizeMode = value; Invalidate(); } }
 
-        public BackgroundForm() {
+        public BackgroundForm()
+        {
             SetStyle(ControlStyles.ResizeRedraw, true);
         }
 
@@ -29,10 +30,13 @@ namespace SandstoneControls
                 float Ratio = Math.Max((float)ClientSize.Width / BackgroundImage.Width, (float)ClientSize.Height / BackgroundImage.Height);
                 float m_width;
                 float m_height;
-                if (m_sizeMode == BackgroundSizeMode.GrowOnlyZoom) {
+                if (m_sizeMode == BackgroundSizeMode.GrowOnlyZoom)
+                {
                     m_width = Math.Max(BackgroundImage.Width, BackgroundImage.Width * Ratio);
                     m_height = Math.Max(BackgroundImage.Height, BackgroundImage.Height * Ratio);
-                } else {
+                }
+                else
+                {
                     m_width = BackgroundImage.Width * Ratio;
                     m_height = BackgroundImage.Height * Ratio;
                 }

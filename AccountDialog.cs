@@ -11,7 +11,6 @@ namespace Sandstone_Launcher
             InitializeComponent();
             usertype_box.DataSource = Accounts.accountTypes;
             login_button.ImageList = Program.homeWindow.AccountImages;
-            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void save_Click(object sender, System.EventArgs e)

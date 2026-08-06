@@ -61,6 +61,7 @@
             this.bg_box = new System.Windows.Forms.ComboBox();
             this.game_group = new System.Windows.Forms.GroupBox();
             this.ScrollablePanel = new System.Windows.Forms.Panel();
+            this.separateVers = new System.Windows.Forms.CheckBox();
             this.java_ver = new System.Windows.Forms.Label();
             this.javalist_btn = new System.Windows.Forms.Button();
             this.jre_label = new System.Windows.Forms.Label();
@@ -517,6 +518,7 @@
             // ScrollablePanel
             // 
             this.ScrollablePanel.AutoScroll = true;
+            this.ScrollablePanel.Controls.Add(this.separateVers);
             this.ScrollablePanel.Controls.Add(this.java_ver);
             this.ScrollablePanel.Controls.Add(this.javalist_btn);
             this.ScrollablePanel.Controls.Add(this.jre_label);
@@ -546,9 +548,18 @@
             this.ScrollablePanel.Size = new System.Drawing.Size(294, 216);
             this.ScrollablePanel.TabIndex = 0;
             // 
+            // separateVers
+            // 
+            this.separateVers.Location = new System.Drawing.Point(5, 40);
+            this.separateVers.Name = "separateVers";
+            this.separateVers.Size = new System.Drawing.Size(270, 20);
+            this.separateVers.TabIndex = 24;
+            this.separateVers.Text = "Separate Version";
+            this.separateVers.UseVisualStyleBackColor = true;
+            // 
             // java_ver
             // 
-            this.java_ver.Location = new System.Drawing.Point(5, 347);
+            this.java_ver.Location = new System.Drawing.Point(5, 377);
             this.java_ver.Name = "java_ver";
             this.java_ver.Size = new System.Drawing.Size(270, 13);
             this.java_ver.TabIndex = 23;
@@ -560,7 +571,7 @@
             this.javalist_btn.BackColor = System.Drawing.Color.DimGray;
             this.javalist_btn.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.javalist_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.javalist_btn.Location = new System.Drawing.Point(5, 318);
+            this.javalist_btn.Location = new System.Drawing.Point(5, 348);
             this.javalist_btn.Name = "javalist_btn";
             this.javalist_btn.Size = new System.Drawing.Size(270, 25);
             this.javalist_btn.TabIndex = 22;
@@ -570,7 +581,7 @@
             // 
             // jre_label
             // 
-            this.jre_label.Location = new System.Drawing.Point(6, 278);
+            this.jre_label.Location = new System.Drawing.Point(6, 308);
             this.jre_label.Name = "jre_label";
             this.jre_label.Size = new System.Drawing.Size(270, 15);
             this.jre_label.TabIndex = 18;
@@ -582,7 +593,7 @@
             this.jre_box.BackColor = System.Drawing.Color.DimGray;
             this.jre_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.jre_box.ForeColor = System.Drawing.Color.White;
-            this.jre_box.Location = new System.Drawing.Point(5, 294);
+            this.jre_box.Location = new System.Drawing.Point(5, 324);
             this.jre_box.Name = "jre_box";
             this.jre_box.Size = new System.Drawing.Size(190, 20);
             this.jre_box.TabIndex = 20;
@@ -592,7 +603,7 @@
             this.jre_button.BackColor = System.Drawing.Color.DimGray;
             this.jre_button.FlatAppearance.BorderSize = 0;
             this.jre_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.jre_button.Location = new System.Drawing.Point(200, 294);
+            this.jre_button.Location = new System.Drawing.Point(200, 324);
             this.jre_button.Name = "jre_button";
             this.jre_button.Size = new System.Drawing.Size(75, 20);
             this.jre_button.TabIndex = 21;
@@ -608,14 +619,14 @@
             this.gc_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gc_box.ForeColor = System.Drawing.Color.White;
             this.gc_box.FormattingEnabled = true;
-            this.gc_box.Location = new System.Drawing.Point(5, 175);
+            this.gc_box.Location = new System.Drawing.Point(5, 205);
             this.gc_box.Name = "gc_box";
             this.gc_box.Size = new System.Drawing.Size(270, 21);
             this.gc_box.TabIndex = 13;
             // 
             // gc_label
             // 
-            this.gc_label.Location = new System.Drawing.Point(6, 160);
+            this.gc_label.Location = new System.Drawing.Point(6, 190);
             this.gc_label.Name = "gc_label";
             this.gc_label.Size = new System.Drawing.Size(270, 15);
             this.gc_label.TabIndex = 12;
@@ -627,7 +638,7 @@
             this.jvmarg_box.BackColor = System.Drawing.Color.DimGray;
             this.jvmarg_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.jvmarg_box.ForeColor = System.Drawing.Color.White;
-            this.jvmarg_box.Location = new System.Drawing.Point(5, 255);
+            this.jvmarg_box.Location = new System.Drawing.Point(5, 285);
             this.jvmarg_box.Name = "jvmarg_box";
             this.jvmarg_box.Size = new System.Drawing.Size(270, 20);
             this.jvmarg_box.TabIndex = 17;
@@ -643,7 +654,7 @@
             // 
             // mcarg_label
             // 
-            this.mcarg_label.Location = new System.Drawing.Point(5, 200);
+            this.mcarg_label.Location = new System.Drawing.Point(5, 230);
             this.mcarg_label.Name = "mcarg_label";
             this.mcarg_label.Size = new System.Drawing.Size(270, 15);
             this.mcarg_label.TabIndex = 14;
@@ -666,7 +677,7 @@
             this.mcarg_box.BackColor = System.Drawing.Color.DimGray;
             this.mcarg_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mcarg_box.ForeColor = System.Drawing.Color.White;
-            this.mcarg_box.Location = new System.Drawing.Point(5, 215);
+            this.mcarg_box.Location = new System.Drawing.Point(5, 245);
             this.mcarg_box.Name = "mcarg_box";
             this.mcarg_box.Size = new System.Drawing.Size(270, 20);
             this.mcarg_box.TabIndex = 15;
@@ -686,7 +697,7 @@
             // 
             // jvmarg_label
             // 
-            this.jvmarg_label.Location = new System.Drawing.Point(5, 240);
+            this.jvmarg_label.Location = new System.Drawing.Point(5, 270);
             this.jvmarg_label.Name = "jvmarg_label";
             this.jvmarg_label.Size = new System.Drawing.Size(270, 15);
             this.jvmarg_label.TabIndex = 16;
@@ -695,7 +706,7 @@
             // 
             // res_label
             // 
-            this.res_label.Location = new System.Drawing.Point(5, 40);
+            this.res_label.Location = new System.Drawing.Point(5, 65);
             this.res_label.Name = "res_label";
             this.res_label.Size = new System.Drawing.Size(270, 15);
             this.res_label.TabIndex = 3;
@@ -704,7 +715,7 @@
             // 
             // mib_label
             // 
-            this.mib_label.Location = new System.Drawing.Point(180, 135);
+            this.mib_label.Location = new System.Drawing.Point(180, 165);
             this.mib_label.Name = "mib_label";
             this.mib_label.Size = new System.Drawing.Size(30, 20);
             this.mib_label.TabIndex = 11;
@@ -718,7 +729,7 @@
             0,
             0,
             0});
-            this.resx_box.Location = new System.Drawing.Point(5, 55);
+            this.resx_box.Location = new System.Drawing.Point(5, 80);
             this.resx_box.Maximum = new decimal(new int[] {
             16384,
             0,
@@ -737,7 +748,7 @@
             0,
             0,
             0});
-            this.ram_box.Location = new System.Drawing.Point(105, 135);
+            this.ram_box.Location = new System.Drawing.Point(105, 165);
             this.ram_box.Maximum = new decimal(new int[] {
             -1,
             -1,
@@ -756,7 +767,7 @@
             0,
             0,
             0});
-            this.resy_box.Location = new System.Drawing.Point(155, 55);
+            this.resy_box.Location = new System.Drawing.Point(155, 80);
             this.resy_box.Maximum = new decimal(new int[] {
             16384,
             0,
@@ -771,7 +782,7 @@
             // 
             this.ram_bar.AutoSize = false;
             this.ram_bar.LargeChange = 512;
-            this.ram_bar.Location = new System.Drawing.Point(5, 115);
+            this.ram_bar.Location = new System.Drawing.Point(5, 145);
             this.ram_bar.Maximum = 131072;
             this.ram_bar.Minimum = 1024;
             this.ram_bar.Name = "ram_bar";
@@ -785,7 +796,7 @@
             // 
             // x_label
             // 
-            this.x_label.Location = new System.Drawing.Point(125, 55);
+            this.x_label.Location = new System.Drawing.Point(125, 80);
             this.x_label.Name = "x_label";
             this.x_label.Size = new System.Drawing.Size(30, 20);
             this.x_label.TabIndex = 5;
@@ -794,7 +805,7 @@
             // 
             // ram_label
             // 
-            this.ram_label.Location = new System.Drawing.Point(5, 100);
+            this.ram_label.Location = new System.Drawing.Point(5, 130);
             this.ram_label.Name = "ram_label";
             this.ram_label.Size = new System.Drawing.Size(270, 15);
             this.ram_label.TabIndex = 8;
@@ -803,9 +814,9 @@
             // 
             // fullscreen_box
             // 
-            this.fullscreen_box.Location = new System.Drawing.Point(5, 80);
+            this.fullscreen_box.Location = new System.Drawing.Point(5, 105);
             this.fullscreen_box.Name = "fullscreen_box";
-            this.fullscreen_box.Size = new System.Drawing.Size(270, 15);
+            this.fullscreen_box.Size = new System.Drawing.Size(270, 20);
             this.fullscreen_box.TabIndex = 7;
             this.fullscreen_box.Text = "Fullscreen";
             this.fullscreen_box.UseVisualStyleBackColor = true;
@@ -1371,5 +1382,6 @@
         public System.Windows.Forms.Label java_ver;
         public System.Windows.Forms.Panel bgcolor;
         public System.Windows.Forms.ColorDialog ColorPick;
+        public System.Windows.Forms.CheckBox separateVers;
     }
 }

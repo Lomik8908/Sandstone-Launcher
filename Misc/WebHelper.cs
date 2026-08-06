@@ -14,7 +14,8 @@ namespace Sandstone_Launcher
             {
                 if (Query.StartsWith("?")) Query = QueryString.Substring(1);
                 string[] AllKeyValuePairs = Query.Split('&');
-                foreach (string KeyValuePairString in AllKeyValuePairs) {
+                foreach (string KeyValuePairString in AllKeyValuePairs)
+                {
                     string[] KeyValuePair = KeyValuePairString.Split('=');
                     if (KeyValuePair.Length > 1)
                         QueryList.Add(KeyValuePair[0], Uri.UnescapeDataString(KeyValuePair[1]));
@@ -31,7 +32,8 @@ namespace Sandstone_Launcher
                     PingReply reply = ping.Send(HostName, 2000);
                     return reply.Status == IPStatus.Success;
                 }
-            } catch {}
+            }
+            catch { }
             return false;
         }
     }

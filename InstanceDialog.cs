@@ -25,7 +25,6 @@ namespace Sandstone_Launcher
             resx_box.MouseWheel += SharedMethods.HandleScroll;
             resy_box.MouseWheel += SharedMethods.HandleScroll;
             gc_box.MouseWheel += SharedMethods.HandleScroll;
-            DarkModeTitle.SetDarkMode(Handle, true);
         }
         string CurrentJavaVer = null;
         public void SetValues(Instance inst = null)
@@ -115,7 +114,8 @@ namespace Sandstone_Launcher
             inst.java_path = string.IsNullOrWhiteSpace(jre_box.Text) ? null : jre_box.Text;
             inst.java_type = CurrentJavaVer;
         }
-        public void LoadGameVers() {
+        public void LoadGameVers()
+        {
             string Version = version_box.SelectedItem as string;
             version_box.Items.Clear();
             int InsertAt = 1;
@@ -129,13 +129,13 @@ namespace Sandstone_Launcher
             {
                 JsonArray Vers = LauncherLib.GetVersionsManifest()?["versions"]?.AsArray();
                 if (Vers != null)
-                foreach (JsonNode Ver in Vers)
-                {
-                    if (Ver["type"].ToString() == "snapshot" && !show_snapshots.Checked) continue;
-                    int Index = version_box.Items.Add(Ver["id"].ToString());
-                    if (Ver["id"].ToString() == Version)
-                        version_box.SelectedIndex = Index;
-                }
+                    foreach (JsonNode Ver in Vers)
+                    {
+                        if (Ver["type"].ToString() == "snapshot" && !show_snapshots.Checked) continue;
+                        int Index = version_box.Items.Add(Ver["id"].ToString());
+                        if (Ver["id"].ToString() == Version)
+                            version_box.SelectedIndex = Index;
+                    }
             }
             foreach (string Ver in LauncherLib.GetInstalledVersions())
             {

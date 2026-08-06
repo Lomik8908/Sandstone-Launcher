@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -95,7 +97,8 @@ namespace Sandstone_Launcher
             //LauncherLib.OnJavaUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_java ?? "Checking java ({0}/{1})", index, count));
             LauncherLib.OnDownUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = SharedMethods.ReplaceFormat(Lang?.down_status ?? "Downloading files ({0}/{1})", index, count));
             Accounts.OnAccountFinished += (_) => InvokeUI(() => { homeWindow.info_text.Text = string.Empty; });
-            Accounts.OnAccountBegin += (t) => {
+            Accounts.OnAccountBegin += (t) =>
+            {
                 AccountType AccType = Accounts.accountTypes.FirstOrDefault(v => v.id == t);
                 InvokeUI(() => { homeWindow.info_text.Text = SharedMethods.ReplaceFormat(Lang?.blogin_info ?? "Logging into {0}...", AccType?.name ?? "Account"); });
             };
@@ -128,11 +131,13 @@ namespace Sandstone_Launcher
                 Instances.Add(new Instance { uuid = "latest-snapshot", name = "Latest Snapshot", version = "latest-snapshot" });
             }
         }
-        static public void LoadUsers() {
-            string UsersPath = Path.Combine(LauncherLib.GameDir, "sl_users.json");
+        static public void LoadUsers()
+        {
+            string UsersPath = Path.Combine(LauncherLib.GameDir, "sl_users.bin");
             if (File.Exists(UsersPath)) try
                 {
-                    List<User> LoadUsers = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(UsersPath), defaultJsonOptions);
+                    string UsersData = Encoding.UTF8.GetString(ProtectedData.Unprotect(File.ReadAllBytes(UsersPath), null, DataProtectionScope.CurrentUser));
+                    List<User> LoadUsers = JsonSerializer.Deserialize<List<User>>(UsersData, defaultJsonOptions);
                     foreach (User user in LoadUsers)
                         if (!Users.Any(v => v.uuid == user.uuid))
                             Users.Add(user);
@@ -169,6 +174,7 @@ namespace Sandstone_Launcher
             homeWindow.hash_box.Checked = settings.check_hashes;
             homeWindow.updates_box.Checked = settings.check_upd;
             homeWindow.authlib_box.Checked = settings.use_authinjector;
+            homeWindow.separateVers.Checked = settings.separate_versions;
             homeWindow.resx_box.Value = Math.Max(homeWindow.resx_box.Minimum, Math.Min(settings.width, homeWindow.resx_box.Maximum));
             homeWindow.resy_box.Value = Math.Max(homeWindow.resy_box.Minimum, Math.Min(settings.height, homeWindow.resy_box.Maximum));
             homeWindow.ram_bar.Value = Math.Max(homeWindow.ram_bar.Minimum, Math.Min(settings.memory, homeWindow.ram_bar.Maximum));
@@ -180,8 +186,8 @@ namespace Sandstone_Launcher
                     homeWindow.BackColor = color;
                     homeWindow.bgcolor.BackColor = color;
                 }
-            catch (Exception ex) { Logger.Warn($"Couldn't set background color: {ex.Message}"); }
-            
+                catch (Exception ex) { Logger.Warn($"Couldn't set background color: {ex.Message}"); }
+
 
             // GC Box
             GCTemplate[] GCArray = GCFlags.GCTemplates.ToArray();
@@ -241,8 +247,13 @@ namespace Sandstone_Launcher
         static public void SaveUsers()
         {
             if (!saveUser) return;
-            string UsersPath = Path.Combine(LauncherLib.GameDir, "sl_users.json");
-            try { Directory.CreateDirectory(LauncherLib.GameDir); File.WriteAllText(UsersPath, JsonSerializer.Serialize(Users, defaultJsonOptions)); }
+            string UsersPath = Path.Combine(LauncherLib.GameDir, "sl_users.bin");
+            try
+            {
+                Directory.CreateDirectory(LauncherLib.GameDir);
+                byte[] UsersData = ProtectedData.Protect(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(Users, defaultJsonOptions)), null, DataProtectionScope.CurrentUser);
+                File.WriteAllBytes(UsersPath, UsersData);
+            }
             catch (Exception ex) { Logger.Log($"Couldn't save users: {ex.Message}"); }
         }
         static public void SaveSettings()
@@ -263,6 +274,7 @@ namespace Sandstone_Launcher
             settings.check_hashes = homeWindow.hash_box.Checked;
             settings.check_upd = homeWindow.updates_box.Checked;
             settings.use_authinjector = homeWindow.authlib_box.Checked;
+            settings.separate_versions = homeWindow.separateVers.Checked;
 
             settings.on_launch = homeWindow.onlaunch_box.SelectedIndex;
             settings.gc_preset = (homeWindow.gc_box.SelectedItem as GCTemplate)?.id;
@@ -316,7 +328,8 @@ namespace Sandstone_Launcher
             bool checkHash = homeWindow.hash_box.Checked;
             string gameVersion = instance.version;
             string gameDir = instance.gamedir ?? LauncherLib.GameDir;
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 if (string.IsNullOrWhiteSpace(gameDir))
                     gameDir = LauncherLib.GameDir;
 
@@ -366,11 +379,13 @@ namespace Sandstone_Launcher
             });
         }
 
-        static void InvokeUI(Action action) { if (!homeWindow.IsDisposed) homeWindow.Invoke(action); }
-        static void EndLaunch(bool keepText = false) {
+        static void InvokeUI(Action action) { if (!homeWindow.IsDisposed) { if (homeWindow.InvokeRequired) homeWindow.Invoke(action); else action.Invoke(); } }
+        static void EndLaunch(bool keepText = false)
+        {
             Launching = false;
             if (!homeWindow.IsDisposed)
-                homeWindow.Invoke(new Action(() => {
+                homeWindow.Invoke(new Action(() =>
+                {
                     homeWindow.launch.Text = Lang?.play ?? "Play!";
                     homeWindow.launch.Enabled = true;
                     if (!keepText) homeWindow.info_text.Text = string.Empty;
@@ -386,7 +401,8 @@ namespace Sandstone_Launcher
                 WaitingForTasks = false;
                 return;
             }
-            if (Launching) {
+            if (Launching)
+            {
                 homeWindow.launch.Enabled = false;
                 Launching = false;
                 WaitingForTasks = false;
@@ -398,7 +414,8 @@ namespace Sandstone_Launcher
                 lock (AccountLock)
                     MessageBox.Show(Users.Count <= 0 ? Lang.cresel_acc ?? "Create and select an account!" : Lang.sel_acc ?? "Select an account!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
-            };
+            }
+            ;
             if (!(homeWindow.instance_box.SelectedItem is Instance instance))
             {
                 MessageBox.Show(Instances.Count <= 0 ? Lang.cresel_inst ?? "Create and select an instance!" : Lang.sel_inst ?? "Select an instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -417,6 +434,7 @@ namespace Sandstone_Launcher
             string custJrePath = homeWindow.jre_box.Text;
             bool isFullscreen = homeWindow.fullscreen_box.Checked;
             bool useInject = homeWindow.authlib_box.Checked;
+            bool separateVers = homeWindow.separateVers.Checked;
 
             int resX = (int)homeWindow.resx_box.Value;
             int resY = (int)homeWindow.resy_box.Value;
@@ -431,9 +449,9 @@ namespace Sandstone_Launcher
                 gc = homeWindow.gc_box.SelectedItem as GCTemplate;
             else if (GCFlags.GCTemplates.Any(v => v.id == instance.gc_preset))
                 gc = GCFlags.GCTemplates.FirstOrDefault(v => v.id == instance.gc_preset);
-            string GameDir = instance.gamedir ?? LauncherLib.GameDir;
 
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 if (LauncherLib.OperationRunning)
                 {
                     WaitingForTasks = true;
@@ -468,6 +486,13 @@ namespace Sandstone_Launcher
                         mfJson = ManifestTo;
                     }
                 }
+
+
+                string GameDir = LauncherLib.GameDir;
+                if (!string.IsNullOrEmpty(instance.gamedir))
+                    GameDir = instance.gamedir;
+                else if (separateVers)
+                    GameDir = Path.Combine(GameDir, "instances", gameVersion);
 
                 bool connected = false;
                 if (user.usertype == "msa")
@@ -585,22 +610,23 @@ namespace Sandstone_Launcher
 
                 try
                 {
+                    Logger.Log("Launching game!");
+                    InvokeUI(() =>
+                    {
+                        if (homeWindow.onlaunch_box.SelectedIndex == 0) homeWindow.Hide();
+                        if (homeWindow.onlaunch_box.SelectedIndex == 1) homeWindow.Close();
+                    });
                     GC.Collect();
                     Directory.CreateDirectory(GameDir);
-                    Logger.Log("Launching game!");
                     using (var gameProcess = new Process { StartInfo = startInfo })
                     {
-                        GameProcess = gameProcess;
-                        gameProcess.Start();
                         gameProcess.OutputDataReceived += (_, e) => Console.Out.WriteLine(e.Data);
                         gameProcess.ErrorDataReceived += (_, e) => Logger.ErrorLine(e.Data);
+
+                        gameProcess.Start();
+                        GameProcess = gameProcess;
                         gameProcess.BeginErrorReadLine();
                         gameProcess.BeginOutputReadLine();
-                        InvokeUI(() => {
-                            if (homeWindow.onlaunch_box.SelectedIndex == 0) homeWindow.Hide();
-                            if (homeWindow.onlaunch_box.SelectedIndex == 1) homeWindow.Close();
-                        });
-
                         gameProcess.WaitForExit();
                         Logger.Log($"Game exited with code: {gameProcess.ExitCode}");
                     }
@@ -609,7 +635,15 @@ namespace Sandstone_Launcher
                 {
                     Logger.Err($"Game Process error: {ex.Message}");
                 }
-                EndLaunch();
+                finally
+                {
+                    GameProcess = null;
+                    EndLaunch();
+                }
+            }).ContinueWith(t =>
+            {
+                if (t.Exception?.InnerException != null)
+                    Logger.Log($"The launch task finished with error: {t.Exception?.InnerException?.Message}");
             });
         }
 
@@ -619,7 +653,8 @@ namespace Sandstone_Launcher
         }
     }
 
-    class NameClass {
+    class NameClass
+    {
         public string Id { get; set; }
         public string Name { get; set; }
     }
@@ -629,10 +664,11 @@ namespace Sandstone_Launcher
         public string instance { get; set; }
         public string user { get; set; }
         public string gamedir { get; set; } = LauncherLib.GameDir;
+        public bool separate_versions { get; set; }
         public int width { get; set; } = (int)(Screen.PrimaryScreen.Bounds.Width * 0.6f);
         public int height { get; set; } = (int)(Screen.PrimaryScreen.Bounds.Height * 0.6f);
         public bool fullscreen { get; set; }
-        public int memory { get; set; } = Math.Min(1024, (int)(Program.pcInfo.TotalPhysicalMemory/(1024*1024)));
+        public int memory { get; set; } = Math.Min(4096, (int)(Program.pcInfo.TotalPhysicalMemory / (1024 * 1024)));
         public string gc_preset { get; set; } = "m_g1gc";
         public string mc_args { get; set; }
         public string java_args { get; set; }

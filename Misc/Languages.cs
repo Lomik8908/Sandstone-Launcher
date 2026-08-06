@@ -11,14 +11,18 @@ namespace Sandstone_Launcher
         static public BindingList<Language> AllLanguages = new BindingList<Language> {
             new Language()
         };
-        static public void LoadLangs() {
+        static public void LoadLangs()
+        {
             if (Directory.Exists("Languages"))
                 foreach (var PossibleLang in Directory.GetFiles("Languages"))
                     if (Path.GetExtension(PossibleLang).ToLowerInvariant() == ".json")
-                        try {
+                        try
+                        {
                             Language Lang = JsonSerializer.Deserialize<Language>(File.ReadAllText(PossibleLang), Program.defaultJsonOptions);
                             if (!AllLanguages.Any(v => v.lang_id == Lang.lang_id)) AllLanguages.Add(Lang);
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex)
+                        {
                             Logger.Log($"Bad language {Path.GetFileName(PossibleLang)}: {ex.Message}");
                         }
         }
@@ -30,7 +34,8 @@ namespace Sandstone_Launcher
             Program.NamedClasses["onlaunch_hide"].Name = language.launch_hide;
             Program.NamedClasses["onlaunch_close"].Name = language.launch_close;
             Program.NamedClasses["onlaunch_none"].Name = language.launch_none;
-            if (homeWindow != null) {
+            if (homeWindow != null)
+            {
                 homeWindow.account_label.Text = language.acc_box;
                 homeWindow.instance_label.Text = language.inst_box;
                 homeWindow.launch.Text = language.play;
@@ -84,6 +89,7 @@ namespace Sandstone_Launcher
                 homeWindow.gc_box.DisplayMember = "Name";
 
                 homeWindow.javalist_btn.Text = language.open_javas;
+                homeWindow.separateVers.Text = language.separate_vers;
 
                 homeWindow.UpdateJavaLabel();
             }
@@ -131,7 +137,8 @@ namespace Sandstone_Launcher
         }
     }
 
-    class Language {
+    class Language
+    {
         public string lang_id { get; set; } = "en_us";
         public string lang_name { get; set; } = "English";
         public string acc_box { get; set; } = "Account:";
@@ -227,5 +234,6 @@ namespace Sandstone_Launcher
         public string java_ver { get; set; } = "Version: {0}";
         public string open_javas { get; set; } = "Open Java List";
         public string sel_java { get; set; } = "Select a java version!";
+        public string separate_vers { get; set; } = "Separate Versions";
     }
 }

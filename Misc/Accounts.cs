@@ -40,7 +40,8 @@ namespace Sandstone_Launcher
             new AccountType { id = "offline", name = "Offline" }
         };
 
-        static public void MSBeginFlow() {
+        static public void MSBeginFlow()
+        {
             using (var BrowserWindow = new AccountFlowWindow { LoginUrl = Urls.MSFlowUri, StopOnUrl = Urls.MSFlowEndUri, Text = SharedMethods.ReplaceFormat(Program.Lang?.login_into ?? "Login via {0}", "Microsoft") })
             {
                 BrowserWindow.OnCodeReceived += (code) => MSBackground(code);
@@ -70,7 +71,7 @@ namespace Sandstone_Launcher
                 string Secret = Pass;
                 if (!string.IsNullOrEmpty(TFA)) Secret += ":" + TFA;
                 var ElyResponse = httpClient.PostAsync(Urls.ElyAuthUri, new StringContent(JsonSerializer.Serialize(new { username = Username, password = Secret, clientToken = Program.settings.clientId }), Encoding.UTF8, "application/json")).Result;
-                
+
                 var JNode = JsonNode.Parse(ElyResponse.Content.ReadAsStringAsync().Result);
                 if (JNode?["errorMessage"]?.ToString() == "Account protected with two factor auth.")
                 {
@@ -101,7 +102,8 @@ namespace Sandstone_Launcher
             }
             catch (Exception ex) { Logger.Err($"Error occured during Ely.by login: {ex.Message}"); }
         }
-        static public void RefreshEly(User user) {
+        static public void RefreshEly(User user)
+        {
             if (user.usertype == "ely") try
                 {
                     var ElyResponse = httpClient.PostAsync(Urls.ElyAuthUri, new StringContent(JsonSerializer.Serialize(new { user.accessToken, clientToken = Program.settings.clientId }), Encoding.UTF8, "application/json")).Result;
@@ -138,7 +140,8 @@ namespace Sandstone_Launcher
             return code;
         }
 
-        static async public Task MSBackground(string code, User refresh = null) {
+        static async public Task MSBackground(string code, User refresh = null)
+        {
             OnAccountBegin?.Invoke("msa");
             try
             {
@@ -290,7 +293,9 @@ namespace Sandstone_Launcher
                     else
                         Logger.Warn($"[MS] No profile data?");
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.Err($"Error during background MS login: {ex.Message}");
             }
             OnAccountFinished?.Invoke("msa");

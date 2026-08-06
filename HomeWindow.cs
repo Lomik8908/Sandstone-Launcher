@@ -3,7 +3,6 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sandstone_Launcher
@@ -51,7 +50,6 @@ namespace Sandstone_Launcher
             ram_box.MouseWheel += SharedMethods.HandleScroll;
             resx_box.MouseWheel += SharedMethods.HandleScroll;
             resy_box.MouseWheel += SharedMethods.HandleScroll;
-            DarkModeTitle.SetDarkMode(Handle, true);
         }
         public void UpdateJavaLabel()
         {
@@ -111,7 +109,7 @@ namespace Sandstone_Launcher
         private void launch_Click(object sender, EventArgs e) => Program.Launch();
         private void OpenFolder_Click(object sender, EventArgs e)
         {
-            if (instance_box.SelectedItem is Instance inst && Directory.Exists(inst.gamedir))
+            if (instance_box.SelectedItem is Instance inst && (Directory.Exists(inst.gamedir) || (separateVers.Checked && Directory.Exists(Path.Combine(LauncherLib.GameDir, "instances", inst.version)))))
                 AskOpenFolder.Show(more, Point.Empty);
             else
                 Process.Start("explorer", LauncherLib.GameDir);
@@ -120,7 +118,16 @@ namespace Sandstone_Launcher
         private void open_instance_Click(object sender, EventArgs e)
         {
             if (instance_box.SelectedItem is Instance inst)
-                Process.Start("explorer", inst.gamedir);
+            {
+                if (Directory.Exists(inst.gamedir))
+                    Process.Start("explorer", inst.gamedir);
+                else
+                {
+                    string openDir = Path.Combine(LauncherLib.GameDir, "instances", inst.version);
+                    if (Directory.Exists(openDir))
+                        Process.Start("explorer", openDir);
+                }
+            }
         }
         private void HomeWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -302,7 +309,8 @@ namespace Sandstone_Launcher
             if (bg_box.SelectedItem is Background bg)
                 BackgroundImage = bg.Image?.Value;
         }
-        private void lang_box_SelectedIndexChanged(object sender, EventArgs e) {
+        private void lang_box_SelectedIndexChanged(object sender, EventArgs e)
+        {
             Languages.ApplyLang(lang_box.SelectedItem as Language, this, Program.instanceDialog, Program.accountDialog);
             Program.Lang = lang_box.SelectedItem as Language ?? Languages.AllLanguages[0];
         }
@@ -342,7 +350,7 @@ namespace Sandstone_Launcher
             if (console_box.Checked)
                 Conhost.ShowConsole();
             else
-                Conhost.HideConsole();    
+                Conhost.HideConsole();
         }
 
         private void stop_minecraft_Click(object sender, EventArgs e)
@@ -351,7 +359,8 @@ namespace Sandstone_Launcher
             {
                 Program.GameProcess?.Refresh();
                 if (Program.GameProcess?.HasExited == false) Program.GameProcess?.Kill();
-            } catch {}
+            }
+            catch { }
         }
 
         private void stop_operations_Click(object sender, EventArgs e)
@@ -362,7 +371,8 @@ namespace Sandstone_Launcher
 
         private void javalist_btn_Click(object sender, EventArgs e)
         {
-            using (var javaWindow = new JavaList(Program.settings.java_type)) {
+            using (var javaWindow = new JavaList(Program.settings.java_type))
+            {
                 DialogResult result = javaWindow.ShowDialog();
                 if (result == DialogResult.OK && javaWindow.list.SelectedItem is NameClass java)
                 {

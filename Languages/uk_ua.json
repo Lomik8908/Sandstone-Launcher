@@ -90,5 +90,6 @@
     "select": "Вибрати",
     "java_ver": "Версія: {0}",
     "open_javas": "Відкрити Список Java",
-    "sel_java": "Виберіть версію Java!"
+    "sel_java": "Виберіть версію Java!",
+    "separate_vers": "Окремі версії"
 }

@@ -14,7 +14,6 @@ namespace Sandstone_Launcher
             Text = Program.Lang?.java_list ?? "Java List";
             cancel.Text = Program.Lang?.cancel ?? "Cancel";
             select.Text = Program.Lang?.select ?? "Select";
-            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void LoadJavas(string SelectVer = null)
@@ -33,7 +32,8 @@ namespace Sandstone_Launcher
                     if (jvList?.GetValueKind() == JsonValueKind.Array && jvList.AsArray().Count > 0)
                     {
                         JsonNode jvObj = jvList[0];
-                        int idx = list.Items.Add(new NameClass { 
+                        int idx = list.Items.Add(new NameClass
+                        {
                             Id = Java.Key,
                             Name = $"Java {jvObj["version"]?["name"]?.ToString() ?? Java.Key} ({Java.Key})"
                         });

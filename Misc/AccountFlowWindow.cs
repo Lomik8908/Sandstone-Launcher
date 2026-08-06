@@ -18,7 +18,6 @@ namespace Sandstone_Launcher
             InitializeComponent();
             Shown += AccountFlow_Shown;
             FormClosing += AccountFlowWindow_FormClosing;
-            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void AccountFlowWindow_FormClosing(object sender, FormClosingEventArgs e)

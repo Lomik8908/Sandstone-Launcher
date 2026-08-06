@@ -13,7 +13,6 @@ namespace Sandstone_Launcher.Misc
             InitializeComponent();
             Text = Program.Lang?.tfa ?? "2-Factor Authentication";
             tfa_label.Text = Program.Lang?.enter2fa ?? "Enter the 2FA code below";
-            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void InitializeComponent()

@@ -8,9 +8,6 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using static System.Windows.Forms.AxHost;
 
 namespace Sandstone_Launcher
 {
@@ -27,10 +24,12 @@ namespace Sandstone_Launcher
                     if (!rewrite && File.Exists(path)) continue;
                     if (entry.FullName.Contains("/")) continue;
                     if (Path.GetExtension(entry.FullName).ToLowerInvariant() != ".dll") continue;
-                    try {
+                    try
+                    {
                         Directory.CreateDirectory(Directory.GetParent(path).FullName);
                         entry.ExtractToFile(path, true);
-                    } catch (Exception ex) { Logger.Warn($"Failed to extract: {ex.Message}"); }
+                    }
+                    catch (Exception ex) { Logger.Warn($"Failed to extract: {ex.Message}"); }
                 }
             }
         }
@@ -53,7 +52,8 @@ namespace Sandstone_Launcher
         protected override WebRequest GetWebRequest(Uri address)
         {
             WebRequest request = base.GetWebRequest(address);
-            if (request != null) {
+            if (request != null)
+            {
                 request.Timeout = ConnectTimeout;
                 if (request is HttpWebRequest httpRequest)
                     httpRequest.ReadWriteTimeout = DownloadTimeout;
@@ -86,7 +86,7 @@ namespace Sandstone_Launcher
 
         static LauncherLib()
         {
- 
+
             Client.Headers.Add("User-Agent", "CSharp/7.3");
             Directory.CreateDirectory(SaveFolder);
         }
@@ -103,12 +103,14 @@ namespace Sandstone_Launcher
         }
         static public JsonNode SafeParse(string JsonString)
         {
-            try {
+            try
+            {
                 return JsonNode.Parse(JsonString);
-            } catch {}
+            }
+            catch { }
             return null;
         }
-        static public void SetGameDir(string path="")
+        static public void SetGameDir(string path = "")
         {
             if (string.IsNullOrWhiteSpace(path))
                 GameDir = DefaultGameDir;
@@ -188,11 +190,11 @@ namespace Sandstone_Launcher
             string mfPath = Path.Combine(SaveFolder, "java", $"{Version}-{osArch}.json");
 
             if (!File.Exists(mfPath) || Rewrite)
-                {
-                    JsonNode jvList = GetJavaManifest()?[$"windows-{osArch}"]?[Version];
-                    if (jvList?.GetValueKind() == JsonValueKind.Array && jvList.AsArray().Count > 0)
-                        SafeDownload(jvList[0]?["manifest"]?["url"]?.ToString(), mfPath);
-                }
+            {
+                JsonNode jvList = GetJavaManifest()?[$"windows-{osArch}"]?[Version];
+                if (jvList?.GetValueKind() == JsonValueKind.Array && jvList.AsArray().Count > 0)
+                    SafeDownload(jvList[0]?["manifest"]?["url"]?.ToString(), mfPath);
+            }
             if (!File.Exists(mfPath)) { OperationRunning = false; return null; }
 
             JsonNode jManifest = SafeParse(File.ReadAllText(mfPath));
@@ -583,8 +585,8 @@ namespace Sandstone_Launcher
             public string Dest;
             public bool Rewrite;
         }
-}
-public class JvmArguments
+    }
+    public class JvmArguments
     {
         public string Xmx;
         public string Xms;
@@ -592,7 +594,7 @@ public class JvmArguments
         public string Classpath;
         public IEnumerable<string> Additional;
     }
-    
+
     public class GameArguments
     {
         public string Username;

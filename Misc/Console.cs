@@ -28,7 +28,8 @@ namespace Sandstone_Launcher
             Console.ResetColor();
         }
     }
-    static class Conhost {
+    static class Conhost
+    {
         [DllImport("kernel32.dll")]
         static extern bool AllocConsole();
 
@@ -47,7 +48,8 @@ namespace Sandstone_Launcher
         [DllImport("user32.dll")]
         static extern bool DeleteMenu(IntPtr hMenu, uint uPosition, uint uFlags);
 
-        static public void ShowConsole() {
+        static public void ShowConsole()
+        {
             AllocConsole();
             Console.Title = "Sandstone Console";
             Console.OutputEncoding = System.Text.Encoding.UTF8;

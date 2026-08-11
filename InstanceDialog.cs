@@ -161,7 +161,7 @@ namespace Sandstone_Launcher
 
         private void gamedir_button_Click(object sender, EventArgs e)
         {
-            string Path = Program.homeWindow.SelectFolder();
+            string Path = Program.homeWindow.SelectFolder(gamedir_box.Text);
             if (Path != null)
                 gamedir_box.Text = Path;
         }

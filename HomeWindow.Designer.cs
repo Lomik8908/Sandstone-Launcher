@@ -553,7 +553,7 @@
             this.separateVers.Location = new System.Drawing.Point(5, 40);
             this.separateVers.Name = "separateVers";
             this.separateVers.Size = new System.Drawing.Size(270, 20);
-            this.separateVers.TabIndex = 24;
+            this.separateVers.TabIndex = 3;
             this.separateVers.Text = "Separate Version";
             this.separateVers.UseVisualStyleBackColor = true;
             // 
@@ -709,7 +709,7 @@
             this.res_label.Location = new System.Drawing.Point(5, 65);
             this.res_label.Name = "res_label";
             this.res_label.Size = new System.Drawing.Size(270, 15);
-            this.res_label.TabIndex = 3;
+            this.res_label.TabIndex = 4;
             this.res_label.Text = "Resolution";
             this.res_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -737,7 +737,7 @@
             0});
             this.resx_box.Name = "resx_box";
             this.resx_box.Size = new System.Drawing.Size(120, 20);
-            this.resx_box.TabIndex = 4;
+            this.resx_box.TabIndex = 5;
             this.resx_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ram_box
@@ -775,7 +775,7 @@
             0});
             this.resy_box.Name = "resy_box";
             this.resy_box.Size = new System.Drawing.Size(120, 20);
-            this.resy_box.TabIndex = 6;
+            this.resy_box.TabIndex = 5;
             this.resy_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ram_bar
@@ -799,7 +799,7 @@
             this.x_label.Location = new System.Drawing.Point(125, 80);
             this.x_label.Name = "x_label";
             this.x_label.Size = new System.Drawing.Size(30, 20);
-            this.x_label.TabIndex = 5;
+            this.x_label.TabIndex = 6;
             this.x_label.Text = "X";
             this.x_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 

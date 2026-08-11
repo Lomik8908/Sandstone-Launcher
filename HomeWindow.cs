@@ -66,8 +66,9 @@ namespace Sandstone_Launcher
             instances_box.Visible = Screen == 2;
             accounts_box.Visible = Screen == 3;
         }
-        public string SelectFolder()
+        public string SelectFolder(string SelectedFolder = null)
         {
+            GameDirBrowse.SelectedPath = SelectedFolder?.Replace("/", "\\");
             DialogResult result = GameDirBrowse.ShowDialog();
             if (result == DialogResult.OK)
                 return GameDirBrowse.SelectedPath;
@@ -102,7 +103,7 @@ namespace Sandstone_Launcher
         private void gamedir_box_Leave(object sender, EventArgs e) => Program.SetGameDir(gamedir_box.Text);
         private void gamedir_button_Click(object sender, EventArgs e)
         {
-            string Path = SelectFolder();
+            string Path = SelectFolder(LauncherLib.GameDir);
             if (Path != null)
                 Program.SetGameDir(Path);
         }

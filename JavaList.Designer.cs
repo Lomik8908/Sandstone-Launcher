@@ -35,7 +35,7 @@
             // 
             // list
             // 
-            this.list.BackColor = System.Drawing.Color.DimGray;
+            this.list.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.list.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.list.DisplayMember = "Name";
             this.list.ForeColor = System.Drawing.Color.White;
@@ -47,8 +47,8 @@
             // 
             // select
             // 
-            this.select.BackColor = System.Drawing.Color.DimGray;
-            this.select.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.select.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
+            this.select.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.select.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.select.Location = new System.Drawing.Point(130, 130);
             this.select.Name = "select";
@@ -60,9 +60,9 @@
             // 
             // cancel
             // 
-            this.cancel.BackColor = System.Drawing.Color.DimGray;
+            this.cancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.cancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cancel.Location = new System.Drawing.Point(5, 130);
             this.cancel.Name = "cancel";
@@ -75,7 +75,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(255, 160);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.select);

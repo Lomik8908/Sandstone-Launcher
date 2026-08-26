@@ -84,6 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Misc\Backgrounds.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Backgrounds.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Misc\DarkModeTitle.cs" />
     <Compile Include="JavaList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,11 +123,6 @@
     <Compile Include="HomeWindow.Designer.cs">
       <DependentUpon>HomeWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Misc\Backgrounds.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Backgrounds.resx</DependentUpon>
-    </Compile>
     <Compile Include="Misc\AccountFlowWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,18 +142,6 @@
     <Compile Include="AccountDialog.Designer.cs">
       <DependentUpon>AccountDialog.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AccountDialog.resx">
-      <DependentUpon>AccountDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HomeWindow.resx">
-      <DependentUpon>HomeWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InstanceDialog.resx">
-      <DependentUpon>InstanceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="JavaList.resx">
-      <DependentUpon>JavaList.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Misc\Backgrounds.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Backgrounds.Designer.cs</LastGenOutput>
@@ -216,21 +205,13 @@
     <None Include="Resources\edit.png" />
     <None Include="Resources\delete.png" />
     <None Include="Resources\grass.png" />
-    <None Include="Resources\filter.png" />
     <None Include="Resources\more.png" />
-    <None Include="Resources\anniversary.png" />
     <None Include="Resources\aquatic.png" />
-    <None Include="Resources\cave.png" />
     <None Include="Resources\ely.png" />
     <None Include="Resources\island.png" />
     <None Include="Resources\key.png" />
-    <None Include="Resources\monument.png" />
     <None Include="Resources\msa.png" />
-    <None Include="Resources\playstation.png" />
     <None Include="Resources\sandstone.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\stop.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\copy.png" />

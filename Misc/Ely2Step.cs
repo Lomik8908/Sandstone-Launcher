@@ -13,6 +13,7 @@ namespace Sandstone_Launcher.Misc
             InitializeComponent();
             Text = Program.Lang?.tfa ?? "2-Factor Authentication";
             tfa_label.Text = Program.Lang?.enter2fa ?? "Enter the 2FA code below";
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void InitializeComponent()
@@ -33,6 +34,8 @@ namespace Sandstone_Launcher.Misc
             // 
             // tfa_box
             // 
+            this.tfa_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.tfa_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tfa_box.Location = new System.Drawing.Point(10, 30);
             this.tfa_box.Name = "tfa_box";
             this.tfa_box.Size = new System.Drawing.Size(240, 20);
@@ -41,7 +44,7 @@ namespace Sandstone_Launcher.Misc
             // 
             // cancel
             // 
-            this.cancel.BackColor = System.Drawing.Color.DimGray;
+            this.cancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancel.FlatAppearance.BorderSize = 0;
             this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -54,7 +57,7 @@ namespace Sandstone_Launcher.Misc
             // 
             // Ely2Step
             // 
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(260, 90);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.tfa_box);

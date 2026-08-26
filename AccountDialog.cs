@@ -12,6 +12,7 @@ namespace Sandstone_Launcher
             InitializeComponent();
             usertype_box.DataSource = Accounts.accountTypes;
             login_button.ImageList = Program.homeWindow.AccountImages;
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         public void SetLanguage(Language Lang, string Title = null)
@@ -27,6 +28,10 @@ namespace Sandstone_Launcher
 
             Text = Title ?? Program.AppName;
             CurrentLang = Lang;
+
+            AccountType AccType = (AccountType)usertype_box.SelectedItem;
+            if (AccType?.id == "msa" || AccType?.id == "ely")
+                login_button.Text = SharedMethods.ReplaceFormat(CurrentLang.login_into, AccType.name); // ?? "Login into {0}"
         }
 
         private void save_Click(object sender, System.EventArgs e)
@@ -34,7 +39,7 @@ namespace Sandstone_Launcher
             if (string.IsNullOrEmpty(username_box.Text)) { MessageBox.Show(CurrentLang.make_username, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information); return; } // ?? "Make a username!"
             if (username_box.Text.Length > 16 || !Regex.IsMatch(username_box.Text, "^[A-Za-z0-9_]+$"))
             {
-                DialogResult Ask = MessageBox.Show(CurrentLang.username_warn, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);// ?? "While using this username you might encounter:\nGame Crashes\nServer Bugs\nUnexpected Behaviour\nUse this username at your own risk!"
+                MessageBox.Show(CurrentLang.username_warn, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);// ?? "While using this username you might encounter:\nGame Crashes\nServer Bugs\nUnexpected Behaviour\nUse this username at your own risk!"
             }
             DialogResult = DialogResult.OK;
         }

@@ -9,8 +9,8 @@ namespace Sandstone_Launcher
 {
     public partial class InstanceDialog : Form
     {
-        NameClass Snapshot = new NameClass { Id = "latest-snapshot", Name = "Latest Snapshot" };
-        NameClass Release = new NameClass { Id = "latest-release", Name = "Latest Release" };
+        readonly NameClass Snapshot = new NameClass { Id = "latest-snapshot", Name = "Latest Snapshot" };
+        readonly NameClass Release = new NameClass { Id = "latest-release", Name = "Latest Release" };
         private Language CurrentLang = Languages.DefaultLanguage;
         public InstanceDialog()
         {
@@ -26,6 +26,7 @@ namespace Sandstone_Launcher
             resx_box.MouseWheel += SharedMethods.HandleScroll;
             resy_box.MouseWheel += SharedMethods.HandleScroll;
             gc_box.MouseWheel += SharedMethods.HandleScroll;
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         public void SetLanguage(Language Lang, string Title = null)
@@ -194,16 +195,16 @@ namespace Sandstone_Launcher
 
         private void gamedir_button_Click(object sender, EventArgs e)
         {
-            string Path = Program.homeWindow.SelectFolder(gamedir_box.Text);
-            if (Path != null)
+            string Path = Program.homeWindow.FolderOpenDialog(!Directory.Exists(gamedir_box.Text) ? LauncherLib.GameDir : gamedir_box.Text, CurrentLang.gamedir_desc);
+            if (Path is string)
                 gamedir_box.Text = Path;
         }
 
         private void jre_button_Click(object sender, EventArgs e)
         {
-            string EXE = Program.homeWindow.SelectFile("Executable Files (*.exe)|*.exe");
-            if (File.Exists(EXE))
-                jre_box.Text = EXE;
+            string Path = Program.homeWindow.FileOpenDialog("Executable Files (*.exe)|*.exe");
+            if (File.Exists(Path))
+                jre_box.Text = Path;
         }
 
         private void javalist_btn_Click(object sender, EventArgs e)

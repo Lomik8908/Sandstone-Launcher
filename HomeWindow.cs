@@ -1,20 +1,19 @@
 ﻿using SandstoneControls;
 using System;
-using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Sandstone_Launcher
 {
     public partial class HomeWindow : BackgroundForm
     {
-        public static string JavaRegex = "^\\w+ version \"(.+)\"$";
+        //public static string JavaRegex = "^\\w+ version \"(.+)\"$";
         public ImageList AccountImages = new ImageList { ImageSize = new Size(24, 24), ColorDepth = ColorDepth.Depth32Bit };
         public ImageList InstanceImages = new ImageList { ImageSize = new Size(32, 32), ColorDepth = ColorDepth.Depth32Bit };
         private Language CurrentLang = Languages.DefaultLanguage;
+        private readonly Color DefaultColor = Color.FromArgb(40, 40, 40);
         public HomeWindow()
         {
             InitializeComponent();
@@ -53,6 +52,7 @@ namespace Sandstone_Launcher
             ram_box.MouseWheel += SharedMethods.HandleScroll;
             resx_box.MouseWheel += SharedMethods.HandleScroll;
             resy_box.MouseWheel += SharedMethods.HandleScroll;
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         public void SetLanguage(Language Lang)
@@ -99,7 +99,7 @@ namespace Sandstone_Launcher
             jre_button.Text = Lang.browses;
             authlib_box.Text = Lang.use_authinj;
             load_instances.Text = Lang.load_inst;
-            load_users.Text = Lang.load_user;
+            //load_users.Text = Lang.load_user;
             stop_instance.Text = Lang.stop_instance;
             stop_instances.Text = Lang.stop_instances;
             stop_operations.Text = Lang.stop_operations;
@@ -117,7 +117,26 @@ namespace Sandstone_Launcher
             UpdateJavaLabel();
             CurrentLang = Lang;
         }
-
+        public string FolderOpenDialog(string SelectedFolder = null, string Description = null)
+        {
+            using (var Dialog = new FolderBrowserDialog { Description = Description, SelectedPath = SelectedFolder?.Replace("/", "\\") })
+            {
+                DialogResult result = Dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                    return Dialog.SelectedPath;
+            }
+            return null;
+        }
+        public string FileOpenDialog(string Filter = "All Files (*.*)|*.*")
+        {
+            using (var Dialog = new OpenFileDialog { Filter = Filter })
+            {
+                DialogResult result = Dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                    return Dialog.FileName;
+            }
+            return null;
+        }
         public void UpdateJavaLabel()
         {
             if (string.IsNullOrEmpty(Program.settings.java_type))
@@ -130,22 +149,6 @@ namespace Sandstone_Launcher
             settings_box.Visible = Screen == 1;
             instances_box.Visible = Screen == 2;
             accounts_box.Visible = Screen == 3;
-        }
-        public string SelectFolder(string SelectedFolder = null)
-        {
-            GameDirBrowse.SelectedPath = SelectedFolder?.Replace("/", "\\");
-            DialogResult result = GameDirBrowse.ShowDialog();
-            if (result == DialogResult.OK)
-                return GameDirBrowse.SelectedPath;
-            return null;
-        }
-        public string SelectFile(string AllowedExt = "All Files (*.*)|*.*")
-        {
-            FileDialog.Filter = AllowedExt;
-            DialogResult result = FileDialog.ShowDialog();
-            if (result == DialogResult.OK)
-                return FileDialog.FileName;
-            return null;
         }
 
         private void more_Click(object sender, EventArgs e) => more_menu.Show(more, Point.Empty);
@@ -168,8 +171,8 @@ namespace Sandstone_Launcher
         private void gamedir_box_Leave(object sender, EventArgs e) => Program.SetGameDir(gamedir_box.Text);
         private void gamedir_button_Click(object sender, EventArgs e)
         {
-            string Path = SelectFolder(LauncherLib.GameDir);
-            if (Path != null)
+            string Path = FolderOpenDialog(Program.settings.gamedir, CurrentLang.gamedir_desc);
+            if (Path is string)
                 Program.SetGameDir(Path);
         }
         private void launch_Click(object sender, EventArgs e) => Program.Launch();
@@ -237,9 +240,6 @@ namespace Sandstone_Launcher
 
             if (selectedUser != null && selectedUser.usertype == "offline")
             {
-                //    Program.accountDialog.usertype_box.Enabled = false;
-                //    Program.accountDialog.username_box.Text = selectedUser.username;
-                //    Program.accountDialog.Text = Program.Lang?.edit_acc ?? "Editing an Account";
                 using (var Dialog = new AccountDialog())
                 {
                     Dialog.SetLanguage(CurrentLang, CurrentLang.edit_acc);
@@ -256,7 +256,6 @@ namespace Sandstone_Launcher
                         Program.SaveUsers();
                     }
                 }
-                //Program.accountDialog.username_box.Text = "";
             }
         }
         private void account_add_Click(object sender, EventArgs e)
@@ -264,7 +263,7 @@ namespace Sandstone_Launcher
             using (var Dialog = new AccountDialog())
             {
                 Dialog.SetLanguage(CurrentLang, CurrentLang.add_acc);
-                Dialog.usertype_box.Enabled = Program.HasMSAccount();
+                Dialog.usertype_box.Enabled = Program.CanUseOtherServices();
                 Dialog.Text = CurrentLang?.add_acc ?? "Adding an Account";
                 DialogResult confirm = Dialog.ShowDialog();
                 if (confirm == DialogResult.OK)
@@ -291,6 +290,7 @@ namespace Sandstone_Launcher
                     selectedInst = instance_list.SelectedItems[0].Tag as Instance;
                 instance_edit.Enabled = selectedInst != null;
                 instance_remove.Enabled = selectedInst != null;
+                instance_clone.Enabled = selectedInst != null;
             }
         }
         private void instance_remove_Click(object sender, EventArgs e)
@@ -410,24 +410,25 @@ namespace Sandstone_Launcher
         }
         private void bg_button_Click(object sender, EventArgs e)
         {
-            string BG = SelectFile(Backgrounds.AllowedExtString);
-            if (File.Exists(BG))
+            string FilePath = FileOpenDialog(Backgrounds.AllowedExtString);
+            if (File.Exists(FilePath))
             {
-                FileInfo BGInfo = new FileInfo(BG);
+                FileInfo BGInfo = new FileInfo(FilePath);
                 Directory.CreateDirectory("Backgrounds");
-                File.Copy(BG, Path.Combine("Backgrounds", BGInfo.Name));
+                File.Copy(FilePath, Path.Combine("Backgrounds", BGInfo.Name));
                 Backgrounds.LoadBackgrounds();
             }
         }
         private void jre_button_Click(object sender, EventArgs e)
         {
-            string EXE = SelectFile("Executable Files (*.exe)|*.exe");
-            if (File.Exists(EXE))
-                jre_box.Text = EXE;
+            string Path = FileOpenDialog("Executable Files (*.exe)|*.exe");
+            if (File.Exists(Path))
+                jre_box.Text = Path;
         }
 
         private void load_instances_Click(object sender, EventArgs e) => Program.LoadInstances();
-        private void load_users_Click(object sender, EventArgs e) => Program.LoadUsers();
+        //We are encrypting users now...
+        //private void load_users_Click(object sender, EventArgs e) => Program.LoadUsers();
         private void openupd_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) => Process.Start("https://github.com/Lomik8908/Sandstone-Launcher/releases");
 
         private void console_box_CheckedChanged(object sender, EventArgs e)
@@ -455,20 +456,6 @@ namespace Sandstone_Launcher
             }
         }
 
-        private void bgcolor_Click(object sender, EventArgs e)
-        {
-            DialogResult result = ColorPick.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                BackColor = ColorPick.Color;
-                bgcolor.BackColor = ColorPick.Color;
-                if (ColorPick.Color == Color.DimGray)
-                    Program.settings.bg_color = null;
-                else
-                    Program.settings.bg_color = ColorTranslator.ToHtml(ColorPick.Color);
-            }
-        }
-
         private void stop_operations_Click(object sender, EventArgs e)
         {
             LauncherLib.StopOperation();
@@ -477,7 +464,7 @@ namespace Sandstone_Launcher
 
         private void stop_instances_Click(object sender, EventArgs e)
         {
-            DialogResult Result = MessageBox.Show("Are you sure?\nThis will close ALL instances!", Program.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult Result = MessageBox.Show(CurrentLang.stopping_all, Program.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (Result == DialogResult.Yes)
             {
                 lock (Program.GameProcLock)
@@ -513,27 +500,28 @@ namespace Sandstone_Launcher
             }
         }
 
-        //private void stop_instances_DropDownOpening(object sender, EventArgs e)
-        //{
-        //    stop_instances.DropDownItems.Clear();
-        //    if (Program.GameProcesses.Count > 0)
-        //    {
-        //        lock (Program.GameProcLock)
-        //            foreach (var Launched in Program.GameProcesses)
-        //            {
-        //                Instance inst = Program.GetInstanceFromUUID(Launched.Key);
-        //                if (inst is Instance)
-        //                {
-        //                    var Item = new ToolStripMenuItem
-        //                    {
-        //                        Tag = Launched.Key,
-        //                        Text = inst.name,
-        //                        Image = Properties.Resources.grass
-        //                    };
-        //                    stop_instances.DropDownItems.Insert(0, Item);
-        //                }
-        //            }
-        //    }
-        //}
+        private void bgcolor_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                DialogResult result = ColorPick.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    BackColor = ColorPick.Color;
+                    bgcolor.BackColor = ColorPick.Color;
+                    Program.settings.bg_color = ColorTranslator.ToHtml(ColorPick.Color);
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                DialogResult result = MessageBox.Show(CurrentLang.revert_bgcolor, Program.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    BackColor = DefaultColor;
+                    bgcolor.BackColor = DefaultColor;
+                    Program.settings.bg_color = null;
+                }
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace Sandstone_Launcher
         {
             InitializeComponent();
             LoadJavas(SelectVer);
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         public void SetLanguage(Language Lang)
@@ -36,7 +37,7 @@ namespace Sandstone_Launcher
                 foreach (var Java in javaList["gamecore"].AsObject())
                 {
                     if (Java.Key == "minecraft-java-exe") continue;
-                    JsonNode jvList = javaList[$"windows-x86"]?[Java.Key];
+                    JsonNode jvList = javaList[$"windows-{osArch}"]?[Java.Key];
                     if (jvList?.GetValueKind() == JsonValueKind.Array && jvList.AsArray().Count > 0)
                     {
                         JsonNode jvObj = jvList[0];

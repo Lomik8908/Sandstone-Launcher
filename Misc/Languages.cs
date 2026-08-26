@@ -45,7 +45,7 @@ namespace Sandstone_Launcher
     public class Language
     {
         public string lang_id { get; set; } = "en_default";
-        public string lang_name { get; set; } = "English";
+        public string lang_name { get; set; } = "English (Default)";
         public string acc_box { get; set; } = "Account:";
         public string inst_box { get; set; } = "Instance:";
         public string play { get; set; } = "Play!";
@@ -55,7 +55,7 @@ namespace Sandstone_Launcher
         public string instances { get; set; } = "Instances";
         public string accounts { get; set; } = "Accounts";
         public string updating { get; set; } = "Updating";
-        public string check_update { get; set; } = "Check for updates";
+        //public string check_update { get; set; } = "Check for updates";
         public string upd_client { get; set; } = "Update Client";
         public string upd_assets { get; set; } = "Update Assets";
         public string upd_java { get; set; } = "Update Java";
@@ -100,7 +100,7 @@ namespace Sandstone_Launcher
         public string make_username { get; set; } = "Make a username!";
         public string username_warn { get; set; } = "While using this username you might encounter:\nGame Crashes\nServer Bugs\nUnexpected Behaviour\nUse this username at your own risk!";
         public string sel_ver_warn { get; set; } = "Select the game version for this instance!";
-        public string make_name_warn { get; set; } = "Create a name for this instance!";
+        //public string make_name_warn { get; set; } = "Create a name for this instance!";
         public string open_bg { get; set; } = "Open Folder";
         public string add_bg { get; set; } = "Add Custom";
         //public string down_asset { get; set; } = "Checking assets ({0}/{1})";
@@ -119,13 +119,13 @@ namespace Sandstone_Launcher
         public string login { get; set; } = "Login";
         public string tfa { get; set; } = "2-Factor Authentication";
         public string enter2fa { get; set; } = "Enter the 2FA code below";
-        public string register { get; set; } = "You don't have an account? Register one!";
+        public string register { get; set; } = "Don't have an account? Register one!";
         public string type_userpass { get; set; } = "Type in your username and password!";
         public string ely_err { get; set; } = "Couldn't add an Ely.by account!\nCheck if the info was valid!";
         public string use_authinj { get; set; } = "Use AuthLib Injector";
         public string installed_only { get; set; } = "Installed Only";
         public string show_snap { get; set; } = "Show Snapshots";
-        public string load_user { get; set; } = "Load Missing Accounts";
+        //public string load_user { get; set; } = "Load Missing Accounts";
         public string load_inst { get; set; } = "Load Missing Instances";
         public string upd_version { get; set; } = "New Version: {0}";
         public string checking_file { get; set; } = "Checking files...";
@@ -141,6 +141,14 @@ namespace Sandstone_Launcher
         public string open_javas { get; set; } = "Open Java List";
         public string sel_java { get; set; } = "Select a java version!";
         public string separate_vers { get; set; } = "Separate Versions";
-        public string launched_warn { get; set; } = "This instance is already launched!";
+        public string launched_warn { get; set; } = "This instance is already launched.";
+        public string revert_bgcolor { get; set; } = "Reset the background color?";
+        public string stopping_all { get; set; } = "Are you sure?\nThis will close ALL instances!";
+        public string gamedir_desc { get; set; } = "Choose a folder where all of the game files will be saved.";
+        //public string replace_current { get; set; } = "Replace Current";
+        //public string import_title { get; set; } = "Choose what you would like to import.";
+        //public string export_title { get; set; } = "Choose what you would like to export.";
+        //public string import { get; set; } = "Import";
+        //public string export { get; set; } = "Export";
     }
 }

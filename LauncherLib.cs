@@ -63,8 +63,8 @@ namespace Sandstone_Launcher
     }
     static class LauncherLib
     {
-        static string Appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        static BetterWebClient Client = new BetterWebClient();
+        static readonly string Appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        static readonly BetterWebClient Client = new BetterWebClient();
 
         static public string SaveFolder = Path.Combine(Appdata, "SandstoneLauncher");
         static public string GameDir { get; private set; } = Path.Combine(Appdata, ".minecraft");
@@ -72,9 +72,9 @@ namespace Sandstone_Launcher
         static public bool OperationRunning { get; private set; } = false;
 
         static private readonly object downlock = new object();
-        static private Dictionary<string, string> PendingDownloads = new Dictionary<string, string>();
+        static private readonly Dictionary<string, string> PendingDownloads = new Dictionary<string, string>();
         static private readonly object extrlock = new object();
-        static private HashSet<ExtractFile> ExtractList = new HashSet<ExtractFile>();
+        static private readonly HashSet<ExtractFile> ExtractList = new HashSet<ExtractFile>();
 
         static public string VersionManifest = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
         static public string JavaManifest = "https://piston-meta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json";

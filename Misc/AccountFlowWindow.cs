@@ -18,6 +18,7 @@ namespace Sandstone_Launcher
             InitializeComponent();
             Shown += AccountFlow_Shown;
             FormClosing += AccountFlowWindow_FormClosing;
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void AccountFlowWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -81,7 +82,7 @@ namespace Sandstone_Launcher
             // 
             // AccountFlowWindow
             // 
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(600, 650);
             this.Controls.Add(this.webView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

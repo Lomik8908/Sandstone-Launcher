@@ -49,7 +49,7 @@
             // 
             // username_box
             // 
-            this.username_box.BackColor = System.Drawing.Color.DimGray;
+            this.username_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.username_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.username_box.ForeColor = System.Drawing.Color.White;
             this.username_box.Location = new System.Drawing.Point(10, 65);
@@ -59,8 +59,8 @@
             // 
             // save
             // 
-            this.save.BackColor = System.Drawing.Color.DimGray;
-            this.save.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
+            this.save.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.save.ForeColor = System.Drawing.Color.White;
             this.save.Location = new System.Drawing.Point(150, 90);
@@ -73,9 +73,9 @@
             // 
             // cancel
             // 
-            this.cancel.BackColor = System.Drawing.Color.DimGray;
+            this.cancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.cancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cancel.ForeColor = System.Drawing.Color.White;
             this.cancel.Location = new System.Drawing.Point(10, 90);
@@ -87,7 +87,7 @@
             // 
             // usertype_box
             // 
-            this.usertype_box.BackColor = System.Drawing.Color.DimGray;
+            this.usertype_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
             this.usertype_box.DisplayMember = "name";
             this.usertype_box.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.usertype_box.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -111,8 +111,8 @@
             // 
             // login_button
             // 
-            this.login_button.BackColor = System.Drawing.Color.DimGray;
-            this.login_button.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.login_button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
+            this.login_button.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.login_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.login_button.ForeColor = System.Drawing.Color.White;
             this.login_button.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -129,7 +129,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(290, 125);
             this.Controls.Add(this.usertype_label);
             this.Controls.Add(this.usertype_box);

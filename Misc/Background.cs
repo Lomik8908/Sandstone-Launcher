@@ -13,12 +13,8 @@ namespace Sandstone_Launcher
         {
             new Background { Name = "None", Image = null },
             new Background { Name = "Burberry", Image = new Lazy<Image>(() => Misc.Backgrounds.burberry, true) },
-            new Background { Name = "Cave", Image = new Lazy<Image>(() => Misc.Backgrounds.cave, true) }, // 120mb spike because of them :_<
-            new Background { Name = "Playstation", Image = new Lazy<Image>(() => Misc.Backgrounds.playstation, true) },
-            new Background { Name = "Monument", Image = new Lazy<Image>(() => Misc.Backgrounds.monument, true) },
             new Background { Name = "Island", Image = new Lazy<Image>(() => Misc.Backgrounds.island, true) },
             new Background { Name = "Aquatic", Image = new Lazy<Image>(() => Misc.Backgrounds.aquatic, true) },
-            new Background { Name = "Anniversary", Image = new Lazy<Image>(() => Misc.Backgrounds.anniversary, true) }
         };
         static public readonly HashSet<string> AllowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".bmp", ".dib", ".gif", ".jpg", ".jpeg", ".jpe", ".jfif", ".jfi", ".jif", ".png", ".tiff" };
         static public readonly string AllowedExtString = "All image files|*.bmp;*.dib;*.gif;*.jpg;*.jpeg;*.jpe;*.jfif;*.jfi;*.jif;*.png;*.tiff|PNG Images (.png)|*.png|JPEG Images (.jpg, .jpeg, .jpe, .jfif, .jfi, .jif)|*.jpg;*.jpeg;*.jpe;*.jfif;*.jfi;*.jif|TIFF Images (.tiff)|*.tiff|GIF Images (.gif)|*.gif|Bitmap Images (.bmp, .dib)|*.bmp;*.dib";

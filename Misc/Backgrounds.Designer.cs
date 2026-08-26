@@ -63,16 +63,6 @@ namespace Sandstone_Launcher.Misc {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap anniversary {
-            get {
-                object obj = ResourceManager.GetObject("anniversary", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap aquatic {
             get {
                 object obj = ResourceManager.GetObject("aquatic", resourceCulture);
@@ -93,39 +83,9 @@ namespace Sandstone_Launcher.Misc {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cave {
-            get {
-                object obj = ResourceManager.GetObject("cave", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap island {
             get {
                 object obj = ResourceManager.GetObject("island", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap monument {
-            get {
-                object obj = ResourceManager.GetObject("monument", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap playstation {
-            get {
-                object obj = ResourceManager.GetObject("playstation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

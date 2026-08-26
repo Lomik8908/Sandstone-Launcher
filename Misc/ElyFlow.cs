@@ -22,6 +22,7 @@ namespace Sandstone_Launcher.Misc
             login.Text = Program.Lang?.login ?? "Login";
             cancel.Text = Program.Lang?.cancel ?? "Cancel";
             register_button.Text = Program.Lang?.register ?? "You don't have an account? Register one!";
+            DarkModeTitle.SetDarkMode(Handle, true);
         }
 
         private void InitializeComponent()
@@ -37,7 +38,7 @@ namespace Sandstone_Launcher.Misc
             // 
             // login
             // 
-            this.login.BackColor = System.Drawing.Color.DimGray;
+            this.login.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
             this.login.FlatAppearance.BorderSize = 0;
             this.login.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.login.Location = new System.Drawing.Point(10, 105);
@@ -59,18 +60,24 @@ namespace Sandstone_Launcher.Misc
             // 
             // username
             // 
+            this.username.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.username.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.username.Location = new System.Drawing.Point(10, 25);
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(280, 20);
             this.username.TabIndex = 2;
+            this.username.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterDown);
             // 
             // password
             // 
+            this.password.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.password.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.password.Location = new System.Drawing.Point(10, 65);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(280, 20);
             this.password.TabIndex = 4;
             this.password.UseSystemPasswordChar = true;
+            this.password.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterDown);
             // 
             // pass_label
             // 
@@ -83,7 +90,7 @@ namespace Sandstone_Launcher.Misc
             // 
             // cancel
             // 
-            this.cancel.BackColor = System.Drawing.Color.DimGray;
+            this.cancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(75)))));
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancel.FlatAppearance.BorderSize = 0;
             this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -111,7 +118,7 @@ namespace Sandstone_Launcher.Misc
             // 
             // ElyFlow
             // 
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(300, 165);
             this.Controls.Add(this.register_button);
             this.Controls.Add(this.cancel);
@@ -144,6 +151,16 @@ namespace Sandstone_Launcher.Misc
         private void register_button_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://account.ely.by/register");
+        }
+
+        private void EnterDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                login_Click(null, null);
+            }
         }
     }
 }

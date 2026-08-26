@@ -18,12 +18,13 @@ namespace Sandstone_Launcher
     static class Program
     {
         static public string AppName = "Sandstone Launcher";
-        static public string AppVersionString = "1.0.0 rc-1.7";
-        static public int AppVersion = 6;
+        static public string AppVersionString = "1.0.0";
+        static public int AppVersion = 10;
+        static public bool AllowOtherServices = false;
         static public ComputerInfo pcInfo = new ComputerInfo();
 
         static public Settings settings = new Settings();
-        static string[] CommonFlags = new string[] { "-Dfml.ignoreInvalidMinecraftCertificates=true", "-Dfml.ignorePatchDiscrepancies=true", "-Djava.net.useSystemProxies=true", "-Dfile.encoding=UTF-8" };
+        static readonly string[] CommonFlags = new string[] { "-Dfml.ignoreInvalidMinecraftCertificates=true", "-Dfml.ignorePatchDiscrepancies=true", "-Djava.net.useSystemProxies=true", "-Dfile.encoding=UTF-8" };
 
         static public Dictionary<string, NameClass> NamedClasses = new Dictionary<string, NameClass> {
             { "none", new NameClass { Id = "none", Name = "None" } },
@@ -57,6 +58,7 @@ namespace Sandstone_Launcher
         static void Main(string[] args)
         {
             if (args.Contains("console")) Conhost.ShowConsole();
+            if (args.Contains("allow_all_accounts")) AllowOtherServices = true;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(true);
@@ -72,16 +74,13 @@ namespace Sandstone_Launcher
                     saveSetting = false;
                 }
             else
-                MessageBox.Show("Hello! Thanks for using my launcher <3\nIt's still in the early stages of development so feedback is needed!\nThere's probably alot of bugs so... Catch them all!");
+                MessageBox.Show("Hello! Thanks for using my launcher <3\nIt's still in the early stages of development so feedback is needed!\nThere's probably alot of bugs sooo... You Gotta catch 'em all!", AppName);
 
             if (settings.console) Conhost.ShowConsole();
             Languages.LoadLangs();
 
             homeWindow = new HomeWindow();
             Lang = Languages.AllLanguages.FirstOrDefault(v => v.lang_id == settings.lang);
-
-            //accountDialog = new AccountDialog();
-            //instanceDialog = new InstanceDialog();
 
             //LauncherLib.OnAssetUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_asset ?? "Checking assets ({0}/{1})", index, count));
             //LauncherLib.OnClientUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_client ?? "Checking client ({0}/{1})", index, count));
@@ -93,11 +92,8 @@ namespace Sandstone_Launcher
                 AccountType AccType = Accounts.accountTypes.FirstOrDefault(v => v.id == t);
                 InvokeUI(() => { homeWindow.info_text.Text = SharedMethods.ReplaceFormat(Lang?.blogin_info ?? "Logging into {0}...", AccType?.name ?? "Account"); });
             };
-
             LoadAll();
             if (settings.check_upd) CheckForUpdates();
-            using (var win = new SkinSelector())
-                win.ShowDialog();
             Application.Run(homeWindow);
         }
 
@@ -253,7 +249,6 @@ namespace Sandstone_Launcher
         {
             if (!saveSetting) return;
             if (homeWindow.Disposing || homeWindow.IsDisposed) return;
-            settings.gamedir = LauncherLib.GameDir;
             settings.fullscreen = homeWindow.fullscreen_box.Checked;
             settings.memory = (int)homeWindow.ram_box.Value;
             settings.width = (int)homeWindow.resx_box.Value;
@@ -308,15 +303,16 @@ namespace Sandstone_Launcher
             }
             catch (Exception ex) { Logger.Warn($"Couldn't check for updates: {ex.Message}"); }
         }
-        static public bool HasMSAccount()
+        static public bool CanUseOtherServices()
         {
             lock (AccountLock)
-                return Users.Any(v => v.usertype == "msa");
+                return AllowOtherServices || Users.Any(v => v.usertype == "msa");
         }
         static public void SetGameDir(string sPath)
         {
             LauncherLib.SetGameDir(sPath);
             homeWindow.gamedir_box.Text = LauncherLib.GameDir;
+            settings.gamedir = LauncherLib.GameDir;
             LoadInstances();
             LoadUsers();
         }

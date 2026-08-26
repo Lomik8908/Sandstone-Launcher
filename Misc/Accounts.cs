@@ -44,7 +44,7 @@ namespace Sandstone_Launcher
         {
             using (var BrowserWindow = new AccountFlowWindow { LoginUrl = Urls.MSFlowUri, StopOnUrl = Urls.MSFlowEndUri, Text = SharedMethods.ReplaceFormat(Program.Lang?.login_into ?? "Login via {0}", "Microsoft") })
             {
-                BrowserWindow.OnCodeReceived += (code) => MSBackground(code);
+                BrowserWindow.OnCodeReceived += async (code) => await MSBackground(code);
                 BrowserWindow.ShowDialog();
             }
         }

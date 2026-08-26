@@ -93,15 +93,15 @@
             this.OpenInstances = new System.Windows.Forms.ToolStripMenuItem();
             this.more_menu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.stop_instances = new System.Windows.Forms.ToolStripMenuItem();
-            this.stop_instance = new System.Windows.Forms.ToolStripMenuItem();
-            this.stop_operations = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenAccounts = new System.Windows.Forms.ToolStripMenuItem();
             this.file_update = new System.Windows.Forms.ToolStripMenuItem();
             this.updateclient_box = new System.Windows.Forms.ToolStripMenuItem();
             this.updateassets_box = new System.Windows.Forms.ToolStripMenuItem();
             this.updatejava_box = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_instance = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_operations = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_instances = new System.Windows.Forms.ToolStripMenuItem();
             this.instances_box = new System.Windows.Forms.Panel();
             this.instance_clone = new System.Windows.Forms.Button();
             this.instance_add = new System.Windows.Forms.Button();
@@ -125,7 +125,6 @@
             this.FileDialog = new System.Windows.Forms.OpenFileDialog();
             this.openupd = new System.Windows.Forms.LinkLabel();
             this.ColorPick = new System.Windows.Forms.ColorDialog();
-            this.skinSelectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bottom_holder.SuspendLayout();
             this.settings_box.SuspendLayout();
             this.launcher_group.SuspendLayout();
@@ -853,7 +852,7 @@
             this.OpenAbout.Image = global::Sandstone_Launcher.Properties.Resources.isometric_block;
             this.OpenAbout.Name = "OpenAbout";
             this.OpenAbout.Size = new System.Drawing.Size(180, 22);
-            this.OpenAbout.Text = "SL v1.0";
+            this.OpenAbout.Text = "v1.0";
             // 
             // toolStripSeparator1
             // 
@@ -884,7 +883,6 @@
             this.toolStripSeparator2,
             this.OpenInstances,
             this.OpenAccounts,
-            this.skinSelectorToolStripMenuItem,
             this.toolStripSeparator1,
             this.file_update,
             this.stop_instance,
@@ -892,7 +890,7 @@
             this.stop_instances,
             this.OpenAbout});
             this.more_menu.Name = "more_menu";
-            this.more_menu.Size = new System.Drawing.Size(181, 258);
+            this.more_menu.Size = new System.Drawing.Size(181, 236);
             // 
             // OpenFolder
             // 
@@ -901,27 +899,6 @@
             this.OpenFolder.Size = new System.Drawing.Size(180, 22);
             this.OpenFolder.Text = "Open Game Folder";
             this.OpenFolder.Click += new System.EventHandler(this.OpenFolder_Click);
-            // 
-            // stop_instances
-            // 
-            this.stop_instances.Name = "stop_instances";
-            this.stop_instances.Size = new System.Drawing.Size(180, 22);
-            this.stop_instances.Text = "Stop All Instances";
-            this.stop_instances.Click += new System.EventHandler(this.stop_instances_Click);
-            // 
-            // stop_instance
-            // 
-            this.stop_instance.Name = "stop_instance";
-            this.stop_instance.Size = new System.Drawing.Size(180, 22);
-            this.stop_instance.Text = "Stop Instance";
-            this.stop_instance.Click += new System.EventHandler(this.stop_instance_Click);
-            // 
-            // stop_operations
-            // 
-            this.stop_operations.Name = "stop_operations";
-            this.stop_operations.Size = new System.Drawing.Size(180, 22);
-            this.stop_operations.Text = "Stop Operations";
-            this.stop_operations.Click += new System.EventHandler(this.stop_operations_Click);
             // 
             // toolStripSeparator2
             // 
@@ -969,6 +946,27 @@
             this.updatejava_box.Name = "updatejava_box";
             this.updatejava_box.Size = new System.Drawing.Size(148, 22);
             this.updatejava_box.Text = "Update Java";
+            // 
+            // stop_instance
+            // 
+            this.stop_instance.Name = "stop_instance";
+            this.stop_instance.Size = new System.Drawing.Size(180, 22);
+            this.stop_instance.Text = "Stop Instance";
+            this.stop_instance.Click += new System.EventHandler(this.stop_instance_Click);
+            // 
+            // stop_operations
+            // 
+            this.stop_operations.Name = "stop_operations";
+            this.stop_operations.Size = new System.Drawing.Size(180, 22);
+            this.stop_operations.Text = "Stop Operations";
+            this.stop_operations.Click += new System.EventHandler(this.stop_operations_Click);
+            // 
+            // stop_instances
+            // 
+            this.stop_instances.Name = "stop_instances";
+            this.stop_instances.Size = new System.Drawing.Size(180, 22);
+            this.stop_instances.Text = "Stop All Instances";
+            this.stop_instances.Click += new System.EventHandler(this.stop_instances_Click);
             // 
             // instances_box
             // 
@@ -1252,12 +1250,6 @@
             this.ColorPick.AnyColor = true;
             this.ColorPick.Color = System.Drawing.Color.DimGray;
             // 
-            // skinSelectorToolStripMenuItem
-            // 
-            this.skinSelectorToolStripMenuItem.Name = "skinSelectorToolStripMenuItem";
-            this.skinSelectorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.skinSelectorToolStripMenuItem.Text = "Skin Selector";
-            // 
             // HomeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1399,6 +1391,5 @@
         private System.Windows.Forms.ToolStripMenuItem OpenAbout;
         private System.Windows.Forms.ToolStripMenuItem stop_operations;
         public System.Windows.Forms.ToolStripMenuItem stop_instances;
-        private System.Windows.Forms.ToolStripMenuItem skinSelectorToolStripMenuItem;
     }
 }

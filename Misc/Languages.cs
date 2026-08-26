@@ -8,8 +8,9 @@ namespace Sandstone_Launcher
 {
     static class Languages
     {
+        public static Language DefaultLanguage = new Language();
         static public BindingList<Language> AllLanguages = new BindingList<Language> {
-            new Language()
+            DefaultLanguage
         };
         static public void LoadLangs()
         {
@@ -26,7 +27,7 @@ namespace Sandstone_Launcher
                             Logger.Log($"Bad language {Path.GetFileName(PossibleLang)}: {ex.Message}");
                         }
         }
-        static public void ApplyLang(Language language, HomeWindow homeWindow, InstanceDialog instanceDialog, AccountDialog accountDialog)
+        static public void ApplyLang(Language language, HomeWindow homeWindow)//, InstanceDialog instanceDialog, AccountDialog accountDialog
         {
             if (language == null) return;
             Program.NamedClasses["none"].Name = language.none;
@@ -34,112 +35,16 @@ namespace Sandstone_Launcher
             Program.NamedClasses["onlaunch_hide"].Name = language.launch_hide;
             Program.NamedClasses["onlaunch_close"].Name = language.launch_close;
             Program.NamedClasses["onlaunch_none"].Name = language.launch_none;
-            if (homeWindow != null)
-            {
-                homeWindow.account_label.Text = language.acc_box;
-                homeWindow.instance_label.Text = language.inst_box;
-                homeWindow.launch.Text = language.play;
-                homeWindow.OpenFolder.Text = language.open_gamedir;
-                homeWindow.OpenSettings.Text = language.settings;
-                homeWindow.settings_label.Text = language.settings;
-                homeWindow.OpenInstances.Text = language.instances;
-                homeWindow.instances_label.Text = language.instances;
-                homeWindow.OpenAccounts.Text = language.accounts;
-                homeWindow.accounts_label.Text = language.accounts;
-                homeWindow.file_update.Text = language.updating;
-                homeWindow.updateclient_box.Text = language.upd_client;
-                homeWindow.updateassets_box.Text = language.upd_assets;
-                homeWindow.updatejava_box.Text = language.upd_java;
-                homeWindow.open_minecraft.Text = language.open_mcfol;
-                homeWindow.open_instance.Text = language.open_infol;
-                homeWindow.game_group.Text = language.game;
-                homeWindow.gamedir_label.Text = language.gamefol;
-                homeWindow.gamedir_button.Text = language.browses;
-                homeWindow.res_label.Text = language.resolution;
-                homeWindow.fullscreen_box.Text = language.fullscreen;
-                homeWindow.ram_label.Text = language.ram;
-                homeWindow.mib_label.Text = language.mib;
-                homeWindow.gc_label.Text = language.gc_flags;
-                homeWindow.mcarg_label.Text = language.mc_args;
-                homeWindow.jvmarg_label.Text = language.jv_args;
-                homeWindow.jre_label.Text = language.custom_java;
-                homeWindow.launcher_group.Text = language.launcher;
-                homeWindow.onlaunch_label.Text = language.onlaunch_mc;
-                homeWindow.console_box.Text = language.show_console;
-                homeWindow.fullargs_box.Text = language.show_launcharg;
-                homeWindow.asset_box.Text = language.check_asset;
-                homeWindow.hash_box.Text = language.check_hash;
-                homeWindow.updates_box.Text = language.auto_upd;
-                homeWindow.lang_label.Text = language.langs;
-                homeWindow.bg_label.Text = language.bg;
-                homeWindow.bg_folder.Text = language.open_bg;
-                homeWindow.bg_button.Text = language.add_bg;
-                homeWindow.jre_button.Text = language.browses;
-                homeWindow.authlib_box.Text = language.use_authinj;
-                homeWindow.load_instances.Text = language.load_inst;
-                homeWindow.load_users.Text = language.load_user;
-                homeWindow.stop_minecraft.Text = language.stop_minecraft;
-                homeWindow.stop_operations.Text = language.stop_operations;
-                homeWindow.other_label.Text = language.other;
-
-                homeWindow.onlaunch_box.DisplayMember = null;
-                homeWindow.onlaunch_box.DisplayMember = "Name";
-
-                homeWindow.gc_box.DisplayMember = null;
-                homeWindow.gc_box.DisplayMember = "Name";
-
-                homeWindow.javalist_btn.Text = language.open_javas;
-                homeWindow.separateVers.Text = language.separate_vers;
-
-                homeWindow.UpdateJavaLabel();
-            }
-            if (instanceDialog != null)
-            {
-                instanceDialog.instname_label.Text = language.inst_name;
-                instanceDialog.version_label.Text = language.game_ver;
-
-                instanceDialog.gamedir_button.Text = language.browses;
-                instanceDialog.gamedir_label.Text = language.gamefol;
-                instanceDialog.res_label.Text = language.resolution;
-                instanceDialog.ram_label.Text = language.ram;
-                instanceDialog.mib_label.Text = language.mib;
-                instanceDialog.gc_label.Text = language.gc_flags;
-                instanceDialog.mcarg_label.Text = language.mc_args;
-                instanceDialog.jvmarg_label.Text = language.jv_args;
-
-                instanceDialog.installed_only.Text = language.installed_only;
-                instanceDialog.show_snapshots.Text = language.show_snap;
-
-                instanceDialog.predown.Text = language.predown_files;
-                instanceDialog.save.Text = language.save;
-                instanceDialog.cancel.Text = language.cancel;
-
-                instanceDialog.gc_box.DisplayMember = null;
-                instanceDialog.gc_box.DisplayMember = "Name";
-
-                instanceDialog.javalist_btn.Text = language.open_javas;
-                instanceDialog.jre_label.Text = language.custom_java;
-                instanceDialog.jre_button.Text = language.browses;
-            }
+            homeWindow?.SetLanguage(language);
 
             AccountType offline = Accounts.accountTypes.FirstOrDefault(v => v.id == "offline");
             if (offline != null) offline.name = language.offline;
-            if (accountDialog != null)
-            {
-                accountDialog.username_label.Text = language.username;
-                accountDialog.usertype_label.Text = language.user_type;
-                accountDialog.save.Text = language.save;
-                accountDialog.cancel.Text = language.cancel;
-
-                accountDialog.usertype_box.DisplayMember = null;
-                accountDialog.usertype_box.DisplayMember = "Name";
-            }
         }
     }
 
-    class Language
+    public class Language
     {
-        public string lang_id { get; set; } = "en_us";
+        public string lang_id { get; set; } = "en_default";
         public string lang_name { get; set; } = "English";
         public string acc_box { get; set; } = "Account:";
         public string inst_box { get; set; } = "Instance:";
@@ -227,7 +132,8 @@ namespace Sandstone_Launcher
         public string down_status { get; set; } = "Downloading files ({0}/{1})";
         public string predown_files { get; set; } = "Predownload files";
         public string stop_operations { get; set; } = "Stop Operations";
-        public string stop_minecraft { get; set; } = "Stop Minecraft";
+        public string stop_instance { get; set; } = "Stop Instance";
+        public string stop_instances { get; set; } = "Stop All Instances";
         public string other { get; set; } = "Other";
         public string java_list { get; set; } = "Java List";
         public string select { get; set; } = "Select";
@@ -235,5 +141,6 @@ namespace Sandstone_Launcher
         public string open_javas { get; set; } = "Open Java List";
         public string sel_java { get; set; } = "Select a java version!";
         public string separate_vers { get; set; } = "Separate Versions";
+        public string launched_warn { get; set; } = "This instance is already launched!";
     }
 }

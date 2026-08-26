@@ -138,7 +138,7 @@ namespace Sandstone_Launcher.Misc
             if (username.Text.Length > 0 && password.Text.Length > 0)
                 DialogResult = DialogResult.OK;
             else
-                MessageBox.Show(Program.Lang?.type_userpass ?? "Type in your username and password!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Program.Lang?.type_userpass ?? "Type in your username and password!", Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void register_button_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

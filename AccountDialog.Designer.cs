@@ -145,6 +145,7 @@
             this.Name = "AccountDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Account Action";
+            this.Shown += new System.EventHandler(this.AccountDialog_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

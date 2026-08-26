@@ -7,21 +7,13 @@ namespace Sandstone_Launcher
 {
     public partial class JavaList : Form
     {
-        private Language CurrentLang = Languages.DefaultLanguage;
         public JavaList(string SelectVer = null)
         {
             InitializeComponent();
             LoadJavas(SelectVer);
-        }
-
-        public void SetLanguage(Language Lang)
-        {
-            if (!(Lang is Language)) return;
-            Text = Lang.java_list;
-            cancel.Text = Lang.cancel;
-            select.Text = Lang.select;
-
-            CurrentLang = Lang;
+            Text = Program.Lang?.java_list ?? "Java List";
+            cancel.Text = Program.Lang?.cancel ?? "Cancel";
+            select.Text = Program.Lang?.select ?? "Select";
         }
 
         private void LoadJavas(string SelectVer = null)
@@ -56,7 +48,7 @@ namespace Sandstone_Launcher
             if (list.SelectedItem != null)
                 DialogResult = DialogResult.OK;
             else
-                MessageBox.Show(CurrentLang.sel_java, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information); //  ?? "Select a java version!"
+                MessageBox.Show(Program.Lang?.sel_java ?? "Select a java version!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

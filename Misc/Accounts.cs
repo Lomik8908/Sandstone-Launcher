@@ -98,7 +98,7 @@ namespace Sandstone_Launcher
                     Program.LoadUsersList();
                 }
                 else
-                    MessageBox.Show(Program.Lang?.ely_err ?? "Couldn't add an Ely.by account!\nCheck if the info was valid!", Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Program.Lang?.ely_err ?? "Couldn't add an Ely.by account!\nCheck if the info was valid!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex) { Logger.Err($"Error occured during Ely.by login: {ex.Message}"); }
         }

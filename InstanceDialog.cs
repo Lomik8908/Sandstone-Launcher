@@ -11,7 +11,6 @@ namespace Sandstone_Launcher
     {
         NameClass Snapshot = new NameClass { Id = "latest-snapshot", Name = "Latest Snapshot" };
         NameClass Release = new NameClass { Id = "latest-release", Name = "Latest Release" };
-        private Language CurrentLang = Languages.DefaultLanguage;
         public InstanceDialog()
         {
             InitializeComponent();
@@ -27,40 +26,6 @@ namespace Sandstone_Launcher
             resy_box.MouseWheel += SharedMethods.HandleScroll;
             gc_box.MouseWheel += SharedMethods.HandleScroll;
         }
-
-        public void SetLanguage(Language Lang, string Title = null)
-        {
-            if (!(Lang is Language)) return;
-            instname_label.Text = Lang.inst_name;
-            version_label.Text = Lang.game_ver;
-
-            gamedir_button.Text = Lang.browses;
-            gamedir_label.Text = Lang.gamefol;
-            res_label.Text = Lang.resolution;
-            ram_label.Text = Lang.ram;
-            mib_label.Text = Lang.mib;
-            gc_label.Text = Lang.gc_flags;
-            mcarg_label.Text = Lang.mc_args;
-            jvmarg_label.Text = Lang.jv_args;
-
-            installed_only.Text = Lang.installed_only;
-            show_snapshots.Text = Lang.show_snap;
-
-            predown.Text = Lang.predown_files;
-            save.Text = Lang.save;
-            cancel.Text = Lang.cancel;
-
-            gc_box.DisplayMember = null;
-            gc_box.DisplayMember = "Name";
-
-            javalist_btn.Text = Lang.open_javas;
-            jre_label.Text = Lang.custom_java;
-            jre_button.Text = Lang.browses;
-
-            Text = Title ?? Program.AppName;
-            CurrentLang = Lang;
-        }
-
         string CurrentJavaVer = null;
         public void SetValues(Instance inst = null)
         {
@@ -97,9 +62,11 @@ namespace Sandstone_Launcher
             predown.Checked = false;
 
             if (string.IsNullOrEmpty(inst?.java_type))
-                java_ver.Text = SharedMethods.ReplaceFormat(CurrentLang.java_ver, Program.NamedClasses["default"].Name); // ?? "Version: {0}"
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", Program.NamedClasses["default"].Name);
+            else if (Program.JavaIdToVersion.ContainsKey(inst.java_type))
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", $"{Program.JavaIdToVersion[inst.java_type]} ({inst.java_type})");
             else
-                java_ver.Text = SharedMethods.ReplaceFormat(CurrentLang.java_ver, inst.java_type); // ?? "Version: {0}"
+                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", inst.java_type);
 
             CurrentJavaVer = inst?.java_type;
         }
@@ -187,7 +154,7 @@ namespace Sandstone_Launcher
             if (version_box.SelectedItem != null)
                 DialogResult = DialogResult.OK;
             else
-                MessageBox.Show(CurrentLang.sel_ver_warn, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information); // ?? "Select the game version for this instance!"
+                MessageBox.Show(Program.Lang?.sel_ver_warn ?? "Select the game version for this instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void installed_only_CheckedChanged(object sender, EventArgs e) => LoadGameVers();
         private void show_snapshots_CheckedChanged(object sender, EventArgs e) => LoadGameVers();
@@ -213,7 +180,7 @@ namespace Sandstone_Launcher
                 DialogResult result = javaWindow.ShowDialog();
                 if (result == DialogResult.OK && javaWindow.list.SelectedItem is NameClass java)
                 {
-                    java_ver.Text = SharedMethods.ReplaceFormat(CurrentLang.java_ver, java.Name); // ?? "Version: {0}"
+                    java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", java.Name);
                     if (java.Id == Program.NamedClasses["default"].Id)
                         CurrentJavaVer = null;
                     else

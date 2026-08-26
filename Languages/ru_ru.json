@@ -84,14 +84,12 @@
     "down_status": "Скачивание файлов ({0}/{1})",
     "predown_files": "Скачать файлы сейчас",
     "stop_operations": "Остановить Операции",
-    "stop_instance": "Остановить Профиль",
-    "stop_instance": "Остановить все Профили",
+    "stop_minecraft": "Остановить Minecraft",
     "other": "Другое",
     "java_list": "Список Java",
     "select": "Выбрать",
     "java_ver": "Версия: {0}",
     "open_javas": "Открыть Список Java",
     "sel_java": "Выберите версию Java!",
-    "separate_vers": "Отдельные версии",
-    "launched_warn": "Этот профиль уже запущен!"
+    "separate_vers": "Отдельные версии"
 }

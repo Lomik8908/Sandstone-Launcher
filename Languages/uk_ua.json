@@ -84,14 +84,12 @@
     "down_status": "Завантаження файлів ({0}/{1})",
     "predown_files": "Завантажити файли зараз",
     "stop_operations": "Зупинити Операції",
-    "stop_instance": "Зупинити Інсталяцію",
-    "stop_instances": "Зупинити всі Інсталяції",
+    "stop_minecraft": "Зупинити Minecraft",
     "other": "Інше",
     "java_list": "Список Java",
     "select": "Вибрати",
     "java_ver": "Версія: {0}",
     "open_javas": "Відкрити Список Java",
     "sel_java": "Виберіть версію Java!",
-    "separate_vers": "Окремі версії",
-    "launched_warn": "Ця інсталяція вже використовується!"
+    "separate_vers": "Окремі версії"
 }

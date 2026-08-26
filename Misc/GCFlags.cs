@@ -16,17 +16,17 @@ namespace Sandstone_Launcher
             new GCTemplate { id = "cms", name = "Concurrent Mark Sweep GC", arguments = new List<string> { "-XX:+AlwaysPreTouch", "-XX:+UseConcMarkSweepGC", "-XX:+CMSParallelRemarkEnabled", "-XX:+CMSClassUnloadingEnabled", "-XX:+UseCMSInitiatingOccupancyOnly" } }
         };
 
-        static public void LoadCustomFlags()
-        {
-            if (Directory.Exists("GCFlags"))
-                foreach (var GCPath in Directory.GetFiles("GCFlags"))
-                    if (Path.GetExtension(GCPath).ToLowerInvariant() == ".json") try
-                        {
-                            GCTemplate gctemp = JsonSerializer.Deserialize<GCTemplate>(File.ReadAllText(GCPath), Program.defaultJsonOptions);
-                            GCTemplates.Add(gctemp);
-                        }
-                        catch (Exception ex) { Logger.Warn($"Couldn't load GCFlags {Path.GetFileName(GCPath)}: {ex.Message}"); }
-        }
+        //static public void LoadCustomFlags()
+        //{
+        //    if (Directory.Exists("GCFlags"))
+        //        foreach (var GCPath in Directory.GetFiles("GCFlags"))
+        //            if (Path.GetExtension(GCPath).ToLowerInvariant() == ".json") try
+        //                {
+        //                    GCTemplate gctemp = JsonSerializer.Deserialize<GCTemplate>(File.ReadAllText(GCPath), Program.defaultJsonOptions);
+        //                    GCTemplates.Add(gctemp);
+        //                }
+        //                catch (Exception ex) { Logger.Warn($"Couldn't load GCFlags {Path.GetFileName(GCPath)}: {ex.Message}"); }
+        //}
     }
     public class GCTemplate
     {

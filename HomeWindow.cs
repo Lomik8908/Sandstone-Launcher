@@ -1,8 +1,10 @@
 ﻿using SandstoneControls;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Sandstone_Launcher
@@ -12,6 +14,7 @@ namespace Sandstone_Launcher
         public static string JavaRegex = "^\\w+ version \"(.+)\"$";
         public ImageList AccountImages = new ImageList { ImageSize = new Size(24, 24), ColorDepth = ColorDepth.Depth32Bit };
         public ImageList InstanceImages = new ImageList { ImageSize = new Size(32, 32), ColorDepth = ColorDepth.Depth32Bit };
+        private Language CurrentLang = Languages.DefaultLanguage;
         public HomeWindow()
         {
             InitializeComponent();
@@ -20,7 +23,7 @@ namespace Sandstone_Launcher
             AccountImages.Images.Add("msa", Properties.Resources.msa);
             InstanceImages.Images.Add("Grass", Properties.Resources.grass);
 
-            OpenAbout.Text = $"SL {Program.AppVersionString}";
+            OpenAbout.Text = Program.AppVersionString;
 
             account_box.DataSource = Program.Users;
             instance_box.DataSource = Program.Instances;
@@ -51,14 +54,76 @@ namespace Sandstone_Launcher
             resx_box.MouseWheel += SharedMethods.HandleScroll;
             resy_box.MouseWheel += SharedMethods.HandleScroll;
         }
+
+        public void SetLanguage(Language Lang)
+        {
+            if (!(Lang is Language)) return;
+            account_label.Text = Lang.acc_box;
+            instance_label.Text = Lang.inst_box;
+            launch.Text = Lang.play;
+            OpenFolder.Text = Lang.open_gamedir;
+            OpenSettings.Text = Lang.settings;
+            settings_label.Text = Lang.settings;
+            OpenInstances.Text = Lang.instances;
+            instances_label.Text = Lang.instances;
+            OpenAccounts.Text = Lang.accounts;
+            accounts_label.Text = Lang.accounts;
+            file_update.Text = Lang.updating;
+            updateclient_box.Text = Lang.upd_client;
+            updateassets_box.Text = Lang.upd_assets;
+            updatejava_box.Text = Lang.upd_java;
+            open_minecraft.Text = Lang.open_mcfol;
+            open_instance.Text = Lang.open_infol;
+            game_group.Text = Lang.game;
+            gamedir_label.Text = Lang.gamefol;
+            gamedir_button.Text = Lang.browses;
+            res_label.Text = Lang.resolution;
+            fullscreen_box.Text = Lang.fullscreen;
+            ram_label.Text = Lang.ram;
+            mib_label.Text = Lang.mib;
+            gc_label.Text = Lang.gc_flags;
+            mcarg_label.Text = Lang.mc_args;
+            jvmarg_label.Text = Lang.jv_args;
+            jre_label.Text = Lang.custom_java;
+            launcher_group.Text = Lang.launcher;
+            onlaunch_label.Text = Lang.onlaunch_mc;
+            console_box.Text = Lang.show_console;
+            fullargs_box.Text = Lang.show_launcharg;
+            asset_box.Text = Lang.check_asset;
+            hash_box.Text = Lang.check_hash;
+            updates_box.Text = Lang.auto_upd;
+            lang_label.Text = Lang.langs;
+            bg_label.Text = Lang.bg;
+            bg_folder.Text = Lang.open_bg;
+            bg_button.Text = Lang.add_bg;
+            jre_button.Text = Lang.browses;
+            authlib_box.Text = Lang.use_authinj;
+            load_instances.Text = Lang.load_inst;
+            load_users.Text = Lang.load_user;
+            stop_instance.Text = Lang.stop_instance;
+            stop_instances.Text = Lang.stop_instances;
+            stop_operations.Text = Lang.stop_operations;
+            other_label.Text = Lang.other;
+
+            onlaunch_box.DisplayMember = null;
+            onlaunch_box.DisplayMember = "Name";
+
+            gc_box.DisplayMember = null;
+            gc_box.DisplayMember = "Name";
+
+            javalist_btn.Text = Lang.open_javas;
+            separateVers.Text = Lang.separate_vers;
+
+            UpdateJavaLabel();
+            CurrentLang = Lang;
+        }
+
         public void UpdateJavaLabel()
         {
             if (string.IsNullOrEmpty(Program.settings.java_type))
-                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", Program.NamedClasses["default"].Name);
-            else if (Program.JavaIdToVersion.ContainsKey(Program.settings.java_type))
-                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", $"{Program.JavaIdToVersion[Program.settings.java_type]} ({Program.settings.java_type})");
+                java_ver.Text = SharedMethods.ReplaceFormat(CurrentLang.java_ver, Program.NamedClasses["default"].Name); // ?? "Version: {0}"
             else
-                java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", Program.settings.java_type);
+                java_ver.Text = SharedMethods.ReplaceFormat(CurrentLang.java_ver, Program.settings.java_type);// ?? "Version: {0}"
         }
         public void OpenMenu(int Screen)
         {
@@ -154,7 +219,7 @@ namespace Sandstone_Launcher
                 selectedUser = account_list.SelectedItems[0].Tag as User;
             if (selectedUser != null)
             {
-                DialogResult confirm = MessageBox.Show(SharedMethods.ReplaceFormat(Program.Lang?.del_user ?? "Remove account \"{0}\"?", selectedUser.username), "Sandstone Launcher", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                DialogResult confirm = MessageBox.Show(SharedMethods.ReplaceFormat(CurrentLang.del_user, selectedUser.username), Program.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);// ?? "Remove account \"{0}\"?"
                 if (confirm == DialogResult.Yes)
                 {
                     lock (Program.AccountLock)
@@ -170,42 +235,52 @@ namespace Sandstone_Launcher
             if (account_list.SelectedItems.Count > 0)
                 selectedUser = account_list.SelectedItems[0].Tag as User;
 
-            if (selectedUser != null)
+            if (selectedUser != null && selectedUser.usertype == "offline")
             {
-                Program.accountDialog.usertype_box.Enabled = false;
-                Program.accountDialog.username_box.Text = selectedUser.username;
-                Program.accountDialog.Text = Program.Lang?.edit_acc ?? "Editing an Account";
-                DialogResult confirm = Program.accountDialog.ShowDialog();
-                if (confirm == DialogResult.OK)
+                //    Program.accountDialog.usertype_box.Enabled = false;
+                //    Program.accountDialog.username_box.Text = selectedUser.username;
+                //    Program.accountDialog.Text = Program.Lang?.edit_acc ?? "Editing an Account";
+                using (var Dialog = new AccountDialog())
                 {
-                    selectedUser.username = Program.accountDialog.username_box.Text;
-                    account_box.DataSource = null;
-                    account_box.DataSource = Program.Users;
-                    Program.LoadUsersList();
-                    Program.SaveUsers();
+                    Dialog.SetLanguage(CurrentLang, CurrentLang.edit_acc);
+                    Dialog.usertype_box.Enabled = false;
+                    Dialog.username_box.Text = selectedUser.username;
+                    Dialog.Text = CurrentLang?.edit_acc ?? "Editing an Account";
+                    DialogResult confirm = Dialog.ShowDialog();
+                    if (confirm == DialogResult.OK)
+                    {
+                        selectedUser.username = Dialog.username_box.Text;
+                        account_box.DataSource = null;
+                        account_box.DataSource = Program.Users;
+                        Program.LoadUsersList();
+                        Program.SaveUsers();
+                    }
                 }
-                Program.accountDialog.username_box.Text = "";
+                //Program.accountDialog.username_box.Text = "";
             }
         }
         private void account_add_Click(object sender, EventArgs e)
         {
-            Program.accountDialog.usertype_box.Enabled = true;
-            Program.accountDialog.Text = Program.Lang?.add_acc ?? "Adding an Account";
-            DialogResult confirm = Program.accountDialog.ShowDialog();
-            if (confirm == DialogResult.OK)
+            using (var Dialog = new AccountDialog())
             {
-                lock (Program.AccountLock)
-                    Program.Users.Add(new User
-                    {
-                        username = Program.accountDialog.username_box.Text,
-                        usertype = "offline",
-                        accessToken = "0",
-                        uuid = Guid.NewGuid().ToString("N")
-                    });
-                Program.LoadUsersList();
-                Program.SaveUsers();
+                Dialog.SetLanguage(CurrentLang, CurrentLang.add_acc);
+                Dialog.usertype_box.Enabled = Program.HasMSAccount();
+                Dialog.Text = CurrentLang?.add_acc ?? "Adding an Account";
+                DialogResult confirm = Dialog.ShowDialog();
+                if (confirm == DialogResult.OK)
+                {
+                    lock (Program.AccountLock)
+                        Program.Users.Add(new User
+                        {
+                            username = Dialog.username_box.Text,
+                            usertype = "offline",
+                            accessToken = "0",
+                            uuid = Guid.NewGuid().ToString("N")
+                        });
+                    Program.LoadUsersList();
+                    Program.SaveUsers();
+                }
             }
-            Program.accountDialog.username_box.Text = "";
         }
         private void instance_list_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -225,7 +300,7 @@ namespace Sandstone_Launcher
                 selectedInst = instance_list.SelectedItems[0].Tag as Instance;
             if (selectedInst != null)
             {
-                DialogResult confirm = MessageBox.Show(SharedMethods.ReplaceFormat(Program.Lang?.del_inst ?? "Remove instance \"{0}\"?", selectedInst.name), "Sandstone Launcher", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                DialogResult confirm = MessageBox.Show(SharedMethods.ReplaceFormat(CurrentLang.del_inst, selectedInst.name), Program.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2); //  ?? "Remove instance \"{0}\"?"
                 if (confirm == DialogResult.Yes)
                 {
                     Program.Instances.Remove(selectedInst);
@@ -242,19 +317,22 @@ namespace Sandstone_Launcher
 
             if (selectedInst != null)
             {
-                Program.instanceDialog.NoFilters();
-                Program.instanceDialog.SetValues(selectedInst);
-                Program.instanceDialog.Text = Program.Lang?.edit_inst ?? "Editing an Instance";
-                DialogResult confirm = Program.instanceDialog.ShowDialog();
-                if (confirm == DialogResult.OK)
+                using (var Dialog = new InstanceDialog())
                 {
-                    Program.instanceDialog.EditInstance(selectedInst);
-                    instance_box.DisplayMember = null;
-                    instance_box.DisplayMember = "name";
-                    if (Program.instanceDialog.predown.Checked)
-                        Program.DownloadFiles(selectedInst);
-                    Program.LoadInstanceList();
-                    Program.SaveInstances();
+                    Dialog.SetLanguage(CurrentLang, CurrentLang.edit_inst);
+                    Dialog.NoFilters();
+                    Dialog.SetValues(selectedInst);
+                    DialogResult confirm = Dialog.ShowDialog();
+                    if (confirm == DialogResult.OK)
+                    {
+                        Dialog.EditInstance(selectedInst);
+                        instance_box.DisplayMember = null;
+                        instance_box.DisplayMember = "name";
+                        if (Dialog.predown.Checked)
+                            Program.DownloadFiles(selectedInst);
+                        Program.LoadInstanceList();
+                        Program.SaveInstances();
+                    }
                 }
             }
         }
@@ -267,40 +345,46 @@ namespace Sandstone_Launcher
 
             if (selectedInst != null)
             {
-                Program.instanceDialog.NoFilters();
-                Program.instanceDialog.SetValues(selectedInst);
-                Program.instanceDialog.Text = Program.Lang?.clone_inst ?? "Cloning an Instance";
-                DialogResult confirm = Program.instanceDialog.ShowDialog();
-                if (confirm == DialogResult.OK)
+                using (var Dialog = new InstanceDialog())
                 {
-                    Instance NewInst = Program.instanceDialog.NewInstance();
-                    if (NewInst != null)
+                    Dialog.SetLanguage(CurrentLang, CurrentLang.clone_inst);
+                    Dialog.NoFilters();
+                    Dialog.SetValues(selectedInst);
+                    DialogResult confirm = Dialog.ShowDialog();
+                    if (confirm == DialogResult.OK)
                     {
-                        Program.Instances.Add(NewInst);
-                        if (Program.instanceDialog.predown.Checked)
-                            Program.DownloadFiles(NewInst);
-                        Program.LoadInstanceList();
-                        Program.SaveInstances();
+                        Instance NewInst = Dialog.NewInstance();
+                        if (NewInst != null)
+                        {
+                            Program.Instances.Add(NewInst);
+                            if (Dialog.predown.Checked)
+                                Program.DownloadFiles(NewInst);
+                            Program.LoadInstanceList();
+                            Program.SaveInstances();
+                        }
                     }
                 }
             }
         }
         private void instance_add_Click(object sender, EventArgs e)
         {
-            Program.instanceDialog.NoFilters();
-            Program.instanceDialog.SetValues();
-            Program.instanceDialog.Text = Program.Lang?.add_inst ?? "Adding an Instance";
-            DialogResult confirm = Program.instanceDialog.ShowDialog();
-            if (confirm == DialogResult.OK)
+            using (var Dialog = new InstanceDialog())
             {
-                Instance NewInst = Program.instanceDialog.NewInstance();
-                if (NewInst != null)
+                Dialog.SetLanguage(CurrentLang, CurrentLang.add_inst);
+                Dialog.NoFilters();
+                Dialog.SetValues();
+                DialogResult confirm = Dialog.ShowDialog();
+                if (confirm == DialogResult.OK)
                 {
-                    Program.Instances.Add(NewInst);
-                    if (Program.instanceDialog.predown.Checked)
-                        Program.DownloadFiles(NewInst);
-                    Program.LoadInstanceList();
-                    Program.SaveInstances();
+                    Instance NewInst = Dialog.NewInstance();
+                    if (NewInst != null)
+                    {
+                        Program.Instances.Add(NewInst);
+                        if (Dialog.predown.Checked)
+                            Program.DownloadFiles(NewInst);
+                        Program.LoadInstanceList();
+                        Program.SaveInstances();
+                    }
                 }
             }
         }
@@ -312,8 +396,8 @@ namespace Sandstone_Launcher
         }
         private void lang_box_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Languages.ApplyLang(lang_box.SelectedItem as Language, this, Program.instanceDialog, Program.accountDialog);
-            Program.Lang = lang_box.SelectedItem as Language ?? Languages.AllLanguages[0];
+            Languages.ApplyLang(lang_box.SelectedItem as Language, this); //, Program.instanceDialog, Program.accountDialog
+            Program.Lang = lang_box.SelectedItem as Language ?? Languages.DefaultLanguage;
         }
         private void bg_folder_Click(object sender, EventArgs e)
         {
@@ -354,30 +438,15 @@ namespace Sandstone_Launcher
                 Conhost.HideConsole();
         }
 
-        private void stop_minecraft_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Program.GameProcess?.Refresh();
-                if (Program.GameProcess?.HasExited == false) Program.GameProcess?.Kill();
-            }
-            catch { }
-        }
-
-        private void stop_operations_Click(object sender, EventArgs e)
-        {
-            LauncherLib.StopOperation();
-            Program.StopLaunch();
-        }
-
         private void javalist_btn_Click(object sender, EventArgs e)
         {
             using (var javaWindow = new JavaList(Program.settings.java_type))
             {
+                javaWindow.SetLanguage(CurrentLang);
                 DialogResult result = javaWindow.ShowDialog();
                 if (result == DialogResult.OK && javaWindow.list.SelectedItem is NameClass java)
                 {
-                    java_ver.Text = SharedMethods.ReplaceFormat(Program.Lang?.java_ver ?? "Version: {0}", java.Name);
+                    java_ver.Text = SharedMethods.ReplaceFormat(CurrentLang.java_ver, java.Name); // ?? "Version: {0}"
                     if (java.Id == Program.NamedClasses["default"].Id)
                         Program.settings.java_type = null;
                     else
@@ -399,5 +468,72 @@ namespace Sandstone_Launcher
                     Program.settings.bg_color = ColorTranslator.ToHtml(ColorPick.Color);
             }
         }
+
+        private void stop_operations_Click(object sender, EventArgs e)
+        {
+            LauncherLib.StopOperation();
+            Program.StopLaunch();
+        }
+
+        private void stop_instances_Click(object sender, EventArgs e)
+        {
+            DialogResult Result = MessageBox.Show("Are you sure?\nThis will close ALL instances!", Program.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (Result == DialogResult.Yes)
+            {
+                lock (Program.GameProcLock)
+                    foreach (var Launched in Program.GameProcesses)
+                    {
+                        try
+                        {
+                            Launched.Value.Refresh();
+                            if (!Launched.Value.HasExited) Launched.Value.Kill();
+                        }
+                        catch { }
+                    }
+            }
+        }
+
+        private void stop_instance_Click(object sender, EventArgs e)
+        {
+            if (instance_box.SelectedItem is Instance Inst)
+            {
+                lock (Program.GameProcLock)
+                {
+                    if (Program.GameProcesses.ContainsKey(Inst.uuid))
+                    {
+                        try
+                        {
+                            Process Proc = Program.GameProcesses[Inst.uuid];
+                            Proc.Refresh();
+                            if (!Proc.HasExited) Proc.Kill();
+                        }
+                        catch { }
+                    }
+                }
+            }
+        }
+
+        //private void stop_instances_DropDownOpening(object sender, EventArgs e)
+        //{
+        //    stop_instances.DropDownItems.Clear();
+        //    if (Program.GameProcesses.Count > 0)
+        //    {
+        //        lock (Program.GameProcLock)
+        //            foreach (var Launched in Program.GameProcesses)
+        //            {
+        //                Instance inst = Program.GetInstanceFromUUID(Launched.Key);
+        //                if (inst is Instance)
+        //                {
+        //                    var Item = new ToolStripMenuItem
+        //                    {
+        //                        Tag = Launched.Key,
+        //                        Text = inst.name,
+        //                        Image = Properties.Resources.grass
+        //                    };
+        //                    stop_instances.DropDownItems.Insert(0, Item);
+        //                }
+        //            }
+        //    }
+        //}
     }
 }

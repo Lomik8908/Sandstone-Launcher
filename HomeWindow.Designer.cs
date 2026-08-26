@@ -93,14 +93,15 @@
             this.OpenInstances = new System.Windows.Forms.ToolStripMenuItem();
             this.more_menu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_instances = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_instance = new System.Windows.Forms.ToolStripMenuItem();
+            this.stop_operations = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenAccounts = new System.Windows.Forms.ToolStripMenuItem();
             this.file_update = new System.Windows.Forms.ToolStripMenuItem();
             this.updateclient_box = new System.Windows.Forms.ToolStripMenuItem();
             this.updateassets_box = new System.Windows.Forms.ToolStripMenuItem();
             this.updatejava_box = new System.Windows.Forms.ToolStripMenuItem();
-            this.stop_operations = new System.Windows.Forms.ToolStripMenuItem();
-            this.stop_minecraft = new System.Windows.Forms.ToolStripMenuItem();
             this.instances_box = new System.Windows.Forms.Panel();
             this.instance_clone = new System.Windows.Forms.Button();
             this.instance_add = new System.Windows.Forms.Button();
@@ -124,6 +125,7 @@
             this.FileDialog = new System.Windows.Forms.OpenFileDialog();
             this.openupd = new System.Windows.Forms.LinkLabel();
             this.ColorPick = new System.Windows.Forms.ColorDialog();
+            this.skinSelectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bottom_holder.SuspendLayout();
             this.settings_box.SuspendLayout();
             this.launcher_group.SuspendLayout();
@@ -850,19 +852,19 @@
             this.OpenAbout.Enabled = false;
             this.OpenAbout.Image = global::Sandstone_Launcher.Properties.Resources.isometric_block;
             this.OpenAbout.Name = "OpenAbout";
-            this.OpenAbout.Size = new System.Drawing.Size(173, 22);
+            this.OpenAbout.Size = new System.Drawing.Size(180, 22);
             this.OpenAbout.Text = "SL v1.0";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(170, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // OpenSettings
             // 
             this.OpenSettings.Image = global::Sandstone_Launcher.Properties.Resources.settings;
             this.OpenSettings.Name = "OpenSettings";
-            this.OpenSettings.Size = new System.Drawing.Size(173, 22);
+            this.OpenSettings.Size = new System.Drawing.Size(180, 22);
             this.OpenSettings.Text = "Settings";
             this.OpenSettings.Click += new System.EventHandler(this.OpenSettings_Click);
             // 
@@ -870,7 +872,7 @@
             // 
             this.OpenInstances.Image = global::Sandstone_Launcher.Properties.Resources.instance;
             this.OpenInstances.Name = "OpenInstances";
-            this.OpenInstances.Size = new System.Drawing.Size(173, 22);
+            this.OpenInstances.Size = new System.Drawing.Size(180, 22);
             this.OpenInstances.Text = "Instances";
             this.OpenInstances.Click += new System.EventHandler(this.OpenInstances_Click);
             // 
@@ -882,32 +884,55 @@
             this.toolStripSeparator2,
             this.OpenInstances,
             this.OpenAccounts,
+            this.skinSelectorToolStripMenuItem,
             this.toolStripSeparator1,
             this.file_update,
+            this.stop_instance,
             this.stop_operations,
-            this.stop_minecraft,
+            this.stop_instances,
             this.OpenAbout});
             this.more_menu.Name = "more_menu";
-            this.more_menu.Size = new System.Drawing.Size(174, 192);
+            this.more_menu.Size = new System.Drawing.Size(181, 258);
             // 
             // OpenFolder
             // 
             this.OpenFolder.Image = global::Sandstone_Launcher.Properties.Resources.folder;
             this.OpenFolder.Name = "OpenFolder";
-            this.OpenFolder.Size = new System.Drawing.Size(173, 22);
+            this.OpenFolder.Size = new System.Drawing.Size(180, 22);
             this.OpenFolder.Text = "Open Game Folder";
             this.OpenFolder.Click += new System.EventHandler(this.OpenFolder_Click);
+            // 
+            // stop_instances
+            // 
+            this.stop_instances.Name = "stop_instances";
+            this.stop_instances.Size = new System.Drawing.Size(180, 22);
+            this.stop_instances.Text = "Stop All Instances";
+            this.stop_instances.Click += new System.EventHandler(this.stop_instances_Click);
+            // 
+            // stop_instance
+            // 
+            this.stop_instance.Name = "stop_instance";
+            this.stop_instance.Size = new System.Drawing.Size(180, 22);
+            this.stop_instance.Text = "Stop Instance";
+            this.stop_instance.Click += new System.EventHandler(this.stop_instance_Click);
+            // 
+            // stop_operations
+            // 
+            this.stop_operations.Name = "stop_operations";
+            this.stop_operations.Size = new System.Drawing.Size(180, 22);
+            this.stop_operations.Text = "Stop Operations";
+            this.stop_operations.Click += new System.EventHandler(this.stop_operations_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(170, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // OpenAccounts
             // 
             this.OpenAccounts.Image = global::Sandstone_Launcher.Properties.Resources.account;
             this.OpenAccounts.Name = "OpenAccounts";
-            this.OpenAccounts.Size = new System.Drawing.Size(173, 22);
+            this.OpenAccounts.Size = new System.Drawing.Size(180, 22);
             this.OpenAccounts.Text = "Accounts";
             this.OpenAccounts.Click += new System.EventHandler(this.OpenAccounts_Click);
             // 
@@ -918,7 +943,7 @@
             this.updateassets_box,
             this.updatejava_box});
             this.file_update.Name = "file_update";
-            this.file_update.Size = new System.Drawing.Size(173, 22);
+            this.file_update.Size = new System.Drawing.Size(180, 22);
             this.file_update.Text = "Updating";
             // 
             // updateclient_box
@@ -944,22 +969,6 @@
             this.updatejava_box.Name = "updatejava_box";
             this.updatejava_box.Size = new System.Drawing.Size(148, 22);
             this.updatejava_box.Text = "Update Java";
-            // 
-            // stop_operations
-            // 
-            this.stop_operations.Image = global::Sandstone_Launcher.Properties.Resources.stop;
-            this.stop_operations.Name = "stop_operations";
-            this.stop_operations.Size = new System.Drawing.Size(173, 22);
-            this.stop_operations.Text = "Stop Operation";
-            this.stop_operations.Click += new System.EventHandler(this.stop_operations_Click);
-            // 
-            // stop_minecraft
-            // 
-            this.stop_minecraft.Image = global::Sandstone_Launcher.Properties.Resources.game;
-            this.stop_minecraft.Name = "stop_minecraft";
-            this.stop_minecraft.Size = new System.Drawing.Size(173, 22);
-            this.stop_minecraft.Text = "Stop Minecraft";
-            this.stop_minecraft.Click += new System.EventHandler(this.stop_minecraft_Click);
             // 
             // instances_box
             // 
@@ -1243,6 +1252,12 @@
             this.ColorPick.AnyColor = true;
             this.ColorPick.Color = System.Drawing.Color.DimGray;
             // 
+            // skinSelectorToolStripMenuItem
+            // 
+            this.skinSelectorToolStripMenuItem.Name = "skinSelectorToolStripMenuItem";
+            this.skinSelectorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.skinSelectorToolStripMenuItem.Text = "Skin Selector";
+            // 
             // HomeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1291,10 +1306,8 @@
 
         public System.Windows.Forms.Button launch;
         public System.Windows.Forms.Panel bottom_holder;
-        public System.Windows.Forms.Label account_label;
         public System.Windows.Forms.ComboBox account_box;
         public System.Windows.Forms.Label info_text;
-        public System.Windows.Forms.Label instance_label;
         public System.Windows.Forms.ComboBox instance_box;
         public System.Windows.Forms.Button more;
         public System.Windows.Forms.Panel settings_box;
@@ -1302,7 +1315,6 @@
         public System.Windows.Forms.Label settings_label;
         public System.Windows.Forms.GroupBox launcher_group;
         public System.Windows.Forms.GroupBox game_group;
-        public System.Windows.Forms.ToolStripMenuItem OpenAbout;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         public System.Windows.Forms.ToolStripMenuItem OpenSettings;
         public System.Windows.Forms.ToolStripMenuItem OpenInstances;
@@ -1312,34 +1324,25 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         public System.Windows.Forms.Button gamedir_button;
         public System.Windows.Forms.TextBox gamedir_box;
-        public System.Windows.Forms.Label gamedir_label;
         public System.Windows.Forms.CheckBox fullscreen_box;
         public System.Windows.Forms.Label x_label;
         public System.Windows.Forms.NumericUpDown resy_box;
         public System.Windows.Forms.NumericUpDown resx_box;
-        public System.Windows.Forms.Label res_label;
-        public System.Windows.Forms.Label ram_label;
         public System.Windows.Forms.TrackBar ram_bar;
         public System.Windows.Forms.Label mib_label;
         public System.Windows.Forms.NumericUpDown ram_box;
-        public System.Windows.Forms.Label mcarg_label;
         public System.Windows.Forms.TextBox mcarg_box;
-        public System.Windows.Forms.Label jvmarg_label;
         public System.Windows.Forms.Panel ScrollablePanel;
         public System.Windows.Forms.TextBox jvmarg_box;
-        public System.Windows.Forms.Label gc_label;
         public System.Windows.Forms.CheckBox updates_box;
         public System.Windows.Forms.CheckBox hash_box;
         public System.Windows.Forms.CheckBox asset_box;
         public System.Windows.Forms.Button bg_button;
         public System.Windows.Forms.ComboBox bg_box;
-        public System.Windows.Forms.Label bg_label;
         public System.Windows.Forms.ComboBox lang_box;
-        public System.Windows.Forms.Label lang_label;
         public System.Windows.Forms.CheckBox fullargs_box;
         public System.Windows.Forms.CheckBox console_box;
         public System.Windows.Forms.ComboBox onlaunch_box;
-        public System.Windows.Forms.Label onlaunch_label;
         public System.Windows.Forms.ToolStripMenuItem file_update;
         public System.Windows.Forms.ToolStripMenuItem updateclient_box;
         public System.Windows.Forms.ToolStripMenuItem updateassets_box;
@@ -1360,7 +1363,6 @@
         public System.Windows.Forms.Button instance_add;
         public System.Windows.Forms.Button instance_edit;
         public System.Windows.Forms.Button instance_remove;
-        public System.Windows.Forms.Label jre_label;
         public System.Windows.Forms.TextBox jre_box;
         public System.Windows.Forms.Button jre_button;
         public System.Windows.Forms.ContextMenuStrip AskOpenFolder;
@@ -1374,14 +1376,29 @@
         public System.Windows.Forms.Button load_instances;
         public System.Windows.Forms.Button load_users;
         public System.Windows.Forms.LinkLabel openupd;
-        public System.Windows.Forms.ToolStripMenuItem stop_operations;
-        public System.Windows.Forms.ToolStripMenuItem stop_minecraft;
-        public System.Windows.Forms.Label other_label;
+        public System.Windows.Forms.ToolStripMenuItem stop_instance;
         public System.Windows.Forms.Button instance_clone;
         public System.Windows.Forms.Button javalist_btn;
         public System.Windows.Forms.Label java_ver;
         public System.Windows.Forms.Panel bgcolor;
         public System.Windows.Forms.ColorDialog ColorPick;
         public System.Windows.Forms.CheckBox separateVers;
+        private System.Windows.Forms.Label account_label;
+        private System.Windows.Forms.Label instance_label;
+        private System.Windows.Forms.Label gamedir_label;
+        private System.Windows.Forms.Label res_label;
+        private System.Windows.Forms.Label ram_label;
+        private System.Windows.Forms.Label mcarg_label;
+        private System.Windows.Forms.Label jvmarg_label;
+        private System.Windows.Forms.Label gc_label;
+        private System.Windows.Forms.Label bg_label;
+        private System.Windows.Forms.Label lang_label;
+        private System.Windows.Forms.Label onlaunch_label;
+        private System.Windows.Forms.Label jre_label;
+        private System.Windows.Forms.Label other_label;
+        private System.Windows.Forms.ToolStripMenuItem OpenAbout;
+        private System.Windows.Forms.ToolStripMenuItem stop_operations;
+        public System.Windows.Forms.ToolStripMenuItem stop_instances;
+        private System.Windows.Forms.ToolStripMenuItem skinSelectorToolStripMenuItem;
     }
 }

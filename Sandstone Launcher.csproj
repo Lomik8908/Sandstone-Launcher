@@ -141,6 +141,12 @@
     <Compile Include="AccountDialog.Designer.cs">
       <DependentUpon>AccountDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkinSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkinSelector.Designer.cs">
+      <DependentUpon>SkinSelector.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AccountDialog.resx">
       <DependentUpon>AccountDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -161,6 +167,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkinSelector.resx">
+      <DependentUpon>SkinSelector.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
   </ItemGroup>

@@ -6,6 +6,7 @@ namespace Sandstone_Launcher
 {
     public partial class AccountDialog : Form
     {
+        private Language CurrentLang = Languages.DefaultLanguage;
         public AccountDialog()
         {
             InitializeComponent();
@@ -13,12 +14,27 @@ namespace Sandstone_Launcher
             login_button.ImageList = Program.homeWindow.AccountImages;
         }
 
+        public void SetLanguage(Language Lang, string Title = null)
+        {
+            if (!(Lang is Language)) return;
+            username_label.Text = Lang.username;
+            usertype_label.Text = Lang.user_type;
+            save.Text = Lang.save;
+            cancel.Text = Lang.cancel;
+
+            usertype_box.DisplayMember = null;
+            usertype_box.DisplayMember = "Name";
+
+            Text = Title ?? Program.AppName;
+            CurrentLang = Lang;
+        }
+
         private void save_Click(object sender, System.EventArgs e)
         {
-            if (string.IsNullOrEmpty(username_box.Text)) { MessageBox.Show(Program.Lang?.make_username ?? "Make a username!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information); return; }
+            if (string.IsNullOrEmpty(username_box.Text)) { MessageBox.Show(CurrentLang.make_username, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information); return; } // ?? "Make a username!"
             if (username_box.Text.Length > 16 || !Regex.IsMatch(username_box.Text, "^[A-Za-z0-9_]+$"))
             {
-                DialogResult Ask = MessageBox.Show(Program.Lang?.username_warn ?? "While using this username you might encounter:\nGame Crashes\nServer Bugs\nUnexpected Behaviour\nUse this username at your own risk!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                DialogResult Ask = MessageBox.Show(CurrentLang.username_warn, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);// ?? "While using this username you might encounter:\nGame Crashes\nServer Bugs\nUnexpected Behaviour\nUse this username at your own risk!"
             }
             DialogResult = DialogResult.OK;
         }
@@ -33,7 +49,7 @@ namespace Sandstone_Launcher
                 save.Enabled = false;
                 login_button.Visible = true;
                 login_button.ImageKey = AccType.id;
-                login_button.Text = SharedMethods.ReplaceFormat(Program.Lang?.login_into ?? "Login into {0}", AccType.name);
+                login_button.Text = SharedMethods.ReplaceFormat(CurrentLang.login_into, AccType.name); // ?? "Login into {0}"
             }
             else
             {
@@ -52,20 +68,6 @@ namespace Sandstone_Launcher
             if (AccType?.id == "ely")
                 Accounts.ElyBeginFlow();
             Close();
-        }
-
-        private void AccountDialog_Shown(object sender, EventArgs e)
-        {
-            if (!Program.HasMSAccount())
-            {
-                usertype_box.SelectedIndex = 0;
-                usertype_box.Enabled = false;
-            }
-            else
-            {
-                usertype_box.Enabled = true;
-            }
-            usertype_box_SelectedIndexChanged(null, null);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Sandstone_Launcher
 {
     static class Program
     {
+        static public string AppName = "Sandstone Launcher";
         static public string AppVersionString = "1.0.0 rc-1.7";
         static public int AppVersion = 6;
         static public ComputerInfo pcInfo = new ComputerInfo();
@@ -32,22 +33,14 @@ namespace Sandstone_Launcher
             { "onlaunch_none", new NameClass { Name = "Do nothing" } }
         };
 
-        public static Dictionary<string, string> JavaIdToVersion = new Dictionary<string, string> {
-            { "java-runtime-alpha", "Java 16~" },
-            { "java-runtime-beta", "Java 17~" },
-            { "java-runtime-delta", "Java 21~" },
-            { "java-runtime-epsilon", "Java 25~" },
-            { "java-runtime-gamma", "Java 17~" },
-            { "java-runtime-gamma-snapshot", "Java 17~" },
-            { "jre-legacy", "Java 8~" }
-        };
-
         static public Language Lang = Languages.AllLanguages[0];
 
         static public BindingList<User> Users = new BindingList<User>();
         static public BindingList<Instance> Instances = new BindingList<Instance>();
+        static public Dictionary<string, Process> GameProcesses = new Dictionary<string, Process>();
 
         static public readonly object AccountLock = new object();
+        static public readonly object GameProcLock = new object();
 
         static public bool Launching { get; private set; }
         static bool WaitingForTasks;
@@ -56,11 +49,9 @@ namespace Sandstone_Launcher
         static bool saveInstance = true;
         static public JsonSerializerOptions defaultJsonOptions = new JsonSerializerOptions { AllowTrailingCommas = true, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
 
-        static public Process GameProcess;
-
         static public HomeWindow homeWindow;
-        static public AccountDialog accountDialog;
-        static public InstanceDialog instanceDialog;
+        //static public AccountDialog accountDialog;
+        //static public InstanceDialog instanceDialog;
 
         [STAThread]
         static void Main(string[] args)
@@ -89,8 +80,8 @@ namespace Sandstone_Launcher
             homeWindow = new HomeWindow();
             Lang = Languages.AllLanguages.FirstOrDefault(v => v.lang_id == settings.lang);
 
-            accountDialog = new AccountDialog();
-            instanceDialog = new InstanceDialog();
+            //accountDialog = new AccountDialog();
+            //instanceDialog = new InstanceDialog();
 
             //LauncherLib.OnAssetUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_asset ?? "Checking assets ({0}/{1})", index, count));
             //LauncherLib.OnClientUpdate += (index, count) => InvokeUI(() => homeWindow.info_text.Text = string.Format(Lang?.down_client ?? "Checking client ({0}/{1})", index, count));
@@ -105,6 +96,8 @@ namespace Sandstone_Launcher
 
             LoadAll();
             if (settings.check_upd) CheckForUpdates();
+            using (var win = new SkinSelector())
+                win.ShowDialog();
             Application.Run(homeWindow);
         }
 
@@ -158,9 +151,9 @@ namespace Sandstone_Launcher
             LoadInstances();
             LoadUsers();
 
-            GCFlags.LoadCustomFlags();
+            //GCFlags.LoadCustomFlags();
             Backgrounds.LoadBackgrounds();
-            Languages.ApplyLang(Lang, homeWindow, instanceDialog, accountDialog);
+            Languages.ApplyLang(Lang, homeWindow);//, instanceDialog, accountDialog
 
             // Load Settings
             homeWindow.gamedir_box.Text = settings.gamedir;
@@ -192,7 +185,7 @@ namespace Sandstone_Launcher
             // GC Box
             GCTemplate[] GCArray = GCFlags.GCTemplates.ToArray();
             homeWindow.gc_box.Items.AddRange(GCArray);
-            instanceDialog.gc_box.Items.AddRange(GCArray);
+            //instanceDialog.gc_box.Items.AddRange(GCArray);
 
             if (settings.gc_preset != null)
                 homeWindow.gc_box.SelectedItem = GCFlags.GCTemplates.FirstOrDefault(v => v.id == settings.gc_preset);
@@ -291,6 +284,11 @@ namespace Sandstone_Launcher
             SaveInstances();
         }
         #endregion
+
+        static public Instance GetInstanceFromUUID(string uuid)
+        {
+            return Instances.FirstOrDefault(v => v.uuid == uuid);
+        }
 
         static public void CheckForUpdates()
         {
@@ -412,15 +410,21 @@ namespace Sandstone_Launcher
             if (!(homeWindow.account_box.SelectedItem is User user))
             {
                 lock (AccountLock)
-                    MessageBox.Show(Users.Count <= 0 ? Lang.cresel_acc ?? "Create and select an account!" : Lang.sel_acc ?? "Select an account!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Users.Count <= 0 ? Lang.cresel_acc ?? "Create and select an account!" : Lang.sel_acc ?? "Select an account!", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             ;
             if (!(homeWindow.instance_box.SelectedItem is Instance instance))
             {
-                MessageBox.Show(Instances.Count <= 0 ? Lang.cresel_inst ?? "Create and select an instance!" : Lang.sel_inst ?? "Select an instance!", "Sandstone Launcher", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Instances.Count <= 0 ? Lang.cresel_inst ?? "Create and select an instance!" : Lang.sel_inst ?? "Select an instance!", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            lock (GameProcLock)
+                if (GameProcesses.ContainsKey(instance.uuid))
+                {
+                    MessageBox.Show(Lang.launched_warn ?? "This instance is already launched!", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
             Launching = true;
             homeWindow.launch.Text = Lang.stop ?? "Stop!";
@@ -610,7 +614,8 @@ namespace Sandstone_Launcher
 
                 try
                 {
-                    Logger.Log("Launching game!");
+                    EndLaunch();
+                    Logger.Log($"Launching {instance.name}!");
                     InvokeUI(() =>
                     {
                         if (homeWindow.onlaunch_box.SelectedIndex == 0) homeWindow.Hide();
@@ -620,11 +625,12 @@ namespace Sandstone_Launcher
                     Directory.CreateDirectory(GameDir);
                     using (var gameProcess = new Process { StartInfo = startInfo })
                     {
-                        gameProcess.OutputDataReceived += (_, e) => Console.Out.WriteLine(e.Data);
-                        gameProcess.ErrorDataReceived += (_, e) => Logger.ErrorLine(e.Data);
+                        gameProcess.OutputDataReceived += (_, e) => Console.Out.WriteLine($"[{instance.name}] {e.Data}");
+                        gameProcess.ErrorDataReceived += (_, e) => Logger.ErrorLine($"[{instance.name}] {e.Data}");
 
                         gameProcess.Start();
-                        GameProcess = gameProcess;
+                        lock (GameProcLock)
+                            GameProcesses.Add(instance.uuid, gameProcess);
                         gameProcess.BeginErrorReadLine();
                         gameProcess.BeginOutputReadLine();
                         gameProcess.WaitForExit();
@@ -637,8 +643,8 @@ namespace Sandstone_Launcher
                 }
                 finally
                 {
-                    GameProcess = null;
-                    EndLaunch();
+                    lock (GameProcLock)
+                        GameProcesses.Remove(instance.uuid);
                 }
             }).ContinueWith(t =>
             {

@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Sandstone_Launcher
@@ -522,6 +523,11 @@ namespace Sandstone_Launcher
                     Program.settings.bg_color = null;
                 }
             }
+        }
+
+        public void UpdatePlayButton(object sender = null, EventArgs e = null)
+        {
+            launch.Enabled = instance_box.SelectedItem is Instance Inst && !Program.GameProcesses.ContainsKey(Inst.uuid);
         }
     }
 }

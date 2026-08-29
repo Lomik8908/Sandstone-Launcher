@@ -57,8 +57,6 @@ namespace Sandstone_Launcher
                 if (result == DialogResult.OK)
                 {
                     ElyContinue(Window.username.Text, Window.password.Text);
-                    Window.username.Text = "";
-                    Window.password.Text = "";
                 }
             }
             OnAccountFinished?.Invoke("ely");
@@ -81,6 +79,7 @@ namespace Sandstone_Launcher
                 }
                 else if (ElyResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized && !string.IsNullOrEmpty(TFA))
                 {
+                    MessageBox.Show(Program.Lang?.ely_tfa_err ?? "Invalid Code. Try Again!", Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     string code = GetElyCode();
                     if (code == null) return;
                     ElyContinue(Username, Pass, code);

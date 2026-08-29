@@ -62,6 +62,7 @@ namespace Sandstone_Launcher.Misc
             // 
             this.username.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.username.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.username.ForeColor = System.Drawing.Color.White;
             this.username.Location = new System.Drawing.Point(10, 25);
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(280, 20);
@@ -72,6 +73,7 @@ namespace Sandstone_Launcher.Misc
             // 
             this.password.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.password.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.password.ForeColor = System.Drawing.Color.White;
             this.password.Location = new System.Drawing.Point(10, 65);
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(280, 20);

@@ -145,7 +145,7 @@ namespace Sandstone_Launcher
         public string revert_bgcolor { get; set; } = "Reset the background color?";
         public string stopping_all { get; set; } = "Are you sure?\nThis will close ALL instances!";
         public string gamedir_desc { get; set; } = "Choose a folder where all of the game files will be saved.";
-        //public string replace_current { get; set; } = "Replace Current";
+        public string ely_tfa_err { get; set; } = "Invalid code. Try again!";
         //public string import_title { get; set; } = "Choose what you would like to import.";
         //public string export_title { get; set; } = "Choose what you would like to export.";
         //public string import { get; set; } = "Import";

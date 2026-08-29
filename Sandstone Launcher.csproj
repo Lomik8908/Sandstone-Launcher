@@ -142,6 +142,9 @@
     <Compile Include="AccountDialog.Designer.cs">
       <DependentUpon>AccountDialog.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="HomeWindow.resx">
+      <DependentUpon>HomeWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Misc\Backgrounds.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Backgrounds.Designer.cs</LastGenOutput>

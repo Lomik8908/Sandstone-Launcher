@@ -192,6 +192,7 @@
             this.instance_box.Name = "instance_box";
             this.instance_box.Size = new System.Drawing.Size(145, 21);
             this.instance_box.TabIndex = 1;
+            this.instance_box.SelectedIndexChanged += new System.EventHandler(this.UpdatePlayButton);
             // 
             // info_text
             // 

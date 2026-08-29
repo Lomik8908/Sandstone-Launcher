@@ -36,6 +36,7 @@ namespace Sandstone_Launcher.Misc
             // 
             this.tfa_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.tfa_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tfa_box.ForeColor = System.Drawing.Color.White;
             this.tfa_box.Location = new System.Drawing.Point(10, 30);
             this.tfa_box.Name = "tfa_box";
             this.tfa_box.Size = new System.Drawing.Size(240, 20);

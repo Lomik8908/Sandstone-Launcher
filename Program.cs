@@ -18,8 +18,8 @@ namespace Sandstone_Launcher
     static class Program
     {
         static public string AppName = "Sandstone Launcher";
-        static public string AppVersionString = "1.0.0";
-        static public int AppVersion = 10;
+        static public string AppVersionString = "1.0.1";
+        static public int AppVersion = 11;
         static public bool AllowOtherServices = false;
         static public ComputerInfo pcInfo = new ComputerInfo();
 
@@ -374,18 +374,22 @@ namespace Sandstone_Launcher
         }
 
         static void InvokeUI(Action action) { if (!homeWindow.IsDisposed) { if (homeWindow.InvokeRequired) homeWindow.Invoke(action); else action.Invoke(); } }
-        static void EndLaunch(bool keepText = false)
+        static void EndLaunch(bool keepText = false, bool gameLaunched = false)
         {
             Launching = false;
-            if (!homeWindow.IsDisposed)
-                homeWindow.Invoke(new Action(() =>
-                {
-                    homeWindow.launch.Text = Lang?.play ?? "Play!";
-                    homeWindow.launch.Enabled = true;
-                    if (!keepText) homeWindow.info_text.Text = string.Empty;
-                    homeWindow.Show();
-                }));
+            InvokeUI(() =>
+            {
+                homeWindow.launch.Text = Lang?.play ?? "Play!";
+                homeWindow.launch.Enabled = !gameLaunched;
+                if (!keepText) homeWindow.info_text.Text = string.Empty;
+                homeWindow.Show();
+            });
         }
+        static void ProcessEnded(Instance inst)
+        {
+            InvokeUI(() => homeWindow.UpdatePlayButton());
+        }
+
         static public void Launch()
         {
             if (WaitingForTasks)
@@ -610,7 +614,7 @@ namespace Sandstone_Launcher
 
                 try
                 {
-                    EndLaunch();
+                    EndLaunch(gameLaunched: true);
                     Logger.Log($"Launching {instance.name}!");
                     InvokeUI(() =>
                     {
@@ -625,22 +629,24 @@ namespace Sandstone_Launcher
                         gameProcess.ErrorDataReceived += (_, e) => Logger.ErrorLine($"[{instance.name}] {e.Data}");
 
                         gameProcess.Start();
+
                         lock (GameProcLock)
                             GameProcesses.Add(instance.uuid, gameProcess);
+
                         gameProcess.BeginErrorReadLine();
                         gameProcess.BeginOutputReadLine();
                         gameProcess.WaitForExit();
+
+                        lock (GameProcLock)
+                            GameProcesses.Remove(instance.uuid);
+
+                        ProcessEnded(instance);
                         Logger.Log($"Game exited with code: {gameProcess.ExitCode}");
                     }
                 }
                 catch (Exception ex)
                 {
                     Logger.Err($"Game Process error: {ex.Message}");
-                }
-                finally
-                {
-                    lock (GameProcLock)
-                        GameProcesses.Remove(instance.uuid);
                 }
             }).ContinueWith(t =>
             {

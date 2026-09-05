@@ -20,7 +20,7 @@ namespace Sandstone_Launcher
         static public string AppName = "Sandstone Launcher";
         static public string AppVersionString = "1.0.1";
         static public int AppVersion = 11;
-        static public bool AllowOtherServices = false;
+        static public bool AllowAllAccounts = false;
         static public ComputerInfo pcInfo = new ComputerInfo();
 
         static public Settings settings = new Settings();
@@ -58,10 +58,10 @@ namespace Sandstone_Launcher
         static void Main(string[] args)
         {
             if (args.Contains("console")) Conhost.ShowConsole();
-            if (args.Contains("allow_all_accounts")) AllowOtherServices = true;
+            if (args.Contains("allow_all_accounts")) AllowAllAccounts = true;
 
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(true);
+            Application.SetCompatibleTextRenderingDefault(false);
 
             if (File.Exists("sl_settings.json")) try
                 {
@@ -74,7 +74,7 @@ namespace Sandstone_Launcher
                     saveSetting = false;
                 }
             else
-                MessageBox.Show("Hello! Thanks for using my launcher <3\nIt's still in the early stages of development so feedback is needed!\nThere's probably alot of bugs sooo... You Gotta catch 'em all!", AppName);
+                MessageBox.Show("Hello! Thanks for using my launcher <3\nIt's still in the early stages of development (maybe not anymore) so feedback is needed!\nThere's probably alot of bugs sooo... You Gotta catch 'em all!", AppName);
 
             if (settings.console) Conhost.ShowConsole();
             Languages.LoadLangs();
@@ -306,7 +306,7 @@ namespace Sandstone_Launcher
         static public bool CanUseOtherServices()
         {
             lock (AccountLock)
-                return AllowOtherServices || Users.Any(v => v.usertype == "msa");
+                return AllowAllAccounts || Users.Any(v => v.usertype == "msa");
         }
         static public void SetGameDir(string sPath)
         {
@@ -385,9 +385,9 @@ namespace Sandstone_Launcher
                 homeWindow.Show();
             });
         }
-        static void ProcessEnded(Instance inst)
+        static void LaunchEnded(Instance inst)
         {
-            InvokeUI(() => homeWindow.UpdatePlayButton());
+            InvokeUI(() => { homeWindow.UpdatePlayButton(); homeWindow.Show(); });
         }
 
         static public void Launch()
@@ -640,13 +640,16 @@ namespace Sandstone_Launcher
                         lock (GameProcLock)
                             GameProcesses.Remove(instance.uuid);
 
-                        ProcessEnded(instance);
                         Logger.Log($"Game exited with code: {gameProcess.ExitCode}");
                     }
                 }
                 catch (Exception ex)
                 {
                     Logger.Err($"Game Process error: {ex.Message}");
+                }
+                finally
+                {
+                    LaunchEnded(instance);
                 }
             }).ContinueWith(t =>
             {

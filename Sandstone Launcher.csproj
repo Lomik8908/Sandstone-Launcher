@@ -7,7 +7,7 @@
     <ProjectGuid>{121E8289-2055-4BF6-9473-9618FFB85947}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Sandstone_Launcher</RootNamespace>
-    <AssemblyName>Sandstone Launcher</AssemblyName>
+    <AssemblyName>SandstoneLauncher</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
